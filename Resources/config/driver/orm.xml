@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+
+    <parameters>
+        <parameter key="tadcka_mapper.manager.category.default.class">Tadcka\Bundle\MapperBundle\Doctrine\EntityManager\CategoryManager</parameter>
+        <parameter key="tadcka_mapper.manager.mapping.default.class">Tadcka\Bundle\MapperBundle\Doctrine\EntityManager\MappingManager</parameter>
+        <parameter key="tadcka_mapper.manager.source.default.class">Tadcka\Bundle\MapperBundle\Doctrine\EntityManager\SourceManager</parameter>
+    </parameters>
+
+    <services>
+
+        <!--Category default manager-->
+        <service id="tadcka_mapper.manager.category.default" class="%tadcka_mapper.manager.category.default.class%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument>%tadcka_mapper.model.category.class%</argument>
+        </service>
+
+        <!--Mapping default manager-->
+        <service id="tadcka_mapper.manager.mapping.default" class="%tadcka_mapper.manager.mapping.default.class%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument>%tadcka_mapper.model.mapping.class%</argument>
+        </service>
+
+        <!--Source default manager-->
+        <service id="tadcka_mapper.manager.source.default" class="%tadcka_mapper.manager.source.default.class%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument>%tadcka_mapper.model.source.class%</argument>
+        </service>
+
+    </services>
+
+</container>

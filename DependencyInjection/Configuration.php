@@ -29,6 +29,28 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('tadcka_mapper');
 
+        $rootNode
+            ->children()
+                ->scalarNode('db_driver')->cannotBeOverwritten()->isRequired()->end()
+                ->scalarNode('category_manager')->defaultValue('tadcka_mapper.manager.category.default')
+                    ->cannotBeEmpty()->end()
+                ->scalarNode('mapping_manager')->defaultValue('tadcka_mapper.manager.mapping.default')
+                    ->cannotBeEmpty()->end()
+                ->scalarNode('source_manager')->defaultValue('tadcka_mapper.manager.source.default')
+                    ->cannotBeEmpty()->end()
+                ->arrayNode('class')->isRequired()
+                    ->children()
+                        ->arrayNode('model')->isRequired()
+                            ->children()
+                                ->scalarNode('category')->isRequired()->end()
+                                ->scalarNode('mapping')->isRequired()->end()
+                                ->scalarNode('source')->isRequired()->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+
         return $treeBuilder;
     }
 }

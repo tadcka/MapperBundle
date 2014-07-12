@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Tadcka\Bundle\Tradedoubler\MapperBundle\DependencyInjection;
+namespace Tadcka\Bundle\MapperBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -33,5 +33,18 @@ class TadckaMapperExtension extends Extension
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
+
+        if (!in_array(strtolower($config['db_driver']), array('mongodb', 'orm'))) {
+            throw new \InvalidArgumentException(sprintf('Invalid db driver "%s".', $config['db_driver']));
+        }
+        $loader->load('driver/' . sprintf('%s.xml', $config['db_driver']));
+
+        $container->setParameter('tadcka_mapper.model.category.class', $config['class']['model']['category']);
+        $container->setParameter('tadcka_mapper.model.mapping.class', $config['class']['model']['mapping']);
+        $container->setParameter('tadcka_mapper.model.source.class', $config['class']['model']['source']);
+
+        $container->setAlias('tadcka_mapper.manager.category', $config['category_manager']);
+        $container->setAlias('tadcka_mapper.manager.mapping', $config['mapping_manager']);
+        $container->setAlias('tadcka_mapper.manager.source', $config['source_manager']);
     }
 }
