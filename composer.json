@@ -1,0 +1,29 @@
+{
+    "name":         "tadcka/mapper-bundle",
+    "homepage":     "https://github.com/tadcka/MapperBundle",
+    "description":  "Mapper bundle on Symfony2",
+    "keywords":     ["mapper", "mapper manager"],
+    "type":         "symfony-bundle",
+    "license":      "MIT",
+    "authors": [
+        {
+            "name":   "Tadas Gliaubicas",
+            "email":  "tadcka89@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.3.3",
+
+        "symfony/framework-bundle" : ">=2.3",
+
+        "doctrine/doctrine-bundle": "dev-master",
+
+        "tadcka/mapper": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tadcka\\Bundle\\MapperBundle\\": ""
+        }
+    }
+}
