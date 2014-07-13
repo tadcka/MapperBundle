@@ -44,7 +44,7 @@ class Node
      * @param string $id
      * @param string $text
      * @param array $children
-     * @param null $icon
+     * @param null|string $icon
      */
     public function __construct($id, $text, array $children, $icon = null)
     {
