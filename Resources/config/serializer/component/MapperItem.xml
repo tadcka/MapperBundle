@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+ This file is part of the Tadcka package.
+
+ (c) Tadcka <tadcka89@gmail.com>
+
+ For the full copyright and license information, please view the LICENSE
+ file that was distributed with this source code.
+-->
+
+<serializer>
+
+    <class name="Tadcka\Component\Mapper\MapperItem">
+
+        <property name="slug" type="string" serialized-name="slug" expose="true" />
+
+        <property name="name" type="string" serialized-name="name" expose="true" />
+
+        <property name="canUseForMapping" type="boolean" serialized-name="can_use_for_mapping" expose="true" />
+
+        <property name="children" serialized-name="children" expose="true">
+            <type><![CDATA[array<Tadcka\Component\Mapper\MapperItem>]]></type>
+        </property>
+
+    </class>
+
+</serializer>

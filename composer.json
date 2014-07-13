@@ -18,8 +18,10 @@
         "symfony/framework-bundle" : ">=2.3",
 
         "doctrine/doctrine-bundle": "dev-master",
+        "jms/serializer-bundle": "~0.13",
 
-        "tadcka/mapper": "dev-master"
+        "tadcka/mapper": "dev-master",
+        "tadcka/jstree-bundle": "dev-master"
     },
     "autoload": {
         "psr-4": {

@@ -1,20 +1,27 @@
 <?xml version="1.0" ?>
 
+<!--
+ This file is part of the Tadcka package.
+
+ (c) Tadcka <tadcka89@gmail.com>
+
+ For the full copyright and license information, please view the LICENSE
+ file that was distributed with this source code.
+-->
+
 <container xmlns="http://symfony.com/schema/dic/services"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <!--
     <parameters>
-        <parameter key="tadcka_mapper.example.class">Tadcka\Bundle\MapperBundle\Example</parameter>
+        <parameter key="tadcka_mapper.registry.mapper.class">Tadcka\Component\Mapper\Registry\Registry</parameter>
     </parameters>
 
     <services>
-        <service id="tadcka_mapper.example" class="%tadcka_mapper.example.class%">
-            <argument type="service" id="service_id" />
-            <argument>plain_value</argument>
-            <argument>%parameter_name%</argument>
-        </service>
+
+        <!--Tadcka mapper registry-->
+        <service id="tadcka_mapper.registry.mapper" class="%tadcka_mapper.registry.mapper.class%" />
+
     </services>
-    -->
+
 </container>

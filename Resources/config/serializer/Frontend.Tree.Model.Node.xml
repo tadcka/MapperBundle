@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+ This file is part of the Tadcka package.
+
+ (c) Tadcka <tadcka89@gmail.com>
+
+ For the full copyright and license information, please view the LICENSE
+ file that was distributed with this source code.
+-->
+
+<serializer>
+
+    <class name="Tadcka\Bundle\MapperBundle\Frontend\Tree\Model\Node">
+
+        <property name="id" type="string" serialized-name="id" expose="true" />
+
+        <property name="text" type="string" serialized-name="text" expose="true" />
+
+        <property name="children" serialized-name="children" expose="true">
+            <type><![CDATA[array<Tadcka\Bundle\MapperBundle\Frontend\Tree\Model\Node>]]></type>
+        </property>
+
+        <property name="icon" type="string" serialized-name="icon" expose="true" />
+
+    </class>
+
+</serializer>
