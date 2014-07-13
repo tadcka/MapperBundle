@@ -15,12 +15,19 @@
 
     <parameters>
         <parameter key="tadcka_mapper.registry.mapper.class">Tadcka\Component\Mapper\Registry\Registry</parameter>
+        <parameter key="tadcka_mapper.provider.class">Tadcka\Bundle\MapperBundle\Provider\MapperProvider</parameter>
     </parameters>
 
     <services>
 
         <!--Tadcka mapper registry-->
         <service id="tadcka_mapper.registry.mapper" class="%tadcka_mapper.registry.mapper.class%" />
+
+        <!--Tadcka mapper provider-->
+        <service id="tadcka_mapper.provider" class="%tadcka_mapper.provider.class%">
+            <argument type="service" id="tadcka_mapper.registry.mapper" />
+            <argument type="service" id="tadcka_mapper.manager.source" />
+        </service>
 
     </services>
 
