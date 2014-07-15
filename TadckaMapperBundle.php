@@ -13,7 +13,6 @@ namespace Tadcka\Bundle\MapperBundle;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Tadcka\Bundle\MapperBundle\DependencyInjection\Compiler\MapperRegistryPass;
 
@@ -34,7 +33,7 @@ class TadckaMapperBundle extends Bundle
         $container->addCompilerPass(new MapperRegistryPass());
 
         if (false === $container->hasExtension('jms_serializer')) {
-            throw new ServiceNotFoundException('jms_serializer');
+            throw new \RuntimeException('JMSSerializerBundle must be registered in kernel.');
         }
 
         $this->addSerializerMapping($container);
