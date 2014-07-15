@@ -16,6 +16,7 @@
     <parameters>
         <parameter key="tadcka_mapper.registry.mapper.class">Tadcka\Component\Mapper\Registry\Registry</parameter>
         <parameter key="tadcka_mapper.provider.class">Tadcka\Bundle\MapperBundle\Provider\MapperProvider</parameter>
+        <parameter key="tadcka_mapper.cache.mapper_item.class">Tadcka\Bundle\MapperBundle\Cache\MapperItemCache</parameter>
     </parameters>
 
     <services>
@@ -27,6 +28,12 @@
         <service id="tadcka_mapper.provider" class="%tadcka_mapper.provider.class%">
             <argument type="service" id="tadcka_mapper.registry.mapper" />
             <argument type="service" id="tadcka_mapper.manager.source" />
+        </service>
+
+        <!--Tadcka mapper item cache-->
+        <service id="tadcka_mapper.cache.mapper_item" class="%tadcka_mapper.cache.mapper_item.class%">
+            <argument>%kernel.cache_dir%</argument>
+            <argument type="service" id="serializer" />
         </service>
 
     </services>
