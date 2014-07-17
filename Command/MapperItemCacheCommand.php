@@ -62,7 +62,8 @@ class MapperItemCacheCommand extends ContainerAwareCommand
         if (null !== $source) {
             $this->getMapperItemCache()->save(
                 $source,
-                $this->getProvider()->getMapper($source, $input->getArgument('locale'))
+                $this->getProvider()->getMapper($source, $input->getArgument('locale')),
+                $input->getArgument('locale')
             );
 
             $output->writeln('Saves mapper item in the cache.');

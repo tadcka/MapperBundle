@@ -48,25 +48,30 @@ class MapperItemCache implements MapperItemCacheInterface
     /**
      * {@inheritdoc}
      */
-    public function save(SourceInterface $source, MapperItemInterface $mapperItem)
+    public function save(SourceInterface $source, MapperItemInterface $mapperItem, $locale)
     {
         if (false === is_dir($this->getCacheDir())) {
             mkdir($this->getCacheDir(), 0777, true);
         }
 
-        file_put_contents($this->getFilename($source), $this->serializer->serialize($mapperItem, 'json'));
+        file_put_contents($this->getFilename($source, $locale), $this->serializer->serialize($mapperItem, 'json'));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function fetch(SourceInterface $source)
+    public function fetch(SourceInterface $source, $locale)
     {
-        return $this->serializer->deserialize(
-            file_get_contents($this->getFilename($source)),
-            'Tadcka\Component\Mapper\MapperItem',
-            'json'
-        );
+        $filename = $this->getFilename($source, $locale);
+        if (file_exists($filename)) {
+            return $this->serializer->deserialize(
+                $filename,
+                'Tadcka\Component\Mapper\MapperItem',
+                'json'
+            );
+        }
+
+        return null;
     }
 
     /**
@@ -83,11 +88,12 @@ class MapperItemCache implements MapperItemCacheInterface
      * Get filename.
      *
      * @param SourceInterface $source
+     * @param string $locale
      *
      * @return string
      */
-    private function getFilename(SourceInterface $source)
+    private function getFilename(SourceInterface $source, $locale)
     {
-        return  $this->getCacheDir() . $source->getSlug() . '.json';
+        return  $this->getCacheDir() . $source->getSlug() . '_' . $locale . '.json';
     }
 }

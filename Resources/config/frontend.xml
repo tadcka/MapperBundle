@@ -20,7 +20,10 @@
     <services>
 
         <!--Tadcka mapper frontend tree manager-->
-        <service id="tadcka_mapper.frontend.manager.tree" class="%tadcka_mapper.frontend.manager.tree.class%" />
+        <service id="tadcka_mapper.frontend.manager.tree" class="%tadcka_mapper.frontend.manager.tree.class%">
+            <argument type="service" id="tadcka_mapper.provider" />
+            <argument type="service" id="tadcka_mapper.cache.mapper_item" />
+        </service>
 
     </services>
 
