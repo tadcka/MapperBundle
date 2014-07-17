@@ -11,8 +11,14 @@
 
 namespace Tadcka\Bundle\MapperBundle\Tests\Frontend\Tree;
 
+use JMS\Serializer\SerializerBuilder;
+use JMS\Serializer\SerializerInterface;
+use Tadcka\Bundle\MapperBundle\Cache\MapperItemCache;
 use Tadcka\Bundle\MapperBundle\Frontend\Tree\TreeManager;
+use Tadcka\Bundle\MapperBundle\Provider\MapperProvider;
+use Tadcka\Bundle\MapperBundle\Tests\Mock\ModelManager\MockSourceManager;
 use Tadcka\Component\Mapper\MapperItem;
+use Tadcka\Component\Mapper\Registry\Registry;
 
 /**
  * @author Tadas Gliaubicas <tadcka89@gmail.com>
@@ -21,23 +27,36 @@ use Tadcka\Component\Mapper\MapperItem;
  */
 class TreeManagerTest extends \PHPUnit_Framework_TestCase
 {
-    private function getTreeManager()
+    /**
+     * @return SerializerInterface
+     */
+    private function getSerializer()
     {
-        return new TreeManager();
+        $serializer = SerializerBuilder::create();
+
+        return $serializer->build();
     }
 
-    public function testGetTreeWithoutChildren()
+    private function getTreeManager()
+    {
+        return new TreeManager(
+            new MapperProvider(new Registry(), new MockSourceManager()),
+            new MapperItemCache('', $this->getSerializer())
+        );
+    }
+
+    public function testGetGetNodeWithoutChildren()
     {
         $manager = $this->getTreeManager();
 
         $item = new MapperItem('test1', 'title1');
-        $tree = $manager->getTree($item);
+        $tree = $manager->getNode($item);
 
         $this->assertEquals($item->getSlug(), $tree->getId());
         $this->assertEquals($item->getName(), $tree->getText());
     }
 
-    public function testGetTreeWitChildren()
+    public function testGetNodeWitChildren()
     {
         $manager = $this->getTreeManager();
 
@@ -45,7 +64,7 @@ class TreeManagerTest extends \PHPUnit_Framework_TestCase
         $item->addChild(new MapperItem('test_child_1', 'title_child_1'));
         $item->addChild(new MapperItem('test_child_2', 'title_child_2'));
 
-        $tree = $manager->getTree($item);
+        $tree = $manager->getNode($item);
 
         $this->assertCount(2, $tree->getChildren());
 

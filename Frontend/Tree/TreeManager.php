@@ -77,7 +77,7 @@ class TreeManager
      *
      * @return Node
      */
-    private function getNode(MapperItemInterface $mapperItem)
+    public function getNode(MapperItemInterface $mapperItem)
     {
         $children = array();
         foreach ($mapperItem->getChildren() as $child) {

@@ -18,5 +18,13 @@ namespace Tadcka\Bundle\MapperBundle\Tests\Cache;
  */
 class MapperItemCacheTest extends \PHPUnit_Framework_TestCase
 {
+    public function testSave()
+    {
 
+    }
+
+    public function testFetch()
+    {
+        
+    }
 }
