@@ -65,7 +65,7 @@ class MapperItemCache implements MapperItemCacheInterface
         $filename = $this->getFilename($source, $locale);
         if (file_exists($filename)) {
             return $this->serializer->deserialize(
-                $filename,
+                file_get_contents($filename),
                 'Tadcka\Component\Mapper\MapperItem',
                 'json'
             );

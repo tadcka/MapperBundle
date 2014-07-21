@@ -64,7 +64,10 @@ class TreeManager
                 return $this->getNode($item);
             }
 
-            return $this->getNode($this->provider->getMapper($source, $locale));
+            $item = $this->provider->getMapper($source, $locale);
+            $this->itemCache->save($source, $item, $locale);
+
+            return $this->getNode($item);
         }
 
         return null;
