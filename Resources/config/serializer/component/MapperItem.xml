@@ -19,6 +19,8 @@
 
         <property name="canUseForMapping" type="boolean" serialized-name="can_use_for_mapping" expose="true" />
 
+        <property name="priority" type="integer" serialized-name="priority" expose="true" />
+
         <property name="children" serialized-name="children" expose="true">
             <type><![CDATA[array<Tadcka\Component\Mapper\MapperItem>]]></type>
         </property>
