@@ -68,10 +68,12 @@ class TreeManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(2, $tree->getChildren());
 
-        $this->assertEquals($item->getChildren()[0]->getSlug(), $tree->getChildren()[0]->getId());
-        $this->assertEquals($item->getChildren()[0]->getName(), $tree->getChildren()[0]->getText());
+        $itemChildren = $item->getChildren();
+        $treeChildren = $tree->getChildren();
+        $this->assertEquals($itemChildren[0]->getSlug(), $treeChildren[0]->getId());
+        $this->assertEquals($itemChildren[0]->getName(), $treeChildren[0]->getText());
 
-        $this->assertEquals($item->getChildren()[1]->getSlug(), $tree->getChildren()[1]->getId());
-        $this->assertEquals($item->getChildren()[1]->getName(), $tree->getChildren()[1]->getText());
+        $this->assertEquals($itemChildren[1]->getSlug(), $treeChildren[1]->getId());
+        $this->assertEquals($itemChildren[1]->getName(), $treeChildren[1]->getText());
     }
 }
