@@ -16,7 +16,8 @@ use JMS\Serializer\SerializerInterface;
 use Tadcka\Bundle\MapperBundle\Cache\MapperItemCache;
 use Tadcka\Bundle\MapperBundle\Frontend\Tree\TreeManager;
 use Tadcka\Bundle\MapperBundle\Provider\MapperProvider;
-use Tadcka\Bundle\MapperBundle\Tests\Mock\ModelManager\MockSourceManager;
+use Tadcka\Component\Mapper\Tests\Mock\ModelManager\MockMappingManager;
+use Tadcka\Component\Mapper\Tests\Mock\ModelManager\MockSourceManager;
 use Tadcka\Component\Mapper\MapperItem;
 use Tadcka\Component\Mapper\Registry\Registry;
 
@@ -40,7 +41,7 @@ class TreeManagerTest extends \PHPUnit_Framework_TestCase
     private function getTreeManager()
     {
         return new TreeManager(
-            new MapperProvider(new Registry(), new MockSourceManager()),
+            new MapperProvider(new Registry(), new MockSourceManager(), new MockMappingManager()),
             new MapperItemCache('', $this->getSerializer())
         );
     }

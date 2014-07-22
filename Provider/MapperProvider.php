@@ -12,6 +12,8 @@
 namespace Tadcka\Bundle\MapperBundle\Provider;
 
 use Tadcka\Component\Mapper\Exception\ResourceNotFoundException;
+use Tadcka\Component\Mapper\Model\CategoryInterface;
+use Tadcka\Component\Mapper\Model\Manager\MappingManagerInterface;
 use Tadcka\Component\Mapper\Model\Manager\SourceManagerInterface;
 use Tadcka\Component\Mapper\Model\SourceInterface;
 use Tadcka\Component\Mapper\Provider\MapperProviderInterface;
@@ -36,15 +38,25 @@ class MapperProvider implements MapperProviderInterface
     private $sourceManager;
 
     /**
+     * @var MappingManagerInterface
+     */
+    private $mappingManager;
+
+    /**
      * Constructor.
      *
      * @param Registry $registry
      * @param SourceManagerInterface $sourceManager
+     * @param MappingManagerInterface $mappingManager
      */
-    public function __construct(Registry $registry, SourceManagerInterface $sourceManager)
-    {
+    public function __construct(
+        Registry $registry,
+        SourceManagerInterface $sourceManager,
+        MappingManagerInterface $mappingManager
+    ) {
         $this->registry = $registry;
         $this->sourceManager = $sourceManager;
+        $this->mappingManager = $mappingManager;
     }
 
     /**
@@ -77,6 +89,25 @@ class MapperProvider implements MapperProviderInterface
         }
 
         throw new ResourceNotFoundException('Not found mapper ' . $source->getSlug() . '!');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMappingCategories(CategoryInterface $category, SourceInterface $source)
+    {
+        $mappings = $this->mappingManager->findManyMappings($category->getSlug(), $source->getSlug());
+
+        $data = array();
+        foreach ($mappings as $mapping) {
+            if ($category->getSlug() === $mapping->getLeft()->getSlug()) {
+                $data[] = $mapping->getRight();
+            } elseif ($category->getSlug() === $mapping->getRight()->getSlug()) {
+                $data[] = $mapping->getLeft();
+            }
+        }
+
+        return $data;
     }
 
     /**

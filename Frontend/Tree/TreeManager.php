@@ -11,6 +11,7 @@
 
 namespace Tadcka\Bundle\MapperBundle\Frontend\Tree;
 
+use Tadcka\Bundle\MapperBundle\Frontend\Icons;
 use Tadcka\Component\Mapper\Cache\MapperItemCacheInterface;
 use Tadcka\Component\Mapper\MapperItemInterface;
 use Tadcka\Bundle\MapperBundle\Frontend\Tree\Model\Node;
@@ -87,6 +88,11 @@ class TreeManager
             $children[] = $this->getNode($child);
         }
 
-        return new Node($mapperItem->getSlug(), $mapperItem->getName(), $children);
+        return new Node(
+            $mapperItem->getSlug(),
+            $mapperItem->getName(),
+            $children,
+            $mapperItem->canUseForMapping() ? Icons::CAN_USE_FOR_MAPPING : Icons::CAN_NOT_USE_FOR_MAPPING
+        );
     }
 }

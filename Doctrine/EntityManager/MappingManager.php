@@ -74,6 +74,38 @@ class MappingManager extends BaseMappingManager
     /**
      * {@inheritdoc}
      */
+    public function findManyMappings($categorySlug, $sourceSlug)
+    {
+        $qb = $this->repository->createQueryBuilder('m');
+
+        $qb->innerJoin('m.left', 'ml');
+        $qb->innerJoin('m.right', 'mr');
+
+        $qb->innerJoin('ml.source', 'mls');
+        $qb->innerJoin('mr.source', 'mrs');
+
+        $qb->where(
+            $qb->expr()->orX(
+                $qb->expr()->andX(
+                    $qb->expr()->eq('ml.slug', ':category_slug'),
+                    $qb->expr()->eq('mrs.slug', ':source_slug')
+                ),
+                $qb->expr()->andX(
+                    $qb->expr()->eq('mr.slug', ':category_slug'),
+                    $qb->expr()->eq('mls.slug', ':source_slug')
+                )
+            )
+        );
+
+        $qb->setParameter('category_slug', $categorySlug);
+        $qb->setParameter('source_slug', $sourceSlug);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function add(MappingInterface $mapping, $save = false)
     {
         $this->em->persist($mapping);
