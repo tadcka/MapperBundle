@@ -113,7 +113,7 @@ class MapperItemCache implements MapperItemCacheInterface
      */
     private function getCacheDir()
     {
-        return $this->cacheDir . '/tadcka_mapper/mapper_item/';
+        return rtrim($this->cacheDir, '/') . '/tadcka_mapper/mapper_item/';
     }
 
     /**
@@ -126,6 +126,6 @@ class MapperItemCache implements MapperItemCacheInterface
      */
     private function getFilename(SourceInterface $source, $locale)
     {
-        return  $this->getCacheDir() . $source->getSlug() . '_' . $locale . '.json';
+        return $this->getCacheDir() . $source->getSlug() . '_' . $locale . '.json';
     }
 }

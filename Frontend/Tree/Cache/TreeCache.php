@@ -93,7 +93,7 @@ class TreeCache implements TreeCacheInterface
      */
     private function getFilename($name, $locale)
     {
-        return  $this->getCacheDir() . $name . '_' . $locale . '.json';
+        return $this->getCacheDir() . $name . '_' . $locale . '.json';
     }
 
     /**

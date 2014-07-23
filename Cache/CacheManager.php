@@ -61,4 +61,12 @@ class CacheManager implements CacheManagerInterface
             unlink($filename);
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFilename($cacheDir, $name, $locale)
+    {
+        return rtrim($cacheDir, '/') . '/' . $name . '_' . $locale . '.json';
+    }
 }
