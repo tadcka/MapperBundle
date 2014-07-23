@@ -26,8 +26,9 @@
 
         <!--Tadcka mapper item cache-->
         <service id="tadcka_mapper.cache.mapper_item" class="%tadcka_mapper.cache.mapper_item.class%">
-            <argument>%kernel.cache_dir%</argument>
+            <argument type="service" id="tadcka_mapper.manager.cache" />
             <argument type="service" id="serializer" />
+            <argument>%kernel.cache_dir%</argument>
         </service>
 
     </services>
