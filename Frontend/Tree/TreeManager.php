@@ -11,11 +11,11 @@
 
 namespace Tadcka\Bundle\MapperBundle\Frontend\Tree;
 
+use JMS\Serializer\SerializerInterface;
 use Tadcka\Bundle\MapperBundle\Frontend\Icons;
-use Tadcka\Component\Mapper\Cache\MapperItemCacheInterface;
+use Tadcka\Bundle\MapperBundle\Frontend\Tree\Cache\TreeCacheInterface;
 use Tadcka\Component\Mapper\MapperItemInterface;
 use Tadcka\Bundle\MapperBundle\Frontend\Tree\Model\Node;
-use Tadcka\Component\Mapper\Model\SourceInterface;
 use Tadcka\Component\Mapper\Provider\MapperProviderInterface;
 
 /**
@@ -31,20 +31,30 @@ class TreeManager
     private $provider;
 
     /**
-     * @var MapperItemCacheInterface
+     * @var SerializerInterface
      */
-    private $itemCache;
+    private $serializer;
+
+    /**
+     * @var TreeCacheInterface
+     */
+    private $treeCache;
 
     /**
      * Constructor.
      *
      * @param MapperProviderInterface $provider
-     * @param MapperItemCacheInterface $itemCache
+     * @param SerializerInterface $serializer
+     * @param TreeCacheInterface $treeCache
      */
-    public function __construct(MapperProviderInterface $provider, MapperItemCacheInterface $itemCache)
-    {
+    public function __construct(
+        MapperProviderInterface $provider,
+        SerializerInterface $serializer,
+        TreeCacheInterface $treeCache
+    ) {
         $this->provider = $provider;
-        $this->itemCache = $itemCache;
+        $this->serializer = $serializer;
+        $this->treeCache = $treeCache;
     }
 
     /**
@@ -54,21 +64,22 @@ class TreeManager
      * @param string $locale
      * @param bool $force
      *
-     * @return null|Node
+     * @return string
      */
     public function getTree($name, $locale, $force = false)
     {
         $source = $this->provider->getSource($name);
 
         if ((null !== $source)) {
-            if (false === $force && null !== $item = $this->itemCache->fetch($source, $locale)) {
-                return $this->getNode($item);
+            if (false === $force && null !== $json = $this->treeCache->fetch($name, $locale)) {
+                return $json;
             }
 
             $item = $this->provider->getMapper($source, $locale);
-            $this->itemCache->save($source, $item, $locale);
+            $json = $this->serializer->serialize($this->getNode($item), 'json');
+            $this->treeCache->save($name, $json, $locale);
 
-            return $this->getNode($item);
+            return $json;
         }
 
         return null;

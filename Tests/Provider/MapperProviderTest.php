@@ -11,7 +11,11 @@
 
 namespace Tadcka\Bundle\MapperBundle\Tests\Provider;
 
+use JMS\Serializer\SerializerBuilder;
+use JMS\Serializer\SerializerInterface;
+use Tadcka\Bundle\MapperBundle\Cache\MapperItemCache;
 use Tadcka\Bundle\MapperBundle\Provider\MapperProvider;
+use Tadcka\Bundle\MapperBundle\Tests\Mock\MockCacheFileSystem;
 use Tadcka\Component\Mapper\Model\Category;
 use Tadcka\Component\Mapper\Model\Mapping;
 use Tadcka\Component\Mapper\Model\Source;
@@ -28,9 +32,28 @@ use Tadcka\Component\Mapper\Tests\Mock\MockMapperFactory;
  */
 class MapperProviderTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @return SerializerInterface
+     */
+    private function getSerializer()
+    {
+        $serializer = SerializerBuilder::create();
+        $serializer->addMetadataDir(
+            dirname(__FILE__) . '/../../Resources/config/serializer/component',
+            'Tadcka\Component\Mapper'
+        );
+
+        return $serializer->build();
+    }
+
     private function getMapperProvider(Registry $registry, MockSourceManager $sourceManager)
     {
-        return new MapperProvider($registry, $sourceManager, new MockMappingManager());
+        return new MapperProvider(
+            $registry,
+            $sourceManager,
+            new MockMappingManager(),
+            new MapperItemCache(MockCacheFileSystem::getTempDirDirectory(), $this->getSerializer())
+        );
     }
 
     public function testEmptyGetSource()
@@ -115,7 +138,12 @@ class MapperProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testEmptyGetMappingCategories()
     {
-        $provider = new MapperProvider(new Registry(), new MockSourceManager(), new MockMappingManager());
+        $provider = new MapperProvider(
+            new Registry(),
+            new MockSourceManager(),
+            new MockMappingManager(),
+            new MapperItemCache(MockCacheFileSystem::getTempDirDirectory(), $this->getSerializer())
+        );
 
         $category = new Category();
         $category->setSlug('category_test');
@@ -134,7 +162,12 @@ class MapperProviderTest extends \PHPUnit_Framework_TestCase
         $manager->add($this->createMapping('test', 'test', 'test', 'test'));
         $manager->add($this->createMapping('right_category', 'right_source', 'left_category', 'left_source'));
 
-        $provider = new MapperProvider(new Registry(), new MockSourceManager(), $manager);
+        $provider = new MapperProvider(
+            new Registry(),
+            new MockSourceManager(),
+            $manager,
+            new MapperItemCache(MockCacheFileSystem::getTempDirDirectory(), $this->getSerializer())
+        );
 
         $category = new Category();
         $category->setSlug('left_category');

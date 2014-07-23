@@ -14,8 +14,10 @@ namespace Tadcka\Bundle\MapperBundle\Tests\Frontend\Tree;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
 use Tadcka\Bundle\MapperBundle\Cache\MapperItemCache;
+use Tadcka\Bundle\MapperBundle\Frontend\Tree\Cache\TreeCache;
 use Tadcka\Bundle\MapperBundle\Frontend\Tree\TreeManager;
 use Tadcka\Bundle\MapperBundle\Provider\MapperProvider;
+use Tadcka\Bundle\MapperBundle\Tests\Mock\MockCacheFileSystem;
 use Tadcka\Component\Mapper\Tests\Mock\ModelManager\MockMappingManager;
 use Tadcka\Component\Mapper\Tests\Mock\ModelManager\MockSourceManager;
 use Tadcka\Component\Mapper\MapperItem;
@@ -34,6 +36,10 @@ class TreeManagerTest extends \PHPUnit_Framework_TestCase
     private function getSerializer()
     {
         $serializer = SerializerBuilder::create();
+        $serializer->addMetadataDir(
+            dirname(__FILE__) . '/../../../Resources/config/serializer/',
+            'Tadcka\Bundle\MapperBundle'
+        );
 
         return $serializer->build();
     }
@@ -41,8 +47,14 @@ class TreeManagerTest extends \PHPUnit_Framework_TestCase
     private function getTreeManager()
     {
         return new TreeManager(
-            new MapperProvider(new Registry(), new MockSourceManager(), new MockMappingManager()),
-            new MapperItemCache('', $this->getSerializer())
+            new MapperProvider(
+                new Registry(),
+                new MockSourceManager(),
+                new MockMappingManager(),
+                new MapperItemCache(MockCacheFileSystem::getTempDirDirectory(), $this->getSerializer())
+            ),
+            $this->getSerializer(),
+            new TreeCache(MockCacheFileSystem::getTempDirDirectory())
         );
     }
 

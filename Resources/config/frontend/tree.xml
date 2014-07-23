@@ -15,6 +15,7 @@
 
     <parameters>
         <parameter key="tadcka_mapper.frontend.manager.tree.class">Tadcka\Bundle\MapperBundle\Frontend\Tree\TreeManager</parameter>
+        <parameter key="tadcka_mapper.frontend.cache.tree.class">Tadcka\Bundle\MapperBundle\Frontend\Tree\Cache\TreeCache</parameter>
     </parameters>
 
     <services>
@@ -22,7 +23,13 @@
         <!--Tadcka mapper frontend tree manager-->
         <service id="tadcka_mapper.frontend.manager.tree" class="%tadcka_mapper.frontend.manager.tree.class%">
             <argument type="service" id="tadcka_mapper.provider" />
-            <argument type="service" id="tadcka_mapper.cache.mapper_item" />
+            <argument type="service" id="serializer" />
+            <argument type="service" id="tadcka_mapper.frontend.cache.tree" />
+        </service>
+
+        <!--Tadcka mapper frontend tree cache-->
+        <service id="tadcka_mapper.frontend.cache.tree" class="%tadcka_mapper.frontend.cache.tree.class%">
+            <argument>%kernel.cache_dir%</argument>
         </service>
 
     </services>

@@ -14,6 +14,7 @@ namespace Tadcka\Bundle\MapperBundle\Tests\Cache;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
 use Tadcka\Bundle\MapperBundle\Cache\MapperItemCache;
+use Tadcka\Bundle\MapperBundle\Tests\Mock\MockCacheFileSystem;
 use Tadcka\Component\Mapper\MapperItem;
 use Tadcka\Component\Mapper\MapperItemInterface;
 use Tadcka\Component\Mapper\Model\Source;
@@ -26,12 +27,9 @@ use Tadcka\Component\Mapper\Model\SourceInterface;
  */
 class MapperItemCacheTest extends \PHPUnit_Framework_TestCase
 {
-    private $tmp;
-
     protected function setUp()
     {
-        $this->tmp = dirname(__FILE__) . '/../tmp';
-        $this->deleteDirectory($this->tmp);
+        MockCacheFileSystem::deleteTempDirectory(MockCacheFileSystem::getTempDirDirectory());
     }
 
     /**
@@ -51,11 +49,11 @@ class MapperItemCacheTest extends \PHPUnit_Framework_TestCase
     public function testSave()
     {
         $serializer = $this->getSerializer();
-        $cache = new MapperItemCache($this->tmp, $serializer);
+        $cache = new MapperItemCache(MockCacheFileSystem::getTempDirDirectory(), $serializer);
 
         $item = $this->getMapperItem();
         $cache->save($this->getMapperSource(), $item, 'en');
-        $filename = $this->tmp . '/tadcka_mapper/mapper_item/test_en.json';
+        $filename = MockCacheFileSystem::getTempDirDirectory() . '/tadcka_mapper/mapper_item/test_en.json';
 
         $this->assertEquals($serializer->serialize($item, 'json'), file_get_contents($filename));
     }
@@ -63,7 +61,7 @@ class MapperItemCacheTest extends \PHPUnit_Framework_TestCase
     public function testFetch()
     {
         $serializer = $this->getSerializer();
-        $cache = new MapperItemCache($this->tmp, $serializer);
+        $cache = new MapperItemCache(MockCacheFileSystem::getTempDirDirectory(), $serializer);
 
         $item = $this->getMapperItem();
         $source = $this->getMapperSource();
@@ -72,23 +70,6 @@ class MapperItemCacheTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($item, $cache->fetch($source, 'en'));
 
         $this->assertEmpty($cache->fetch($source, 'lt'));
-    }
-
-    protected function tearDown()
-    {
-        $this->deleteDirectory($this->tmp);
-    }
-
-    private function deleteDirectory($dir)
-    {
-        if (is_dir($this->tmp)) {
-            $files = array_diff(scandir($dir), array('.', '..'));
-            foreach ($files as $file) {
-                (is_dir("$dir/$file")) ? $this->deleteDirectory("$dir/$file") : unlink("$dir/$file");
-            }
-
-            return rmdir($dir);
-        }
     }
 
     /**
@@ -111,5 +92,10 @@ class MapperItemCacheTest extends \PHPUnit_Framework_TestCase
         $source->setSlug('test');
 
         return $source;
+    }
+
+    protected function tearDown()
+    {
+        MockCacheFileSystem::deleteTempDirectory(MockCacheFileSystem::getTempDirDirectory());
     }
 }

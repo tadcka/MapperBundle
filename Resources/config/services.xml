@@ -29,6 +29,7 @@
             <argument type="service" id="tadcka_mapper.registry.mapper" />
             <argument type="service" id="tadcka_mapper.manager.source" />
             <argument type="service" id="tadcka_mapper.manager.mapping" />
+            <argument type="service" id="tadcka_mapper.cache.mapper_item" />
         </service>
 
         <!--Tadcka mapper item cache-->
