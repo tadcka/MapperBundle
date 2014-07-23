@@ -15,7 +15,6 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Tadcka\Component\Mapper\Cache\MapperItemCacheInterface;
 use Tadcka\Component\Mapper\Provider\MapperProviderInterface;
 
 /**
@@ -31,14 +30,6 @@ class MapperItemCacheCommand extends ContainerAwareCommand
     private function getProvider()
     {
         return $this->getContainer()->get('tadcka_mapper.provider');
-    }
-
-    /**
-     * @return MapperItemCacheInterface
-     */
-    private function getMapperItemCache()
-    {
-        return $this->getContainer()->get('tadcka_mapper.cache.mapper_item');
     }
 
     /**
@@ -60,11 +51,7 @@ class MapperItemCacheCommand extends ContainerAwareCommand
     {
         $source = $this->getProvider()->getSource($input->getArgument('name'));
         if (null !== $source) {
-            $this->getMapperItemCache()->save(
-                $source,
-                $this->getProvider()->getMapper($source, $input->getArgument('locale')),
-                $input->getArgument('locale')
-            );
+            $this->getProvider()->getMapper($source, $input->getArgument('locale'), true);
 
             $output->writeln('Saves mapper item in the cache.');
         } else {

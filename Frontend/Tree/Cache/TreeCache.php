@@ -50,12 +50,37 @@ class TreeCache implements TreeCacheInterface
      */
     public function fetch($name, $locale)
     {
-        $filename = $this->getFilename($name, $locale);
-        if (file_exists($filename)) {
-            return file_get_contents($filename);
+        if ($this->has($name, $locale)) {
+            return file_get_contents($this->getFilename($name, $locale));
         }
 
         return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function has($name, $locale)
+    {
+        return file_exists($this->getFilename($name, $locale));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function remove($name, $locale)
+    {
+        if ($this->has($name, $locale)) {
+            unlink($this->getFilename($name, $locale));
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeAll($name)
+    {
+
     }
 
     /**
@@ -78,6 +103,6 @@ class TreeCache implements TreeCacheInterface
      */
     private function getCacheDir()
     {
-        return $this->cacheDir . '/tadcka_mapper/frontend/tree/';
+        return rtrim($this->cacheDir, '/') . '/tadcka_mapper/frontend/tree/';
     }
 }

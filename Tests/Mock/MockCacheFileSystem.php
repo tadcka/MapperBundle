@@ -23,7 +23,7 @@ class MockCacheFileSystem
      */
     public static function getTempDirDirectory()
     {
-        return  dirname(__FILE__) . '/../tmp';
+        return  dirname(__FILE__) . '/../tmp/';
     }
 
     /**

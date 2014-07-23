@@ -12,6 +12,7 @@
 namespace Tadcka\Bundle\MapperBundle\Cache;
 
 use JMS\Serializer\SerializerInterface;
+use Tadcka\Component\Mapper\Cache\CacheManagerInterface;
 use Tadcka\Component\Mapper\Cache\MapperItemCacheInterface;
 use Tadcka\Component\Mapper\MapperItemInterface;
 use Tadcka\Component\Mapper\Model\SourceInterface;
@@ -23,6 +24,11 @@ use Tadcka\Component\Mapper\Model\SourceInterface;
  */
 class MapperItemCache implements MapperItemCacheInterface
 {
+    /**
+     * @var CacheManagerInterface
+     */
+    private $cacheManager;
+
     /**
      * @var string
      */
@@ -36,13 +42,15 @@ class MapperItemCache implements MapperItemCacheInterface
     /**
      * Constructor.
      *
-     * @param string $cacheDir
+     * @param CacheManagerInterface $cacheManager
      * @param SerializerInterface $serializer
+     * @param string $cacheDir
      */
-    public function __construct($cacheDir, SerializerInterface $serializer)
+    public function __construct(CacheManagerInterface $cacheManager, SerializerInterface $serializer, $cacheDir)
     {
-        $this->cacheDir = $cacheDir;
+        $this->cacheManager = $cacheManager;
         $this->serializer = $serializer;
+        $this->cacheDir = $cacheDir;
     }
 
     /**
@@ -50,11 +58,10 @@ class MapperItemCache implements MapperItemCacheInterface
      */
     public function save(SourceInterface $source, MapperItemInterface $mapperItem, $locale)
     {
-        if (false === is_dir($this->getCacheDir())) {
-            mkdir($this->getCacheDir(), 0777, true);
-        }
-
-        file_put_contents($this->getFilename($source, $locale), $this->serializer->serialize($mapperItem, 'json'));
+        $this->cacheManager->save(
+            $this->getFilename($source, $locale),
+            $this->serializer->serialize($mapperItem, 'json')
+        );
     }
 
     /**
@@ -62,16 +69,41 @@ class MapperItemCache implements MapperItemCacheInterface
      */
     public function fetch(SourceInterface $source, $locale)
     {
-        $filename = $this->getFilename($source, $locale);
-        if (file_exists($filename)) {
+        if (null !== $cache = $this->cacheManager->fetch($this->getFilename($source, $locale))) {
             return $this->serializer->deserialize(
-                file_get_contents($filename),
+                $cache,
                 'Tadcka\Component\Mapper\MapperItem',
                 'json'
             );
         }
 
         return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function has(SourceInterface $source, $locale)
+    {
+        return $this->cacheManager->has($this->getFilename($source, $locale));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function remove(SourceInterface $source, $locale)
+    {
+        if ($this->has($source, $locale)) {
+            unlink($this->getFilename($source, $locale));
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeAll(SourceInterface $source)
+    {
+
     }
 
     /**

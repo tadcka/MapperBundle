@@ -13,6 +13,7 @@ namespace Tadcka\Bundle\MapperBundle\Tests\Provider;
 
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
+use Tadcka\Bundle\MapperBundle\Cache\CacheManager;
 use Tadcka\Bundle\MapperBundle\Cache\MapperItemCache;
 use Tadcka\Bundle\MapperBundle\Provider\MapperProvider;
 use Tadcka\Bundle\MapperBundle\Tests\Mock\MockCacheFileSystem;
@@ -32,6 +33,11 @@ use Tadcka\Component\Mapper\Tests\Mock\MockMapperFactory;
  */
 class MapperProviderTest extends \PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        MockCacheFileSystem::deleteTempDirectory(MockCacheFileSystem::getTempDirDirectory());
+    }
+
     /**
      * @return SerializerInterface
      */
@@ -52,7 +58,7 @@ class MapperProviderTest extends \PHPUnit_Framework_TestCase
             $registry,
             $sourceManager,
             new MockMappingManager(),
-            new MapperItemCache(MockCacheFileSystem::getTempDirDirectory(), $this->getSerializer())
+            new MapperItemCache(new CacheManager(), $this->getSerializer(), MockCacheFileSystem::getTempDirDirectory())
         );
     }
 
@@ -142,7 +148,7 @@ class MapperProviderTest extends \PHPUnit_Framework_TestCase
             new Registry(),
             new MockSourceManager(),
             new MockMappingManager(),
-            new MapperItemCache(MockCacheFileSystem::getTempDirDirectory(), $this->getSerializer())
+            new MapperItemCache(new CacheManager(), $this->getSerializer(), MockCacheFileSystem::getTempDirDirectory())
         );
 
         $category = new Category();
@@ -166,7 +172,7 @@ class MapperProviderTest extends \PHPUnit_Framework_TestCase
             new Registry(),
             new MockSourceManager(),
             $manager,
-            new MapperItemCache(MockCacheFileSystem::getTempDirDirectory(), $this->getSerializer())
+            new MapperItemCache(new CacheManager(), $this->getSerializer(), MockCacheFileSystem::getTempDirDirectory())
         );
 
         $category = new Category();
@@ -201,5 +207,10 @@ class MapperProviderTest extends \PHPUnit_Framework_TestCase
         $mapping->setRight($category);
 
         return $mapping;
+    }
+
+    protected function tearDown()
+    {
+        MockCacheFileSystem::deleteTempDirectory(MockCacheFileSystem::getTempDirDirectory());
     }
 }

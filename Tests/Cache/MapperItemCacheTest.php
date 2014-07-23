@@ -13,6 +13,7 @@ namespace Tadcka\Bundle\MapperBundle\Tests\Cache;
 
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
+use Tadcka\Bundle\MapperBundle\Cache\CacheManager;
 use Tadcka\Bundle\MapperBundle\Cache\MapperItemCache;
 use Tadcka\Bundle\MapperBundle\Tests\Mock\MockCacheFileSystem;
 use Tadcka\Component\Mapper\MapperItem;
@@ -49,7 +50,7 @@ class MapperItemCacheTest extends \PHPUnit_Framework_TestCase
     public function testSave()
     {
         $serializer = $this->getSerializer();
-        $cache = new MapperItemCache(MockCacheFileSystem::getTempDirDirectory(), $serializer);
+        $cache = new MapperItemCache(new CacheManager(), $serializer, MockCacheFileSystem::getTempDirDirectory());
 
         $item = $this->getMapperItem();
         $cache->save($this->getMapperSource(), $item, 'en');
@@ -61,7 +62,7 @@ class MapperItemCacheTest extends \PHPUnit_Framework_TestCase
     public function testFetch()
     {
         $serializer = $this->getSerializer();
-        $cache = new MapperItemCache(MockCacheFileSystem::getTempDirDirectory(), $serializer);
+        $cache = new MapperItemCache(new CacheManager(), $serializer, MockCacheFileSystem::getTempDirDirectory());
 
         $item = $this->getMapperItem();
         $source = $this->getMapperSource();

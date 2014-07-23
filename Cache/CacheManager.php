@@ -9,51 +9,36 @@
  * file that was distributed with this source code.
  */
 
-namespace Tadcka\Bundle\MapperBundle\Frontend\Tree\Cache;
+namespace Tadcka\Bundle\MapperBundle\Cache;
 
-use Tadcka\Component\Mapper\Cache\CacheInterface;
+use Tadcka\Component\Mapper\Cache\CacheManagerInterface;
 
 /**
  * @author Tadas Gliaubicas <tadcka89@gmail.com>
  *
  * @since 7/23/14 10:05 PM
  */
-class Cache implements CacheInterface
+class CacheManager implements CacheManagerInterface
 {
     /**
-     * @var string
-     */
-    private $cacheDir;
-
-    /**
-     * Constructor.
-     *
-     * @param string $cacheDir
-     */
-    public function __construct($cacheDir)
-    {
-        $this->cacheDir = $cacheDir;
-    }
-
-    /**
      * {@inheritdoc}
      */
-    public function save($name, $json, $locale)
+    public function save($filename, $string)
     {
-        if (false === is_dir($this->getCacheDir())) {
-            mkdir($this->getCacheDir(), 0777, true);
+        if (false === is_dir(dirname($filename))) {
+            mkdir(dirname($filename), 0777, true);
         }
 
-        file_put_contents($this->getFilename($name, $locale), $json);
+        file_put_contents($filename, $string);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function fetch($name, $locale)
+    public function fetch($filename)
     {
-        if ($this->has($name, $locale)) {
-            return file_get_contents($this->getFilename($name, $locale));
+        if ($this->has($filename)) {
+            return file_get_contents($filename);
         }
 
         return null;
@@ -62,49 +47,18 @@ class Cache implements CacheInterface
     /**
      * {@inheritdoc}
      */
-    public function has($name, $locale)
+    public function has($filename)
     {
-        return file_exists($this->getFilename($name, $locale));
+        return file_exists($filename);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function remove($name, $locale)
+    public function remove($filename)
     {
-        if ($this->has($name, $locale)) {
-            unlink($this->getFilename($name, $locale));
+        if ($this->has($filename)) {
+            unlink($filename);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeAll($name)
-    {
-
-    }
-
-    /**
-     * Get filename.
-     *
-     * @param string $name
-     * @param string $locale
-     *
-     * @return string
-     */
-    private function getFilename($name, $locale)
-    {
-        return  $this->getCacheDir() . $name . '_' . $locale . '.json';
-    }
-
-    /**
-     * Get cache dir.
-     *
-     * @return string
-     */
-    private function getCacheDir()
-    {
-        return $this->cacheDir . '/tadcka_mapper/frontend/tree/';
     }
 }

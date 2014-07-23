@@ -99,6 +99,8 @@ class MapperProvider implements MapperProviderInterface
             }
 
             if (null !== $mapper = $config->getFactory()->create()->getMapper($locale)) {
+                $this->mapperItemCache->save($source, $mapper, $locale);
+
                 return $mapper;
             }
         }

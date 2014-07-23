@@ -36,4 +36,29 @@ interface TreeCacheInterface
      * @return string
      */
     public function fetch($name, $locale);
+
+    /**
+     * Check if has tree cache.
+     *
+     * @param string $name
+     * @param string $locale
+     *
+     * @return bool
+     */
+    public function has($name, $locale);
+
+    /**
+     * Remove tree by locale.
+     *
+     * @param string $name
+     * @param string $locale
+     */
+    public function remove($name, $locale);
+
+    /**
+     * Remove tree cache.
+     *
+     * @param string $name
+     */
+    public function removeAll($name);
 }
