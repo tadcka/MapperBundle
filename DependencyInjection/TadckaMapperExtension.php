@@ -48,5 +48,8 @@ class TadckaMapperExtension extends Extension
         $container->setAlias('tadcka_mapper.manager.category', $config['category_manager']);
         $container->setAlias('tadcka_mapper.manager.mapping', $config['mapping_manager']);
         $container->setAlias('tadcka_mapper.manager.source', $config['source_manager']);
+
+        $container->setAlias('tadcka_mapper.provider', $config['mapper_provider']);
+        $container->setAlias('tadcka_mapper.frontend.manager.tree', $config['frontend']['tree_manager']);
     }
 }

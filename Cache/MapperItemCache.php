@@ -103,7 +103,7 @@ class MapperItemCache implements MapperItemCacheInterface
      */
     public function removeAll(SourceInterface $source)
     {
-
+        $this->cacheManager->removeAll($this->getCacheDir(), $source->getSlug());
     }
 
     /**
@@ -126,6 +126,6 @@ class MapperItemCache implements MapperItemCacheInterface
      */
     private function getFilename(SourceInterface $source, $locale)
     {
-        return $this->getCacheDir() . $source->getSlug() . '_' . $locale . '.json';
+        return $this->cacheManager->getFilename($this->getCacheDir(), $source->getSlug(), $locale);
     }
 }

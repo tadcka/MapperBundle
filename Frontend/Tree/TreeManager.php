@@ -23,7 +23,7 @@ use Tadcka\Component\Mapper\Provider\MapperProviderInterface;
  *
  * @since 7/13/14 12:53 PM
  */
-class TreeManager
+class TreeManager implements TreeManagerInterface
 {
     /**
      * @var MapperProviderInterface
@@ -36,61 +36,35 @@ class TreeManager
     private $serializer;
 
     /**
-     * @var TreeCacheInterface
-     */
-    private $treeCache;
-
-    /**
      * Constructor.
      *
      * @param MapperProviderInterface $provider
      * @param SerializerInterface $serializer
-     * @param TreeCacheInterface $treeCache
      */
-    public function __construct(
-        MapperProviderInterface $provider,
-        SerializerInterface $serializer,
-        TreeCacheInterface $treeCache
-    ) {
+    public function __construct(MapperProviderInterface $provider, SerializerInterface $serializer)
+    {
         $this->provider = $provider;
         $this->serializer = $serializer;
-        $this->treeCache = $treeCache;
     }
 
     /**
-     * Get tree.
-     *
-     * @param string $name
-     * @param string $locale
-     * @param bool $force
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function getTree($name, $locale, $force = false)
+    public function getTree($name, $locale)
     {
         $source = $this->provider->getSource($name);
 
         if ((null !== $source)) {
-            if (false === $force && null !== $json = $this->treeCache->fetch($name, $locale)) {
-                return $json;
-            }
-
             $item = $this->provider->getMapper($source, $locale);
-            $json = $this->serializer->serialize($this->getNode($item), 'json');
-            $this->treeCache->save($name, $json, $locale);
 
-            return $json;
+            return $this->serializer->serialize($this->getNode($item), 'json');
         }
 
         return null;
     }
 
     /**
-     * Get frontend node.
-     *
-     * @param MapperItemInterface $mapperItem
-     *
-     * @return Node
+     * {@inheritdoc}
      */
     public function getNode(MapperItemInterface $mapperItem)
     {

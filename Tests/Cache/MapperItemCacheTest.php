@@ -13,9 +13,9 @@ namespace Tadcka\Bundle\MapperBundle\Tests\Cache;
 
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
-use Tadcka\Bundle\MapperBundle\Cache\CacheManager;
+use Tadcka\Component\Mapper\Cache\CacheManager;
 use Tadcka\Bundle\MapperBundle\Cache\MapperItemCache;
-use Tadcka\Bundle\MapperBundle\Tests\Mock\MockCacheFileSystem;
+use Tadcka\Component\Mapper\Tests\Mock\MockCacheFileSystem;
 use Tadcka\Component\Mapper\MapperItem;
 use Tadcka\Component\Mapper\MapperItemInterface;
 use Tadcka\Component\Mapper\Model\Source;

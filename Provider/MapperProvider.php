@@ -11,7 +11,6 @@
 
 namespace Tadcka\Bundle\MapperBundle\Provider;
 
-use Tadcka\Component\Mapper\Cache\MapperItemCacheInterface;
 use Tadcka\Component\Mapper\Exception\ResourceNotFoundException;
 use Tadcka\Component\Mapper\Model\CategoryInterface;
 use Tadcka\Component\Mapper\Model\Manager\MappingManagerInterface;
@@ -44,28 +43,20 @@ class MapperProvider implements MapperProviderInterface
     private $mappingManager;
 
     /**
-     * @var MapperItemCacheInterface
-     */
-    private $mapperItemCache;
-
-    /**
      * Constructor.
      *
      * @param Registry $registry
      * @param SourceManagerInterface $sourceManager
      * @param MappingManagerInterface $mappingManager
-     * @param MapperItemCacheInterface $mapperItemCache
      */
     public function __construct(
         Registry $registry,
         SourceManagerInterface $sourceManager,
-        MappingManagerInterface $mappingManager,
-        MapperItemCacheInterface $mapperItemCache
+        MappingManagerInterface $mappingManager
     ) {
         $this->registry = $registry;
         $this->sourceManager = $sourceManager;
         $this->mappingManager = $mappingManager;
-        $this->mapperItemCache = $mapperItemCache;
     }
 
     /**
@@ -90,19 +81,11 @@ class MapperProvider implements MapperProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getMapper(SourceInterface $source, $locale, $force = false)
+    public function getMapper(SourceInterface $source, $locale)
     {
         $config = $this->getConfig($source->getSlug());
-        if (null !== $config) {
-            if ((false === $force) && (null !== $mapper = $this->mapperItemCache->fetch($source, $locale))) {
-                return $mapper;
-            }
-
-            if (null !== $mapper = $config->getFactory()->create()->getMapper($locale)) {
-                $this->mapperItemCache->save($source, $mapper, $locale);
-
-                return $mapper;
-            }
+        if ((null !== $config) && (null !== $mapper = $config->getFactory()->create()->getMapper($locale))) {
+            return $mapper;
         }
 
         throw new ResourceNotFoundException('Not found mapper ' . $source->getSlug() . '!');

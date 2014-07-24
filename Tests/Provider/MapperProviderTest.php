@@ -11,12 +11,7 @@
 
 namespace Tadcka\Bundle\MapperBundle\Tests\Provider;
 
-use JMS\Serializer\SerializerBuilder;
-use JMS\Serializer\SerializerInterface;
-use Tadcka\Bundle\MapperBundle\Cache\CacheManager;
-use Tadcka\Bundle\MapperBundle\Cache\MapperItemCache;
 use Tadcka\Bundle\MapperBundle\Provider\MapperProvider;
-use Tadcka\Bundle\MapperBundle\Tests\Mock\MockCacheFileSystem;
 use Tadcka\Component\Mapper\Model\Category;
 use Tadcka\Component\Mapper\Model\Mapping;
 use Tadcka\Component\Mapper\Model\Source;
@@ -33,33 +28,9 @@ use Tadcka\Component\Mapper\Tests\Mock\MockMapperFactory;
  */
 class MapperProviderTest extends \PHPUnit_Framework_TestCase
 {
-    protected function setUp()
-    {
-        MockCacheFileSystem::deleteTempDirectory(MockCacheFileSystem::getTempDirDirectory());
-    }
-
-    /**
-     * @return SerializerInterface
-     */
-    private function getSerializer()
-    {
-        $serializer = SerializerBuilder::create();
-        $serializer->addMetadataDir(
-            dirname(__FILE__) . '/../../Resources/config/serializer/component',
-            'Tadcka\Component\Mapper'
-        );
-
-        return $serializer->build();
-    }
-
     private function getMapperProvider(Registry $registry, MockSourceManager $sourceManager)
     {
-        return new MapperProvider(
-            $registry,
-            $sourceManager,
-            new MockMappingManager(),
-            new MapperItemCache(new CacheManager(), $this->getSerializer(), MockCacheFileSystem::getTempDirDirectory())
-        );
+        return new MapperProvider($registry, $sourceManager, new MockMappingManager());
     }
 
     public function testEmptyGetSource()
@@ -144,12 +115,7 @@ class MapperProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testEmptyGetMappingCategories()
     {
-        $provider = new MapperProvider(
-            new Registry(),
-            new MockSourceManager(),
-            new MockMappingManager(),
-            new MapperItemCache(new CacheManager(), $this->getSerializer(), MockCacheFileSystem::getTempDirDirectory())
-        );
+        $provider = new MapperProvider(new Registry(), new MockSourceManager(), new MockMappingManager());
 
         $category = new Category();
         $category->setSlug('category_test');
@@ -168,12 +134,7 @@ class MapperProviderTest extends \PHPUnit_Framework_TestCase
         $manager->add($this->createMapping('test', 'test', 'test', 'test'));
         $manager->add($this->createMapping('right_category', 'right_source', 'left_category', 'left_source'));
 
-        $provider = new MapperProvider(
-            new Registry(),
-            new MockSourceManager(),
-            $manager,
-            new MapperItemCache(new CacheManager(), $this->getSerializer(), MockCacheFileSystem::getTempDirDirectory())
-        );
+        $provider = new MapperProvider(new Registry(), new MockSourceManager(), $manager);
 
         $category = new Category();
         $category->setSlug('left_category');
@@ -207,10 +168,5 @@ class MapperProviderTest extends \PHPUnit_Framework_TestCase
         $mapping->setRight($category);
 
         return $mapping;
-    }
-
-    protected function tearDown()
-    {
-        MockCacheFileSystem::deleteTempDirectory(MockCacheFileSystem::getTempDirDirectory());
     }
 }
