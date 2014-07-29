@@ -1,51 +1,7 @@
-.mapper-tree-wrapper, #mapper-content {
+.mapper-tree-wrapper, .mapper-content {
     border: 1px solid #DDDDDD;
     min-height: 300px;
     max-height: 600px;
     padding: 5px;
     overflow: auto;
-}
-
-.mapper-mapping-item {
-    border: 1px solid #DDDDDD;
-    height: 50px;
-    padding: 5px;
-    margin-bottom: 5px;
-}
-
-.mapper-mapping-item strong {
-    font-size: 14px;
-}
-
-.mapper-mapping-item span, .mapper-mapping-item .mapper-mapping-main {
-    font-size: 12px;
-}
-
-.mapper-mapping-item a {
-    float: right;
-}
-
-.mapper-mapping-item .mapper-mapping-remove {
-    color: #000000;
-}
-
-.mapper-mapping-item .mapper-mapping-main {
-    margin-top: 5px;
-}
-
-.mapper-draggable-place {
-    background: #DDDDDD;
-    height: 60px;
-    margin-bottom: 5px;
-}
-
-.mapper-draggable-place p {
-    text-align: center;
-    margin-top: 15px;
-    font-weight: bold;
-    font-size: 20px;
-}
-
-#mapper-content .mapper-button {
-    padding: 0;
 }

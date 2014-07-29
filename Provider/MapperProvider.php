@@ -12,6 +12,7 @@
 namespace Tadcka\Bundle\MapperBundle\Provider;
 
 use Tadcka\Component\Mapper\Exception\ResourceNotFoundException;
+use Tadcka\Component\Mapper\MapperItemInterface;
 use Tadcka\Component\Mapper\Model\CategoryInterface;
 use Tadcka\Component\Mapper\Model\Manager\MappingManagerInterface;
 use Tadcka\Component\Mapper\Model\Manager\SourceManagerInterface;
@@ -108,6 +109,53 @@ class MapperProvider implements MapperProviderInterface
         }
 
         return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMapperItems(array $categories, MapperItemInterface $mapperItem)
+    {
+        $items = array();
+        /** @var CategoryInterface $category */
+        foreach ($categories as $category) {
+            if (null !== $item = $this->getMapperItemByCategory($category->getSlug(), $mapperItem)) {
+                $items[] = $item;
+            }
+        }
+
+        return $items;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function canUseForMapping($categorySlug, MapperItemInterface $mapperItem)
+    {
+        $item = $this->getMapperItemByCategory($categorySlug, $mapperItem);
+        if (null === $item) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMapperItemByCategory($categorySlug, MapperItemInterface $mapperItem)
+    {
+        if (((string)$categorySlug === (string)$mapperItem->getSlug()) && $mapperItem->canUseForMapping()) {
+            return $mapperItem;
+        }
+
+        foreach ($mapperItem->getChildren() as $child) {
+            if (null !== $item = $this->getMapperItemByCategory($categorySlug, $child)) {
+                return $item;
+            }
+        }
+
+        return null;
     }
 
     /**

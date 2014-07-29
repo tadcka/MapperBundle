@@ -12,6 +12,7 @@
 namespace Tadcka\Bundle\MapperBundle\Provider;
 
 use Tadcka\Component\Mapper\Cache\MapperItemCacheInterface;
+use Tadcka\Component\Mapper\MapperItemInterface;
 use Tadcka\Component\Mapper\Model\CategoryInterface;
 use Tadcka\Component\Mapper\Model\SourceInterface;
 use Tadcka\Component\Mapper\Provider\MapperProviderInterface;
@@ -70,5 +71,29 @@ class MapperProviderWrapper implements MapperProviderInterface
     public function getMappingCategories(CategoryInterface $category, SourceInterface $source)
     {
         return $this->mapperProvider->getMappingCategories($category, $source);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function canUseForMapping($categorySlug, MapperItemInterface $mapperItem)
+    {
+        return $this->mapperProvider->canUseForMapping($categorySlug, $mapperItem);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMapperItems(array $categories, MapperItemInterface $mapperItem)
+    {
+        return $this->mapperProvider->getMapperItems($categories, $mapperItem);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMapperItemByCategory($categorySlug, MapperItemInterface $mapperItem)
+    {
+        return $this->mapperProvider->getMapperItemByCategory($categorySlug, $mapperItem);
     }
 }

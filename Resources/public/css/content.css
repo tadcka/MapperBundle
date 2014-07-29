@@ -1,0 +1,43 @@
+.mapper-content .mapper-item {
+    border: 1px solid #DDDDDD;
+    height: 50px;
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+.mapper-content .mapper-item strong {
+    font-size: 14px;
+}
+
+.mapper-content .mapper-item span, .mapper-content .mapper-item .mapper-main {
+    font-size: 12px;
+}
+
+.mapper-content .mapper-item a {
+    float: right;
+}
+
+.mapper-content .mapper-item .mapper-remove {
+    color: #000000;
+}
+
+.mapper-content .mapper-item .mapper-main {
+    margin-top: 5px;
+}
+
+.mapper-drop-place {
+    background: #DDDDDD;
+    height: 60px;
+    margin-bottom: 5px;
+}
+
+.mapper-drop-place p {
+    text-align: center;
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.mapper-content .mapper-button {
+    padding: 0;
+}
