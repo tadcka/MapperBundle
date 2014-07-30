@@ -41,3 +41,14 @@
 .mapper-content .mapper-button {
     padding: 0;
 }
+
+.mapper-content .mapper-item-error {
+    border: 2px solid #b81900;
+    text-align: center;
+}
+
+.mapper-content .mapper-item-error p {
+    margin-top: 5px;
+    font-weight: bold;
+    font-size: 14px;
+}

@@ -76,14 +76,6 @@ class MapperProviderWrapper implements MapperProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function canUseForMapping($categorySlug, MapperItemInterface $mapperItem)
-    {
-        return $this->mapperProvider->canUseForMapping($categorySlug, $mapperItem);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getMapperItems(array $categories, MapperItemInterface $mapperItem)
     {
         return $this->mapperProvider->getMapperItems($categories, $mapperItem);

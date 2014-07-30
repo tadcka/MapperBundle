@@ -130,22 +130,9 @@ class MapperProvider implements MapperProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function canUseForMapping($categorySlug, MapperItemInterface $mapperItem)
-    {
-        $item = $this->getMapperItemByCategory($categorySlug, $mapperItem);
-        if (null === $item) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getMapperItemByCategory($categorySlug, MapperItemInterface $mapperItem)
     {
-        if (((string)$categorySlug === (string)$mapperItem->getSlug()) && $mapperItem->canUseForMapping()) {
+        if ((string)$categorySlug === (string)$mapperItem->getSlug()) {
             return $mapperItem;
         }
 

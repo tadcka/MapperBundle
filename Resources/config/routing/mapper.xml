@@ -13,17 +13,17 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="tadcka_mapper_get_mapping" path="/mapper/get-mapping/{sourceSlug}/{otherSourceSlug}/{categorySlug}">
+    <route id="tadcka_mapper_get_mapping" path="/mapper/get-mapping/{sourceSlug}/{otherSourceSlug}/{categorySlug}" methods="GET">
         <default key="_controller">TadckaMapperBundle:Mapper:getMapping</default>
         <option key="expose">true</option>
     </route>
 
-    <route id="tadcka_mapper_post_mapping" path="/mapper/post-mapping/{sourceSlug}/{otherSourceSlug}/{categorySlug}">
+    <route id="tadcka_mapper_post_mapping" path="/mapper/post-mapping/{sourceSlug}/{otherSourceSlug}/{categorySlug}" methods="POST">
         <default key="_controller">TadckaMapperBundle:Mapper:postMapping</default>
         <option key="expose">true</option>
     </route>
 
-    <route id="tadcka_mapper_add_mapping" path="/mapper/add-mapping/{sourceSlug}/{otherSourceSlug}/{categorySlug}">
+    <route id="tadcka_mapper_add_mapping" path="/mapper/add-mapping/{sourceSlug}/{categorySlug}" methods="GET">
         <default key="_controller">TadckaMapperBundle:Mapper:addMapping</default>
         <option key="expose">true</option>
     </route>
