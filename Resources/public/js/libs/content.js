@@ -77,6 +77,8 @@ function MapperContent() {
         $('div.mapper-content .mapper-item').each(function () {
             if ($categorySlug === $(this).data('slug')) {
                 has = true;
+
+                return true;
             }
         });
 
@@ -102,7 +104,7 @@ function MapperContent() {
     /**
      * Fade off.
      */
-    var fadeOff = function() {
+    var fadeOff = function () {
         $content.fadeTo(0, 1);
     };
 }

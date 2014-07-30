@@ -6,7 +6,7 @@
         {% include 'TadckaMapperBundle:Mapper:mapper_item.html.twig' with {item: item} %}
     {% endfor %}
 
-    <div class="col-md-12 mapper-drop-place">
+    <div class="col-md-12 mapper-drop-place" data-current_source="{{ source_slug }}">
         <p>{{ 'drag_category_here'|trans }}</p>
     </div>
     <div class="clearfix"><!-- --></div>

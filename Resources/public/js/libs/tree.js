@@ -32,22 +32,29 @@ $.fn.mapperTree = function () {
 
     // Example: https://groups.google.com/forum/#!topic/jstree/BYppISuCFRE
     $(document)
-        .on('dnd_move.vakata', function (e, data) {
-            var target = $(data.event.target);
+        .on('dnd_move.vakata', function ($event, $data) {
+            var $target = $($data.event.target);
+            var $dropPlace = $target.closest('.mapper-drop-place');
 
-            if (target.closest('.mapper-drop-place').length) {
-                data.helper.find('.jstree-icon').removeClass('jstree-er').addClass('jstree-ok');
+            if ($dropPlace.length) {
+                var $currentTreeSource = $($data.element).closest('div.mapper-tree-wrapper').data('source');
+                if ($dropPlace.data('current_source') !== $currentTreeSource) {
+                    $data.helper.find('.jstree-icon').removeClass('jstree-er').addClass('jstree-ok');
+                }
             }
             else {
-                data.helper.find('.jstree-icon').removeClass('jstree-ok').addClass('jstree-er');
+                $data.helper.find('.jstree-icon').removeClass('jstree-ok').addClass('jstree-er');
             }
         })
-        .on('dnd_stop.vakata', function (e, data) {
-            var target = $(data.event.target);
-            if (target.closest('.mapper-drop-place').length) {
-                if (data.data.jstree && data.data.origin) {
-                    var $node = data.data.origin.get_node(data.element);
-                    var $currentTree = $(data.element).closest('div.mapper-tree-wrapper');
+        .on('dnd_stop.vakata', function ($event, $data) {
+            var $target = $($data.event.target);
+            var $dropPlace = $target.closest('.mapper-drop-place');
+
+            if ($dropPlace) {
+                var $currentTreeSource = $($data.element).closest('div.mapper-tree-wrapper').data('source');
+                if (($dropPlace.data('current_source') !== $currentTreeSource) && $data.data.jstree && $data.data.origin) {
+                    var $node = $data.data.origin.get_node($data.element);
+                    var $currentTree = $($data.element).closest('div.mapper-tree-wrapper');
                     var $source = $currentTree.data('source');
 
                     $content.addItem($source, $node.id);
