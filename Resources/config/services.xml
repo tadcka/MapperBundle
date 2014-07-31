@@ -17,6 +17,7 @@
         <parameter key="tadcka_mapper.registry.mapper.class">Tadcka\Component\Mapper\Registry\Registry</parameter>
         <parameter key="tadcka_mapper.provider.class">Tadcka\Bundle\MapperBundle\Provider\MapperProvider</parameter>
         <parameter key="tadcka_mapper.provider.wrapper.class">Tadcka\Bundle\MapperBundle\Provider\MapperProviderWrapper</parameter>
+        <parameter key="tadcka_mapper.handler.mapping.class">Tadcka\Bundle\MapperBundle\Handler\MappingHandler</parameter>
     </parameters>
 
     <services>
@@ -35,6 +36,12 @@
         <service id="tadcka_mapper.provider.wrapper" class="%tadcka_mapper.provider.wrapper.class%">
             <argument type="service" id="tadcka_mapper.provider.default" />
             <argument type="service" id="tadcka_mapper.cache.mapper_item" />
+        </service>
+
+        <service id="tadcka_mapper.handler.mapping" class="%tadcka_mapper.handler.mapping.class%">
+            <argument type="service" id="tadcka_mapper.provider" />
+            <argument type="service" id="tadcka_mapper.manager.category" />
+            <argument type="service" id="tadcka_mapper.manager.mapping" />
         </service>
 
     </services>

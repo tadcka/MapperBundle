@@ -70,6 +70,8 @@ class MapperProvider implements MapperProviderInterface
         if ((null === $source) && (null !== $config = $this->getConfig($name))) {
             $source = $this->sourceManager->create();
             $source->setSlug($config->getName());
+
+            $this->sourceManager->add($source);
         } elseif ((null !== $source) && (false === $config = $this->registry->getContainer()->has($name))) {
             $this->sourceManager->remove($source);
 
@@ -98,7 +100,6 @@ class MapperProvider implements MapperProviderInterface
     public function getMappingCategories(CategoryInterface $category, SourceInterface $source)
     {
         $mappings = $this->mappingManager->findManyMappings($category->getSlug(), $source->getSlug());
-
         $data = array();
         foreach ($mappings as $mapping) {
             if ($category->getSlug() === $mapping->getLeft()->getSlug()) {

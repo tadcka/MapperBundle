@@ -52,3 +52,11 @@
     font-weight: bold;
     font-size: 14px;
 }
+
+.mapper-content .mapper-item input[type="radio"], .mapper-content .is-main .mapper-main {
+    display: none;
+}
+
+.mapper-content .is-main {
+    border: 2px solid #df8505;
+}

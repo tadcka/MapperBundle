@@ -14,6 +14,56 @@ function MapperContent() {
     var $content = $('div.mapper-content');
 
     /**
+     * Remove mapper item.
+     */
+    $content.on('click', 'a.mapper-remove', function ($event) {
+        $(this).closest('div.mapper-item').remove();
+    });
+
+    /**
+     * Set main mapper item.
+     */
+    $content.on('click', 'a.mapper-main', function ($event) {
+        $('div.mapper-content .mapper-item').each(function () {
+            $(this).find('input[type=radio]:first').removeAttr('checked');
+            $(this).removeClass('is-main');
+        });
+
+        var $mapperItem = $(this).closest('div.mapper-item');
+        $mapperItem.addClass('is-main');
+        $mapperItem.find('input[type=radio]:first').attr('checked', 'checked');
+    });
+
+    /**
+     * Submit form.
+     */
+    $content.on('click', 'button.form-submit', function ($event) {
+        $event.preventDefault();
+        var $form = $content.find('form:first');
+
+        $.ajax({
+            url: $form.attr('action'),
+            type: 'POST',
+            data: $form.serialize(),
+            success: function ($response) {
+                $content.html($response);
+                fadeOff();
+            },
+            error: function ($request, $status, $error) {
+                $content.html($request.responseText);
+                fadeOff();
+            }
+        });
+    });
+
+    /**
+     * Cancel form.
+     */
+    $content.on('click', 'a.form-cancel', function ($event) {
+        $content.html('');
+    });
+
+    /**
      * Get content.
      *
      * @returns {*|jQuery|HTMLElement}

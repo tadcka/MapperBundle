@@ -17,9 +17,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Tadcka\Bundle\MapperBundle\Handler\MappingHandler;
 use Tadcka\Component\Mapper\MapperItemInterface;
 use Tadcka\Component\Mapper\Model\Manager\CategoryManagerInterface;
 use Tadcka\Component\Mapper\Model\SourceInterface;
+use Tadcka\Component\Mapper\Provider\MapperProviderInterface;
 
 /**
  * @author Tadas Gliaubicas <tadcka89@gmail.com>
@@ -44,9 +46,9 @@ class MapperController extends ContainerAware
 
         $mapperItems = array();
         if (null !== $category) {
-            $mapperItems = $this->getProvider()->getMapperItemByCategory(
+            $mapperItems = $this->getProvider()->getMapperItems(
                 $this->getProvider()->getMappingCategories($category, $otherSource),
-                $mapper
+                $this->getProvider()->getMapper($otherSource, $request->getLocale())
             );
         }
 
@@ -55,6 +57,7 @@ class MapperController extends ContainerAware
                 'TadckaMapperBundle:Mapper:mapper.html.twig',
                 array(
                     'items' => $mapperItems,
+                    'is_main' => false,
                     'source_slug' => $sourceSlug,
                     'other_source_slug' => $otherSourceSlug,
                     'category_slug' => $categorySlug,
@@ -65,7 +68,14 @@ class MapperController extends ContainerAware
 
     public function postMappingAction(Request $request, $sourceSlug, $otherSourceSlug, $categorySlug)
     {
+        $source = $this->getSource($sourceSlug);
+        $otherSource = $this->getSource($otherSourceSlug);
 
+        if ($this->getHandler()->process($request, $source, $otherSource, $categorySlug)) {
+            $this->getCategoryManager()->save();
+        }
+
+        return new Response();
     }
 
     public function addMappingAction(Request $request, $sourceSlug, $categorySlug)
@@ -85,6 +95,7 @@ class MapperController extends ContainerAware
                 'TadckaMapperBundle:Mapper:mapper_item.html.twig',
                 array(
                     'item' => $mapperItem,
+                    'is_main' => false,
                 )
             )
         );
@@ -114,9 +125,20 @@ class MapperController extends ContainerAware
         return $this->container->get('tadcka_mapper.manager.category');
     }
 
+    /**
+     * @return MapperProviderInterface
+     */
     private function getProvider()
     {
         return $this->container->get('tadcka_mapper.provider');
+    }
+
+    /**
+     * @return MappingHandler
+     */
+    private function getHandler()
+    {
+        return $this->container->get('tadcka_mapper.handler.mapping');
     }
 
     /**
