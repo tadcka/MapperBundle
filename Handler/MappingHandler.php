@@ -203,7 +203,7 @@ class MappingHandler
     }
 
     /**
-     * Duff categories slugs.
+     * Diff categories slugs.
      *
      * @param array $slugs
      * @param array|CategoryInterface[] $categories
