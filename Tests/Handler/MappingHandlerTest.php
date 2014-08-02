@@ -14,10 +14,8 @@ namespace Tadcka\Bundle\MapperBundle\Tests\Handler;
 use Symfony\Component\HttpFoundation\Request;
 use Tadcka\Bundle\MapperBundle\Handler\MappingHandler;
 use Tadcka\Bundle\MapperBundle\Provider\MapperProvider;
+use Tadcka\Bundle\MapperBundle\Tests\Mock\MockMapper;
 use Tadcka\Component\Mapper\Model\CategoryInterface;
-use Tadcka\Component\Mapper\Model\Manager\CategoryManagerInterface;
-use Tadcka\Component\Mapper\Model\Manager\MappingManagerInterface;
-use Tadcka\Component\Mapper\Model\Manager\SourceManagerInterface;
 use Tadcka\Component\Mapper\Model\SourceInterface;
 use Tadcka\Component\Mapper\Registry\Config\Config;
 use Tadcka\Component\Mapper\Registry\Registry;
@@ -34,17 +32,17 @@ use Tadcka\Component\Mapper\Tests\Mock\ModelManager\MockSourceManager;
 class MappingHandlerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var SourceManagerInterface
+     * @var MockSourceManager
      */
     private $sourceManager;
 
     /**
-     * @var MappingManagerInterface
+     * @var MockMappingManager
      */
     private $mappingManager;
 
     /**
-     * @var CategoryManagerInterface
+     * @var MockCategoryManager
      */
     private $categoryManager;
 
@@ -55,28 +53,57 @@ class MappingHandlerTest extends \PHPUnit_Framework_TestCase
         $this->categoryManager = new MockCategoryManager();
     }
 
-    /**
-     * @expectedException \Tadcka\Component\Mapper\Exception\ResourceNotFoundException
-     */
-    public function testProcessWithEmptyRegistry()
-    {
-        $handler = $this->getHandler($this->getRegistry());
+//    /**
+//     * @expectedException \Tadcka\Component\Mapper\Exception\ResourceNotFoundException
+//     */
+//    public function testProcessWithEmptyRegistry()
+//    {
+//        $handler = $this->getHandler($this->getRegistry());
+//
+//        $this->assertFalse($this->process($handler, new Request()));
+//    }
+//
+//    public function testProcessWithNotEmptyRegistry()
+//    {
+//        $registry = $this->getRegistry(
+//            array('source' => new MockMapperFactory(), 'other_source' => new MockMapperFactory())
+//        );
+//        $handler = $this->getHandler($registry);
+//
+//        $this->assertTrue($this->process($handler, new Request()));
+//    }
 
-        $this->assertFalse($this->process($handler, new Request()));
-    }
-
-    public function testProcessWithNotEmptyRegistry()
+    public function testProcess()
     {
-        $registry = $this->getRegistry(
-            array('source' => new MockMapperFactory(), 'other_source' => new MockMapperFactory())
-        );
+        $factory = new MockMapperFactory();
+        $registry = $this->getRegistry(array('source' => $factory, 'other_source' => $factory));
         $handler = $this->getHandler($registry);
 
-        $this->assertTrue($this->process($handler, new Request()));
+        $request =  new Request();
+        $request->query->set('mapper_item', array('test_1'));
+//        $this->assertFalse($this->process($handler, $request));
+
+        $factory->setMapper(new MockMapper());
+//        $this->assertFalse($this->process($handler, $request));
+        $request->query->set('mapper_item', array('test_2', 'test_3'));
+
+        $this->assertTrue($this->process($handler, $request));
+
+        $mappings = $this->mappingManager->getMappings();
+
+        $this->assertCount(2, $mappings);
+        $this->assertEquals('category', $mappings[0]->getLeft()->getSlug());
+        $this->assertEquals('category', $mappings[1]->getLeft()->getSlug());
+
+        $this->assertEquals('test_2', $mappings[0]->getRight()->getSlug());
+        $this->assertEquals('test_3', $mappings[1]->getRight()->getSlug());
+
+        $this->assertTrue($mappings[0]->isMain());
+        $this->assertFalse($mappings[1]->isMain());
     }
 
     /**
-     * Process
+     * Process.
      *
      * @param MappingHandler $handler
      * @param Request $request

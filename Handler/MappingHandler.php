@@ -164,7 +164,8 @@ class MappingHandler
     {
         $isValid = true;
         foreach ($slugs as $slug) {
-            if (null === $this->provider->getMapperItemByCategory($slug, $mapperItem)) {
+            $item = $this->provider->getMapperItemByCategory($slug, $mapperItem);
+            if ((null === $item) || (false === $item->canUseForMapping())) {
                 $isValid = false;
 
                 break;
