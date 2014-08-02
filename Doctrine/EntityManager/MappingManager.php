@@ -55,6 +55,42 @@ class MappingManager extends BaseMappingManager
     /**
      * {@inheritdoc}
      */
+    public function findMainMapping($categorySlug, $sourceSlug)
+    {
+        $qb = $this->repository->createQueryBuilder('m');
+
+        $qb->innerJoin('m.left', 'ml');
+        $qb->innerJoin('m.right', 'mr');
+
+        $qb->innerJoin('ml.source', 'mls');
+        $qb->innerJoin('mr.source', 'mrs');
+
+        $qb->where(
+            $qb->expr()->orX(
+                $qb->expr()->andX(
+                    $qb->expr()->eq('ml.slug', ':category_slug'),
+                    $qb->expr()->eq('mrs.slug', ':source_slug')
+                ),
+                $qb->expr()->andX(
+                    $qb->expr()->eq('mr.slug', ':category_slug'),
+                    $qb->expr()->eq('mls.slug', ':source_slug')
+                )
+            )
+        );
+
+        $qb->setParameter('category_slug', $categorySlug);
+        $qb->setParameter('source_slug', $sourceSlug);
+
+        $qb->andWhere($qb->expr()->eq('m.main', true));
+
+        $qb->select('m');
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findManyByCategory(CategoryInterface $category)
     {
         $qb = $this->repository->createQueryBuilder('m');

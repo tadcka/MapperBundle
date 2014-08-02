@@ -57,7 +57,7 @@ class MapperController extends ContainerAware
                 'TadckaMapperBundle:Mapper:mapper.html.twig',
                 array(
                     'items' => $mapperItems,
-                    'is_main' => false,
+                    'main_category_slug' => $this->getProvider()->getMappingMainCategorySlug($categorySlug, $otherSourceSlug),
                     'source_slug' => $sourceSlug,
                     'other_source_slug' => $otherSourceSlug,
                     'category_slug' => $categorySlug,

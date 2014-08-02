@@ -23,7 +23,7 @@ use Tadcka\Component\Mapper\Provider\MapperProviderInterface;
 /**
  * @author Tadas Gliaubicas <tadcka89@gmail.com>
  *
- * @since 7/31/14 11:21 PM
+ * @since  7/31/14 11:21 PM
  */
 class MappingHandler
 {
@@ -75,7 +75,7 @@ class MappingHandler
 
         $mapper = $this->provider->getMapper($otherSource, $request->getLocale());
         if ($this->validateCategorySlugs($itemSlugs, $mapper)) {
-            $mappings = $this->mappingManager->findManyMappings($categorySlug, $source->getSlug());
+            $mappings = $this->mappingManager->findManyMappings($categorySlug, $otherSource->getSlug());
             $this->removeNonExistingMappings($categorySlug, $mappings, $itemSlugs);
 
             $category = $this->categoryManager->findBySlugAndSource($categorySlug, $source);
@@ -90,10 +90,14 @@ class MappingHandler
                 $this->categoryManager->add($category);
             }
 
-            $newCategories = $this->createNonExistingCategories($itemSlugs, $mappingCategories, $otherSource);
-            $newMappings = $this->createNonExistingMappings($category, $newCategories);
-
-            $this->setMainMapping($request->get('main_mapper_item', null), array_merge($mappings, $newMappings));
+            $slugs = $this->diffCategoriesSlugs($itemSlugs, $mappingCategories);
+            $categories = $this->categoryManager->findManyBySlugsAndSource($slugs, $otherSource);
+            $slugs = $this->diffCategoriesSlugs($slugs, $categories);
+            $categories = array_merge($categories, $this->createCategories($slugs, $otherSource));
+            if (0 < count($categories)) {
+                $mappings = array_merge($mappings, $this->createNonExistingMappings($category, $categories));
+            }
+            $this->setMainMapping($request->get('main_mapper_item', null), $mappings);
 
             return true;
         }
@@ -137,11 +141,11 @@ class MappingHandler
         foreach ($mappings as $mapping) {
             $remove = true;
             if ($categorySlug === $mapping->getLeft()->getSlug()) {
-                if ($this->hasCategorySlug($mapping->getRight(), $slugs)) {
+                if ($this->hasCategorySlug($mapping->getRight()->getSlug(), $slugs)) {
                     $remove = false;
                 }
             } elseif ($categorySlug === $mapping->getRight()->getSlug()) {
-                if ($this->hasCategorySlug($mapping->getLeft(), $slugs)) {
+                if ($this->hasCategorySlug($mapping->getLeft()->getSlug(), $slugs)) {
                     $remove = false;
                 }
             }
@@ -199,35 +203,52 @@ class MappingHandler
     }
 
     /**
-     * Create non existing categories.
+     * Duff categories slugs.
      *
      * @param array $slugs
-     * @param array|CategoryInterface[] $existingCategories
-     * @param SourceInterface $source
+     * @param array|CategoryInterface[] $categories
      *
-     * @return array|CategoryInterface[]
+     * @return array
      */
-    private function createNonExistingCategories(array $slugs, array $existingCategories, SourceInterface $source)
+    private function diffCategoriesSlugs(array $slugs, array $categories)
     {
-        $categories = array();
+        $data = array();
         foreach ($slugs as $slug) {
-            $create = true;
-            foreach ($existingCategories as $existingCategory) {
-                if ($slug === $existingCategory->getSlug()) {
-                    $create = false;
+            $exist = false;
+            foreach ($categories as $category) {
+                if ($slug === $category->getSlug()) {
+                    $exist = true;
 
                     break;
                 }
             }
 
-            if ($create) {
-                $category = $this->categoryManager->create();
-                $category->setSlug($slug);
-                $category->setSource($source);
-
-                $this->categoryManager->add($category);
-                $categories[] = $category;
+            if (false === $exist) {
+                $data[] = $slug;
             }
+        }
+
+        return $data;
+    }
+
+    /**
+     * Create categories.
+     *
+     * @param array $slugs
+     * @param SourceInterface $source
+     *
+     * @return array|CategoryInterface[]
+     */
+    private function createCategories(array $slugs, SourceInterface $source)
+    {
+        $categories = array();
+        foreach ($slugs as $slug) {
+            $category = $this->categoryManager->create();
+            $category->setSlug($slug);
+            $category->setSource($source);
+
+            $this->categoryManager->add($category);
+            $categories[] = $category;
         }
 
         return $categories;

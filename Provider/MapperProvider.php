@@ -147,6 +147,24 @@ class MapperProvider implements MapperProviderInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getMappingMainCategorySlug($currentCategorySlug, $otherSourceSlug)
+    {
+        $mapping = $this->mappingManager->findMainMapping($currentCategorySlug, $otherSourceSlug);
+
+        if (null !== $mapping) {
+            if ($currentCategorySlug === $mapping->getLeft()->getSlug()) {
+                return $mapping->getRight()->getSlug();
+            }
+
+            return $mapping->getLeft()->getSlug();
+        }
+
+        return null;
+    }
+
+    /**
      * Get mapper config.
      *
      * @param string $name

@@ -88,4 +88,12 @@ class MapperProviderWrapper implements MapperProviderInterface
     {
         return $this->mapperProvider->getMapperItemByCategory($categorySlug, $mapperItem);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMappingMainCategorySlug($currentCategorySlug, $otherSourceSlug)
+    {
+        return $this->mapperProvider->getMappingMainCategorySlug($currentCategorySlug, $otherSourceSlug);
+    }
 }
