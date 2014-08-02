@@ -53,25 +53,25 @@ class MappingHandlerTest extends \PHPUnit_Framework_TestCase
         $this->categoryManager = new MockCategoryManager();
     }
 
-//    /**
-//     * @expectedException \Tadcka\Component\Mapper\Exception\ResourceNotFoundException
-//     */
-//    public function testProcessWithEmptyRegistry()
-//    {
-//        $handler = $this->getHandler($this->getRegistry());
-//
-//        $this->assertFalse($this->process($handler, new Request()));
-//    }
-//
-//    public function testProcessWithNotEmptyRegistry()
-//    {
-//        $registry = $this->getRegistry(
-//            array('source' => new MockMapperFactory(), 'other_source' => new MockMapperFactory())
-//        );
-//        $handler = $this->getHandler($registry);
-//
-//        $this->assertTrue($this->process($handler, new Request()));
-//    }
+    /**
+     * @expectedException \Tadcka\Component\Mapper\Exception\ResourceNotFoundException
+     */
+    public function testProcessWithEmptyRegistry()
+    {
+        $handler = $this->getHandler($this->getRegistry());
+
+        $this->assertFalse($this->process($handler, new Request()));
+    }
+
+    public function testProcessWithNotEmptyRegistry()
+    {
+        $registry = $this->getRegistry(
+            array('source' => new MockMapperFactory(), 'other_source' => new MockMapperFactory())
+        );
+        $handler = $this->getHandler($registry);
+
+        $this->assertTrue($this->process($handler, new Request()));
+    }
 
     public function testProcess()
     {
@@ -79,12 +79,12 @@ class MappingHandlerTest extends \PHPUnit_Framework_TestCase
         $registry = $this->getRegistry(array('source' => $factory, 'other_source' => $factory));
         $handler = $this->getHandler($registry);
 
-        $request =  new Request();
+        $request = new Request();
         $request->query->set('mapper_item', array('test_1'));
-//        $this->assertFalse($this->process($handler, $request));
+        $this->assertFalse($this->process($handler, $request));
 
         $factory->setMapper(new MockMapper());
-//        $this->assertFalse($this->process($handler, $request));
+        $this->assertFalse($this->process($handler, $request));
         $request->query->set('mapper_item', array('test_2', 'test_3'));
 
         $this->assertTrue($this->process($handler, $request));
