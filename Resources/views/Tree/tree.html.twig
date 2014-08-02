@@ -1,16 +1,9 @@
 {% extends 'TadckaMapperBundle::layout.html.twig' %}
 
 {% block content %}
-    <div id="mapper-tree">
-        <div class="col-md-3">
-            {% include 'TadckaMapperBundle:Tree:left.html.twig' with {tree: left, source_slug: left_source_slug} %}
-        </div>
-        <div class="col-md-6">
-            {% include 'TadckaMapperBundle:Mapper:content.html.twig' %}
-        </div>
-        <div class="col-md-3">
-            {% include 'TadckaMapperBundle:Tree:right.html.twig' with {tree: right, source_slug: right_source_slug} %}
-        </div>
+    <div class="row" id="mapper-tree">
+        {% include 'TadckaMapperBundle:Tree:left.html.twig' with {tree: left, source_slug: left_source_slug} %}
+        {% include 'TadckaMapperBundle:Mapper:content.html.twig' %}
+        {% include 'TadckaMapperBundle:Tree:right.html.twig' with {tree: right, source_slug: right_source_slug} %}
     </div>
-
 {% endblock %}
