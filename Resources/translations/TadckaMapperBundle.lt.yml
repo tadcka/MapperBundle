@@ -4,3 +4,6 @@ main_category: Pagrindinė kategorija
 remove_category: Pašalinti kategoriją
 save: Išsaugoti
 cancel: Atšaukti
+
+mappings_have_been_saved: Sėkmingai išsaugoti sąryšiai.
+was_error: Įvyko klaida.

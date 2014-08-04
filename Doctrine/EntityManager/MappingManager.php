@@ -84,6 +84,7 @@ class MappingManager extends BaseMappingManager
         $qb->andWhere($qb->expr()->eq('m.main', true));
 
         $qb->select('m');
+        $qb->setMaxResults(1);
 
         return $qb->getQuery()->getOneOrNullResult();
     }

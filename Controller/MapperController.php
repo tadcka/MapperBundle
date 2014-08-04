@@ -57,7 +57,10 @@ class MapperController extends ContainerAware
                 'TadckaMapperBundle:Mapper:mapper.html.twig',
                 array(
                     'items' => $mapperItems,
-                    'main_category_slug' => $this->getProvider()->getMappingMainCategorySlug($categorySlug, $otherSourceSlug),
+                    'main_category_slug' => $this->getProvider()->getMappingMainCategorySlug(
+                            $categorySlug,
+                            $otherSourceSlug
+                        ),
                     'source_slug' => $sourceSlug,
                     'other_source_slug' => $otherSourceSlug,
                     'category_slug' => $categorySlug,
@@ -73,9 +76,19 @@ class MapperController extends ContainerAware
 
         if ($this->getHandler()->process($request, $source, $otherSource, $categorySlug)) {
             $this->getCategoryManager()->save();
+
+            return new Response(
+                '<div class="alert alert-success" role="alert">' .
+                $this->getTranslator()->trans('mappings_have_been_saved', array(), 'TadckaMapperBundle') .
+                '</div>'
+            );
         }
 
-        return new Response();
+        return new Response(
+            '<div class="alert alert-error" role="alert">' .
+            $this->getTranslator()->trans('was_error', array(), 'TadckaMapperBundle') .
+            '</div>'
+        );
     }
 
     public function addMappingAction(Request $request, $sourceSlug, $categorySlug)

@@ -4,3 +4,6 @@ main_category: Main category
 remove_category: Remove category
 save: Save
 cancel: Cancel
+
+mappings_have_been_saved: The mappings have been saved.
+was_error: There was an error.
