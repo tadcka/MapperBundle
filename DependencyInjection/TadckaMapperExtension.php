@@ -35,6 +35,7 @@ class TadckaMapperExtension extends Extension
         $loader->load('services.xml');
         $loader->load('cache.xml');
         $loader->load('frontend/tree.xml');
+        $loader->load('helpers.xml');
 
         if (!in_array(strtolower($config['db_driver']), array('mongodb', 'orm'))) {
             throw new \InvalidArgumentException(sprintf('Invalid db driver "%s".', $config['db_driver']));
