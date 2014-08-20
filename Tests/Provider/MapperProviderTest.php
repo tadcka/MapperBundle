@@ -118,12 +118,15 @@ class MapperProviderTest extends \PHPUnit_Framework_TestCase
         $provider = new MapperProvider(new Registry(), new MockSourceManager(), new MockMappingManager());
 
         $category = new Category();
-        $category->setSlug('category_test');
         $source = new Source();
-        $source->setSlug('source_test');
+        $source->setSlug('test');
+        $category->setSource($source);
+        $category->setSlug('category_test');
+        $otherSource = new Source();
+        $otherSource->setSlug('other_test');
 
 
-        $this->assertEmpty($provider->getMappingCategories($category, $source));
+        $this->assertEmpty($provider->getMappingCategories($category, $otherSource));
     }
 
     public function testGetMappingCategories()
@@ -140,11 +143,14 @@ class MapperProviderTest extends \PHPUnit_Framework_TestCase
         $category->setSlug('left_category');
         $source = new Source();
         $source->setSlug('left_source');
+        $category->setSource($source);
+        $otherSource = new Source();
+        $otherSource->setSlug('left_source');
 
-        $this->assertEmpty($provider->getMappingCategories($category, $source));
+        $this->assertEmpty($provider->getMappingCategories($category, $otherSource));
 
-        $source->setSlug('right_source');
-        $this->assertCount(2, $provider->getMappingCategories($category, $source));
+        $otherSource->setSlug('right_source');
+        $this->assertCount(2, $provider->getMappingCategories($category, $otherSource));
     }
 
     private function createMapping($leftCategory, $leftSource, $rightCategory, $rightSource)
