@@ -68,9 +68,9 @@ class MapperProviderWrapper implements MapperProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getMappingCategories(CategoryInterface $category, SourceInterface $source)
+    public function getMappingCategories(CategoryInterface $category, SourceInterface $otherSource)
     {
-        return $this->mapperProvider->getMappingCategories($category, $source);
+        return $this->mapperProvider->getMappingCategories($category, $otherSource);
     }
 
     /**
@@ -92,8 +92,8 @@ class MapperProviderWrapper implements MapperProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getMappingMainCategorySlug($currentCategorySlug, $otherSourceSlug)
+    public function getMainMappingOtherCategorySlug($categorySlug, $sourceSlug, $otherSourceSlug)
     {
-        return $this->mapperProvider->getMappingMainCategorySlug($currentCategorySlug, $otherSourceSlug);
+        return $this->mapperProvider->getMainMappingOtherCategorySlug($categorySlug, $sourceSlug, $otherSourceSlug);
     }
 }

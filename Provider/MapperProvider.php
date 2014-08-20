@@ -24,7 +24,7 @@ use Tadcka\Component\Mapper\Registry\Registry;
 /**
  * @author Tadas Gliaubicas <tadcka89@gmail.com>
  *
- * @since 7/13/14 4:29 PM
+ * @since  7/13/14 4:29 PM
  */
 class MapperProvider implements MapperProviderInterface
 {
@@ -97,9 +97,13 @@ class MapperProvider implements MapperProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getMappingCategories(CategoryInterface $category, SourceInterface $source)
+    public function getMappingCategories(CategoryInterface $category, SourceInterface $otherSource)
     {
-        $mappings = $this->mappingManager->findManyMappings($category->getSlug(), $source->getSlug());
+        $mappings = $this->mappingManager->findManyMappingsByCategorySlug(
+            $category->getSlug(),
+            $category->getSource()->getSlug(),
+            $otherSource->getSlug()
+        );
         $data = array();
         foreach ($mappings as $mapping) {
             if ($category->getSlug() === $mapping->getLeft()->getSlug()) {
@@ -149,12 +153,12 @@ class MapperProvider implements MapperProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getMappingMainCategorySlug($currentCategorySlug, $otherSourceSlug)
+    public function getMainMappingOtherCategorySlug($categorySlug, $sourceSlug, $otherSourceSlug)
     {
-        $mapping = $this->mappingManager->findMainMapping($currentCategorySlug, $otherSourceSlug);
+        $mapping = $this->mappingManager->findMainMapping($categorySlug, $sourceSlug, $otherSourceSlug);
 
         if (null !== $mapping) {
-            if ($currentCategorySlug === $mapping->getLeft()->getSlug()) {
+            if ($categorySlug === $mapping->getLeft()->getSlug()) {
                 return $mapping->getRight()->getSlug();
             }
 

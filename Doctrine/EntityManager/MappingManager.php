@@ -55,7 +55,7 @@ class MappingManager extends BaseMappingManager
     /**
      * {@inheritdoc}
      */
-    public function findMainMapping($categorySlug, $sourceSlug)
+    public function findMainMapping($categorySlug, $sourceSlug, $otherSourceSlug)
     {
         $qb = $this->repository->createQueryBuilder('m');
 
@@ -69,17 +69,20 @@ class MappingManager extends BaseMappingManager
             $qb->expr()->orX(
                 $qb->expr()->andX(
                     $qb->expr()->eq('ml.slug', ':category_slug'),
-                    $qb->expr()->eq('mrs.slug', ':source_slug')
+                    $qb->expr()->eq('mls.slug', ':source_slug'),
+                    $qb->expr()->eq('mrs.slug', ':other_source_slug')
                 ),
                 $qb->expr()->andX(
                     $qb->expr()->eq('mr.slug', ':category_slug'),
-                    $qb->expr()->eq('mls.slug', ':source_slug')
+                    $qb->expr()->eq('mrs.slug', ':source_slug'),
+                    $qb->expr()->eq('mls.slug', ':other_source_slug')
                 )
             )
         );
 
         $qb->setParameter('category_slug', $categorySlug);
         $qb->setParameter('source_slug', $sourceSlug);
+        $qb->setParameter('other_source_slug', $otherSourceSlug);
 
         $qb->andWhere($qb->expr()->eq('m.main', true));
 
@@ -92,26 +95,7 @@ class MappingManager extends BaseMappingManager
     /**
      * {@inheritdoc}
      */
-    public function findManyByCategory(CategoryInterface $category)
-    {
-        $qb = $this->repository->createQueryBuilder('m');
-
-        $qb->where(
-            $qb->expr()->orX(
-                $qb->expr()->eq('m.left', ':category'),
-                $qb->expr()->eq('m.right', ':category')
-            )
-        )->setParameter('category', $category);
-
-        $qb->select('m');
-
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findManyMappings($categorySlug, $sourceSlug)
+    public function findManyMappingsByCategorySlug($categorySlug, $sourceSlug, $otherSourceSlug)
     {
         $qb = $this->repository->createQueryBuilder('m');
 
@@ -125,17 +109,20 @@ class MappingManager extends BaseMappingManager
             $qb->expr()->orX(
                 $qb->expr()->andX(
                     $qb->expr()->eq('ml.slug', ':category_slug'),
-                    $qb->expr()->eq('mrs.slug', ':source_slug')
+                    $qb->expr()->eq('mls.slug', ':source_slug'),
+                    $qb->expr()->eq('mrs.slug', ':other_source_slug')
                 ),
                 $qb->expr()->andX(
                     $qb->expr()->eq('mr.slug', ':category_slug'),
-                    $qb->expr()->eq('mls.slug', ':source_slug')
+                    $qb->expr()->eq('mrs.slug', ':source_slug'),
+                    $qb->expr()->eq('mls.slug', ':other_source_slug')
                 )
             )
         );
 
         $qb->setParameter('category_slug', $categorySlug);
         $qb->setParameter('source_slug', $sourceSlug);
+        $qb->setParameter('other_source_slug', $otherSourceSlug);
 
         return $qb->getQuery()->getResult();
     }
@@ -143,7 +130,7 @@ class MappingManager extends BaseMappingManager
     /**
      * {@inheritdoc}
      */
-    public function findManyMappingsByCategories(array $categories, $sourceSlug)
+    public function findManyMappingsByCategorySlugs(array $categorySlugs, $sourceSlug, $otherSourceSlug)
     {
         $qb = $this->repository->createQueryBuilder('m');
 
@@ -156,18 +143,21 @@ class MappingManager extends BaseMappingManager
         $qb->where(
             $qb->expr()->orX(
                 $qb->expr()->andX(
-                    $qb->expr()->in('ml.slug', ':categories'),
-                    $qb->expr()->eq('mrs.slug', ':source_slug')
+                    $qb->expr()->in('ml.slug', ':category_slugs'),
+                    $qb->expr()->eq('mls.slug', ':source_slug'),
+                    $qb->expr()->eq('mrs.slug', ':other_source_slug')
                 ),
                 $qb->expr()->andX(
-                    $qb->expr()->in('mr.slug', ':categories'),
-                    $qb->expr()->eq('mls.slug', ':source_slug')
+                    $qb->expr()->in('mr.slug', ':category_slugs'),
+                    $qb->expr()->eq('mrs.slug', ':source_slug'),
+                    $qb->expr()->eq('mls.slug', ':other_source_slug')
                 )
             )
         );
 
-        $qb->setParameter('categories', $categories);
+        $qb->setParameter('categories', $categorySlugs);
         $qb->setParameter('source_slug', $sourceSlug);
+        $qb->setParameter('other_source_slug', $otherSourceSlug);
 
         return $qb->getQuery()->getResult();
     }

@@ -75,7 +75,8 @@ class MappingHandler
 
         $mapper = $this->provider->getMapper($otherSource, $request->getLocale());
         if ($this->validateCategorySlugs($itemSlugs, $mapper)) {
-            $mappings = $this->mappingManager->findManyMappings($categorySlug, $otherSource->getSlug());
+            $mappings = $this->mappingManager
+                ->findManyMappingsByCategorySlug($categorySlug, $source->getSlug(), $otherSource->getSlug());
             $this->removeNonExistingMappings($categorySlug, $mappings, $itemSlugs);
 
             $category = $this->categoryManager->findBySlugAndSource($categorySlug, $source);
