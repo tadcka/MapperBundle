@@ -16,7 +16,7 @@ use JMS\Serializer\SerializerInterface;
 use Tadcka\Component\Mapper\Cache\CacheManager;
 use Tadcka\Bundle\MapperBundle\Cache\MapperItemCache;
 use Tadcka\Bundle\MapperBundle\Frontend\Tree\TreeManager;
-use Tadcka\Bundle\MapperBundle\Provider\MapperProvider;
+use Tadcka\Component\Mapper\Provider\MapperProvider;
 use Tadcka\Component\Mapper\Tests\Mock\MockCacheFileSystem;
 use Tadcka\Component\Mapper\Tests\Mock\ModelManager\MockMappingManager;
 use Tadcka\Component\Mapper\Tests\Mock\ModelManager\MockSourceManager;

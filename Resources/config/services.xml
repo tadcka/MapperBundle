@@ -15,7 +15,7 @@
 
     <parameters>
         <parameter key="tadcka_mapper.registry.mapper.class">Tadcka\Component\Mapper\Registry\Registry</parameter>
-        <parameter key="tadcka_mapper.provider.class">Tadcka\Bundle\MapperBundle\Provider\MapperProvider</parameter>
+        <parameter key="tadcka_mapper.provider.class">Tadcka\Component\Mapper\Provider\MapperProvider</parameter>
         <parameter key="tadcka_mapper.provider.wrapper.class">Tadcka\Bundle\MapperBundle\Provider\MapperProviderWrapper</parameter>
         <parameter key="tadcka_mapper.handler.mapping.class">Tadcka\Bundle\MapperBundle\Handler\MappingHandler</parameter>
         <parameter key="tadcka_mapper.twig.extension.class">Tadcka\Bundle\MapperBundle\Twig\Extension\MapperExtension</parameter>

@@ -13,7 +13,7 @@ namespace Tadcka\Bundle\MapperBundle\Tests\Handler;
 
 use Symfony\Component\HttpFoundation\Request;
 use Tadcka\Bundle\MapperBundle\Handler\MappingHandler;
-use Tadcka\Bundle\MapperBundle\Provider\MapperProvider;
+use Tadcka\Component\Mapper\Provider\MapperProvider;
 use Tadcka\Bundle\MapperBundle\Tests\Mock\MockMapper;
 use Tadcka\Component\Mapper\Model\CategoryInterface;
 use Tadcka\Component\Mapper\Model\SourceInterface;

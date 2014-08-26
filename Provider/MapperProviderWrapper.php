@@ -35,6 +35,11 @@ class MapperProviderWrapper implements MapperProviderInterface
     private $mapperItemCache;
 
     /**
+     * @var array|MapperItemInterface[]
+     */
+    private $mapperItems = array();
+
+    /**
      * Constructor.
      *
      * @param MapperProviderInterface $mapperProvider
@@ -58,11 +63,16 @@ class MapperProviderWrapper implements MapperProviderInterface
      */
     public function getMapper(SourceInterface $source, $locale)
     {
-        if (null !== $mapper = $this->mapperItemCache->fetch($source, $locale)) {
-            return $mapper;
+        $mapperItemName = $source->getSlug() . '_' . $locale;
+        if (false === isset($this->mapperItems[$mapperItemName])) {
+            if (null !== $mapper = $this->mapperItemCache->fetch($source, $locale)) {
+                $this->mapperItems[$mapperItemName] = $mapper;
+            } else {
+                $this->mapperItems[$mapperItemName] = $this->mapperProvider->getMapper($source, $locale);
+            }
         }
 
-        return $this->mapperProvider->getMapper($source, $locale);
+        return $this->mapperItems[$mapperItemName];
     }
 
     /**
