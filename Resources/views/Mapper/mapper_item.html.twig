@@ -6,7 +6,8 @@
     <input type="radio" name="main_mapper_item" {% if is_main %}checked="checked"{% endif %} value="{{ item.slug }}">
 
     <a href="javascript:;" class="fa fa-times mapper-remove" title="{{ 'remove_category'|trans }}"></a>
+
     <div class="clearfix"><!-- --></div>
-    <span> Test / Test / Test / Test</span>
+    <span>{{ item|mapper_item_full_path(other_source_slug, app.request.locale) }}</span>
     <a href="javascript:;" class="mapper-main" title="{{ 'main_category'|trans }}">{{ 'main_category'|trans }}</a>
 </div>

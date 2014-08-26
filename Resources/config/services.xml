@@ -18,6 +18,7 @@
         <parameter key="tadcka_mapper.provider.class">Tadcka\Bundle\MapperBundle\Provider\MapperProvider</parameter>
         <parameter key="tadcka_mapper.provider.wrapper.class">Tadcka\Bundle\MapperBundle\Provider\MapperProviderWrapper</parameter>
         <parameter key="tadcka_mapper.handler.mapping.class">Tadcka\Bundle\MapperBundle\Handler\MappingHandler</parameter>
+        <parameter key="tadcka_mapper.twig.extension.class">Tadcka\Bundle\MapperBundle\Twig\Extension\MapperExtension</parameter>
     </parameters>
 
     <services>
@@ -42,6 +43,13 @@
             <argument type="service" id="tadcka_mapper.provider" />
             <argument type="service" id="tadcka_mapper.manager.category" />
             <argument type="service" id="tadcka_mapper.manager.mapping" />
+        </service>
+
+        <!--Tadcka mapper twig extension-->
+        <service class="%tadcka_mapper.twig.extension.class%">
+            <tag name="twig.extension" />
+            <argument type="service" id="tadcka_mapper.helper" />
+            <argument type="service" id="tadcka_mapper.provider" />
         </service>
 
     </services>

@@ -3,7 +3,7 @@
 <form method="post" action="{{ url('tadcka_mapper_post_mapping', {sourceSlug: source_slug, otherSourceSlug: other_source_slug, categorySlug: category_slug}) }}">
 
     {% for item in items %}
-        {% include 'TadckaMapperBundle:Mapper:mapper_item.html.twig' with {item: item, is_main: main_category_slug == item.slug} %}
+        {% include 'TadckaMapperBundle:Mapper:mapper_item.html.twig' with {item: item, is_main: main_category_slug == item.slug, other_source_slug: other_source_slug} %}
     {% endfor %}
 
     <div class="col-md-12 mapper-drop-place" data-current_source="{{ source_slug }}">
