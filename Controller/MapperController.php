@@ -94,10 +94,10 @@ class MapperController extends ContainerAware
 
     public function addMappingAction(Request $request, $sourceSlug, $categorySlug)
     {
-        $source = $this->getSource($sourceSlug);
+        $otherSource = $this->getSource($sourceSlug);
         $mapperItem = $this->getProvider()->getMapperItemByCategory(
             $categorySlug,
-            $this->getProvider()->getMapper($source, $request->getLocale())
+            $this->getProvider()->getMapper($otherSource, $request->getLocale())
         );
 
         if ($this->isValidMapperItem($mapperItem)) {
@@ -110,6 +110,7 @@ class MapperController extends ContainerAware
                 array(
                     'item' => $mapperItem,
                     'is_main' => false,
+                    'other_source_slug' => $otherSource->getSlug(),
                 )
             )
         );
