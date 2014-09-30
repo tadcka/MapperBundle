@@ -20,16 +20,21 @@
         "jms/serializer-bundle": "~0.13",
         "friendsofsymfony/jsrouting-bundle": "~1.5",
 
-        "tadcka/mapper": "dev-master",
-        "tadcka/jstree-bundle": "dev-master"
+        "tadcka/mapper": "~0.1",
+        "tadcka/jstree-bundle": "~0.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "~3.7",
+        "phpunit/phpunit": "~4.2",
         "doctrine/doctrine-bundle": "dev-master"
     },
     "autoload": {
         "psr-4": {
             "Tadcka\\Bundle\\MapperBundle\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1.x-dev"
         }
     }
 }
