@@ -7,3 +7,23 @@ MapperBundle
 
 
 Linking the different elements.
+
+## Installation
+
+### Step 1: Download MapperBundle using composer
+
+Add MapperBundle in your composer.json:
+
+```js
+{
+    "require": {
+        "tadcka/mapper-bundle": "dev-master"
+    }
+}
+```
+
+Now tell composer to download the bundle by running the command:
+
+``` bash
+$ php composer.phar update tadcka/mapper-bundle
+```
