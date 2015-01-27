@@ -48,8 +48,6 @@
         <!--Tadcka mapper twig extension-->
         <service class="%tadcka_mapper.twig.extension.class%">
             <tag name="twig.extension" />
-            <argument type="service" id="tadcka_mapper.helper" />
-            <argument type="service" id="tadcka_mapper.provider" />
         </service>
 
     </services>

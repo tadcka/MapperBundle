@@ -15,11 +15,14 @@
 
     <services>
 
-        <!--Tadcka mapper data cache-->
-        <service id="tadcka_mapper.cache.data" class="Tadcka\Bundle\MapperBundle\Cache\MapperDataCache">
-            <argument></argument>
-            <argument type="service" id="filesystem"/>
-            <argument type="service" id="serializer"/>
+        <!--Tadcka mapper tree source type-->
+        <service id="tadcka_mapper.source_type.collection" class="Tadcka\Mapper\Extension\SourceType\Collection\MapperCollectionType" public="true">
+            <tag name="tadcka_mapper_source_type" alias="mapper_collection"/>
+        </service>
+
+        <!--Tadcka mapper tree source type-->
+        <service id="tadcka_mapper.source_type.tree" class="Tadcka\Mapper\Extension\SourceType\Tree\MapperTreeType" public="true">
+            <tag name="tadcka_mapper_source_type" alias="mapper_tree"/>
         </service>
 
     </services>

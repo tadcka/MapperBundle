@@ -11,10 +11,8 @@
 
 namespace Tadcka\Bundle\MapperBundle\Twig\Extension;
 
-use Tadcka\Component\Mapper\Helper\MapperHelper;
-use Tadcka\Component\Mapper\MapperItem;
-use Tadcka\Component\Mapper\MapperItemInterface;
-use Tadcka\Component\Mapper\Provider\MapperProviderInterface;
+use Tadcka\Mapper\MapperSource;
+use Twig_Environment as Twig;
 
 /**
  * @author Tadas Gliaubicas <tadcka89@gmail.com>
@@ -24,35 +22,54 @@ use Tadcka\Component\Mapper\Provider\MapperProviderInterface;
 class MapperExtension extends \Twig_Extension
 {
     /**
-     * @var MapperHelper
+     * @var Twig
      */
-    private $mapperHelper;
-
-    /**
-     * @var MapperProviderInterface
-     */
-    private $mapperProvider;
+    private $twig;
 
     /**
      * Constructor.
      *
-     * @param MapperHelper $mapperHelper
-     * @param MapperProviderInterface $mapperProvider
+     * @param Twig $twig
      */
-    public function __construct(MapperHelper $mapperHelper, MapperProviderInterface $mapperProvider)
+    public function __construct(Twig $twig)
     {
-        $this->mapperHelper = $mapperHelper;
-        $this->mapperProvider = $mapperProvider;
+        $this->twig = $twig;
+    }
+
+    public function getFunctions()
+    {
+        return [
+            new \Twig_SimpleFunction('mapper_render', [$this, 'renderMapper'], ['is_safe' => ['html']]),
+        ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getFilters()
+//    public function getFilters()
+//    {
+////        return array(
+////            new \Twig_SimpleFilter('mapper_item_full_path', array($this, 'getMapperItemFullPath')),
+////        );
+//    }
+
+    public function renderMapper(MapperSource $mapperSource, $flag)
     {
-        return array(
-            new \Twig_SimpleFilter('mapper_item_full_path', array($this, 'getMapperItemFullPath')),
-        );
+        $html = '';
+        switch ($mapperSource->getTypeName()) {
+            case 'mapper_tree':
+                $html = $this->twig->render(
+                    'TadckaMapperBundle:Type:tree.html.twig',
+                    [
+                        'flag' => $flag,
+                        'mapper_source' => $mapperSource
+                    ]
+                );
+
+                break;
+        }
+
+        return $html;
     }
 
     /**
@@ -64,16 +81,16 @@ class MapperExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function getMapperItemFullPath(MapperItemInterface $item, $sourceSlug, $locale)
-    {
-        $mapperTree = $this->mapperProvider->getMapper($this->mapperProvider->getSource($sourceSlug), $locale);
-        $result = '';
-        foreach ($this->mapperHelper->getMapperItemFullPath($item->getSlug(), $mapperTree) as $value) {
-            $result .= $value . ' / ';
-        }
-
-        return rtrim($result, ' / ');
-    }
+//    public function getMapperItemFullPath(MapperItemInterface $item, $sourceSlug, $locale)
+//    {
+//        $mapperTree = $this->mapperProvider->getMapper($this->mapperProvider->getSource($sourceSlug), $locale);
+//        $result = '';
+//        foreach ($this->mapperHelper->getMapperItemFullPath($item->getSlug(), $mapperTree) as $value) {
+//            $result .= $value . ' / ';
+//        }
+//
+//        return rtrim($result, ' / ');
+//    }
 
     /**
      * {@inheritdoc}

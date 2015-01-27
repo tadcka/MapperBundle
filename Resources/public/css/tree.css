@@ -1,7 +1,0 @@
-.mapper-tree-wrapper, .mapper-content {
-    border: 1px solid #DDDDDD;
-    min-height: 300px;
-    max-height: 600px;
-    padding: 10px;
-    overflow: auto;
-}

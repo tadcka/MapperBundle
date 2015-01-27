@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+
+<!--
+ This file is part of the Tadcka package.
+
+ (c) Tadcka <tadcka89@gmail.com>
+
+ For the full copyright and license information, please view the LICENSE
+ file that was distributed with this source code.
+-->
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <!--Tadcka mapper twig extension-->
+        <service id="tadcka_mapper.templating.twig_extension" class="Tadcka\Bundle\MapperBundle\Twig\Extension\MapperExtension">
+            <tag name="twig.extension" />
+            <argument type="service" id="twig" />
+        </service>
+
+        <!--Tadcka mapper tree twig extension-->
+        <service id="tadcka_mapper.templating.twig_extension.tree" class="Tadcka\Bundle\MapperBundle\Twig\Extension\MapperTreeExtension">
+            <tag name="twig.extension" />
+            <argument type="service" id="serializer" />
+        </service>
+
+    </services>
+
+</container>

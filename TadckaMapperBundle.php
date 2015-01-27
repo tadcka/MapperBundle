@@ -14,7 +14,8 @@ namespace Tadcka\Bundle\MapperBundle;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Tadcka\Bundle\MapperBundle\DependencyInjection\Compiler\MapperRegistryPass;
+use Tadcka\Bundle\MapperBundle\DependencyInjection\Compiler\MapperDataCachePass;
+use Tadcka\Bundle\MapperBundle\DependencyInjection\Compiler\MapperSourceTypeRegistryPass;
 
 /**
  * @author Tadas Gliaubicas <tadcka89@gmail.com>
@@ -30,14 +31,15 @@ class TadckaMapperBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new MapperRegistryPass());
+        $container->addCompilerPass(new MapperDataCachePass());
+        $container->addCompilerPass(new MapperSourceTypeRegistryPass());
 
         if (false === $container->hasExtension('jms_serializer')) {
             throw new \RuntimeException('JMSSerializerBundle must be registered in kernel.');
         }
 
         $this->addSerializerMapping($container);
-        $this->addRegisterMappingsPass($container);
+//        $this->addRegisterMappingsPass($container);
     }
 
     /**
@@ -49,8 +51,8 @@ class TadckaMapperBundle extends Bundle
     {
         $directories = array(
             'tadcka-mapper' => array(
-                'namespace_prefix' => 'Tadcka\\Component\\Mapper',
-                'path' => '@TadckaMapperBundle/Resources/config/serializer/component'
+                'namespace_prefix' => 'Tadcka\\Mapper',
+                'path' => '@TadckaMapperBundle/Resources/config/serializer/lib'
             ),
         );
 

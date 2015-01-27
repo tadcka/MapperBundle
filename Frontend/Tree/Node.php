@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Tadcka\Bundle\MapperBundle\Frontend\Tree\Model;
+namespace Tadcka\Bundle\MapperBundle\Frontend\Tree;
 
 /**
  * @author Tadas Gliaubicas <tadcka89@gmail.com>

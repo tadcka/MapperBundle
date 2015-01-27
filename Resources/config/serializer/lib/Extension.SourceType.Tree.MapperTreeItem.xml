@@ -11,17 +11,19 @@
 
 <serializer>
 
-    <class name="Tadcka\Bundle\MapperBundle\Frontend\Tree\Model\Node">
+    <class name="Tadcka\Mapper\Extension\SourceType\Tree\MapperTreeItem">
 
         <property name="id" type="string" serialized-name="id" expose="true" />
 
-        <property name="text" type="string" serialized-name="text" expose="true" />
+        <property name="title" type="string" serialized-name="title" expose="true" />
+
+        <property name="active" type="boolean" serialized-name="active" expose="true" />
+
+        <property name="priority" type="integer" serialized-name="priority" expose="true" />
 
         <property name="children" serialized-name="children" expose="true">
-            <type><![CDATA[array<Tadcka\Bundle\MapperBundle\Frontend\Tree\Model\Node>]]></type>
+            <type><![CDATA[array<Tadcka\Mapper\Extension\SourceType\Tree\MapperTreeItem>]]></type>
         </property>
-
-        <property name="icon" type="string" serialized-name="icon" expose="true" />
 
     </class>
 

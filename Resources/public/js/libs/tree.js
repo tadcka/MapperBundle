@@ -15,6 +15,8 @@ $.fn.mapperTree = function () {
     var $rightTree = $('div#mapper-tree-right');
     var $content = new MapperContent();
 
+    console.log($leftTree.data('tree'));
+
     $leftTree
         .jstree({
             'core': {
