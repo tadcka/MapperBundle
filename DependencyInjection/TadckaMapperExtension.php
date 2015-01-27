@@ -38,23 +38,21 @@ class TadckaMapperExtension extends Extension
         $loader->load('templating.xml');
 //        $loader->load('services.xml');
 //        $loader->load('cache.xml');
-//        $loader->load('frontend/tree.xml');
 //        $loader->load('helpers.xml');
 
-//        if (!in_array(strtolower($config['db_driver']), array('mongodb', 'orm'))) {
-//            throw new \InvalidArgumentException(sprintf('Invalid db driver "%s".', $config['db_driver']));
-//        }
-//        $loader->load('driver/' . sprintf('%s.xml', $config['db_driver']));
+        if (!in_array(strtolower($config['db_driver']), array('mongodb', 'orm'))) {
+            throw new \InvalidArgumentException(sprintf('Invalid db driver "%s".', $config['db_driver']));
+        }
+        $loader->load('driver/' . sprintf('%s.xml', $config['db_driver']));
 
-//        $container->setParameter('tadcka_mapper.model.category.class', $config['class']['model']['category']);
-//        $container->setParameter('tadcka_mapper.model.mapping.class', $config['class']['model']['mapping']);
-//        $container->setParameter('tadcka_mapper.model.source.class', $config['class']['model']['source']);
-//
-//        $container->setAlias('tadcka_mapper.manager.category', $config['category_manager']);
-//        $container->setAlias('tadcka_mapper.manager.mapping', $config['mapping_manager']);
-//        $container->setAlias('tadcka_mapper.manager.source', $config['source_manager']);
+        $container->setParameter('tadcka_mapper.model.mapping.class', $config['class']['model']['mapping']);
+        $container->setParameter('tadcka_mapper.model.mapping_item.class', $config['class']['model']['mapping_item']);
+        $container->setParameter('tadcka_mapper.model.mapping_source.class', $config['class']['model']['mapping_source']);
+
+        $container->setAlias('tadcka_mapper.manager.mapping', $config['mapping_manager']);
+        $container->setAlias('tadcka_mapper.manager.mapping_item', $config['mapping_item_manager']);
+        $container->setAlias('tadcka_mapper.manager.mapping_source', $config['mapping_source_manager']);
 //
 //        $container->setAlias('tadcka_mapper.provider', $config['mapper_provider']);
-//        $container->setAlias('tadcka_mapper.frontend.manager.tree', $config['frontend']['tree_manager']);
     }
 }

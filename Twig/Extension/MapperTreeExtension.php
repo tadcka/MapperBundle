@@ -13,9 +13,9 @@ namespace Tadcka\Bundle\MapperBundle\Twig\Extension;
 
 use JMS\Serializer\SerializerInterface;
 use Tadcka\Bundle\MapperBundle\Frontend\Icons;
-use Tadcka\Bundle\MapperBundle\Frontend\Tree\Node;
-use Tadcka\Mapper\Extension\SourceType\Tree\MapperTree;
-use Tadcka\Mapper\Extension\SourceType\Tree\MapperTreeItemInterface;
+use Tadcka\JsTreeBundle\Model\Node;
+use Tadcka\Mapper\Extension\Source\Tree\MapperTree;
+use Tadcka\Mapper\Extension\Source\Tree\MapperTreeItemInterface;
 
 /**
  * @author Tadas Gliaubicas <tadcka89@gmail.com>

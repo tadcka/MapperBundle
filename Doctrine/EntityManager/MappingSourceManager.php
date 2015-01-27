@@ -13,16 +13,15 @@ namespace Tadcka\Bundle\MapperBundle\Doctrine\EntityManager;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Tadcka\Bundle\MapperBundle\ModelManager\CategoryManager as BaseCategoryManager;
-use Tadcka\Component\Mapper\Model\CategoryInterface;
-use Tadcka\Component\Mapper\Model\SourceInterface;
+use Tadcka\Mapper\Model\Manager\MappingSourceManager as BaseMappingSourceManager;
+use Tadcka\Mapper\Model\MappingSourceInterface;
 
 /**
  * @author Tadas Gliaubicas <tadcka89@gmail.com>
  *
- * @since 7/12/14 6:49 PM
+ * @since 7/12/14 6:57 PM
  */
-class CategoryManager extends BaseCategoryManager
+class MappingSourceManager extends BaseMappingSourceManager
 {
     /**
      * @var EntityManager
@@ -55,33 +54,25 @@ class CategoryManager extends BaseCategoryManager
     /**
      * {@inheritdoc}
      */
-    public function findBySlugAndSource($slug, SourceInterface $source)
+    public function findBySlug($slug)
     {
-        return $this->repository->findOneBy(array('slug' => $slug, 'source' => $source));
+        return $this->repository->findOneBy(array('slug' => $slug));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findManyBySlugsAndSource(array $slugs, SourceInterface $source)
+    public function findBySlugs(array $slugs)
     {
-        return $this->repository->findBy(array('slug' => $slugs, 'source' => $source));
+        return $this->repository->findBy(array('slug' => $slugs));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findManyBySource(SourceInterface $source)
+    public function add(MappingSourceInterface $source, $save = false)
     {
-        return $this->repository->findBy(array('source' => $source));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function add(CategoryInterface $category, $save = false)
-    {
-        $this->em->persist($category);
+        $this->em->persist($source);
         if (true === $save) {
             $this->save();
         }
@@ -90,9 +81,9 @@ class CategoryManager extends BaseCategoryManager
     /**
      * {@inheritdoc}
      */
-    public function remove(CategoryInterface $category, $save = false)
+    public function remove(MappingSourceInterface $source, $save = false)
     {
-        $this->em->remove($category);
+        $this->em->remove($source);
         if (true === $save) {
             $this->save();
         }

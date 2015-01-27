@@ -39,7 +39,7 @@ class TadckaMapperBundle extends Bundle
         }
 
         $this->addSerializerMapping($container);
-//        $this->addRegisterMappingsPass($container);
+        $this->addRegisterMappingsPass($container);
     }
 
     /**
@@ -74,7 +74,7 @@ class TadckaMapperBundle extends Bundle
     private function addRegisterMappingsPass(ContainerBuilder $container)
     {
         $mappings = array(
-            realpath(__DIR__ . '/Resources/config/doctrine/model') => 'Tadcka\Component\Mapper\Model',
+            realpath(__DIR__ . '/Resources/config/doctrine/model') => 'Tadcka\Mapper\Model',
         );
 
         $ormCompilerClass = 'Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass';

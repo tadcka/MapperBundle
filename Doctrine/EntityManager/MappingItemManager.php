@@ -13,15 +13,16 @@ namespace Tadcka\Bundle\MapperBundle\Doctrine\EntityManager;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Tadcka\Bundle\MapperBundle\ModelManager\SourceManager as BaseSourceManager;
-use Tadcka\Component\Mapper\Model\SourceInterface;
+use Tadcka\Mapper\Model\Manager\MappingItemManager as BaseMappingItemManager;
+use Tadcka\Mapper\Model\MappingItemInterface;
+use Tadcka\Mapper\Model\MappingSourceInterface;
 
 /**
  * @author Tadas Gliaubicas <tadcka89@gmail.com>
  *
- * @since 7/12/14 6:57 PM
+ * @since 7/12/14 6:49 PM
  */
-class SourceManager extends BaseSourceManager
+class MappingItemManager extends BaseMappingItemManager
 {
     /**
      * @var EntityManager
@@ -54,25 +55,33 @@ class SourceManager extends BaseSourceManager
     /**
      * {@inheritdoc}
      */
-    public function findBySlug($slug)
+    public function findBySlugAndSource($slug, MappingSourceInterface $source)
     {
-        return $this->repository->findOneBy(array('slug' => $slug));
+        return $this->repository->findOneBy(array('slug' => $slug, 'source' => $source));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findManyBySlugs(array $slugs)
+    public function findBySlugsAndSource(array $slugs, MappingSourceInterface $source)
     {
-        return $this->repository->findBy(array('slug' => $slugs));
+        return $this->repository->findBy(array('slug' => $slugs, 'source' => $source));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function add(SourceInterface $source, $save = false)
+    public function findBySource(MappingSourceInterface $source)
     {
-        $this->em->persist($source);
+        return $this->repository->findBy(array('source' => $source));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function add(MappingItemInterface $item, $save = false)
+    {
+        $this->em->persist($item);
         if (true === $save) {
             $this->save();
         }
@@ -81,9 +90,9 @@ class SourceManager extends BaseSourceManager
     /**
      * {@inheritdoc}
      */
-    public function remove(SourceInterface $source, $save = false)
+    public function remove(MappingItemInterface $item, $save = false)
     {
-        $this->em->remove($source);
+        $this->em->remove($item);
         if (true === $save) {
             $this->save();
         }

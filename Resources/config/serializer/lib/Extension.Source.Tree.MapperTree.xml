@@ -11,10 +11,10 @@
 
 <serializer>
 
-    <class name="Tadcka\Mapper\Extension\SourceType\Tree\MapperTree">
+    <class name="Tadcka\Mapper\Extension\Source\Tree\MapperTree">
 
         <property name="tree" serialized-name="tree" expose="true">
-            <type><![CDATA[Tadcka\Mapper\Extension\SourceType\Tree\MapperTreeItem]]></type>
+            <type><![CDATA[Tadcka\Mapper\Extension\Source\Tree\MapperTreeItem]]></type>
         </property>
 
     </class>

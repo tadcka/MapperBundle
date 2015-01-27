@@ -32,27 +32,26 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('db_driver')->cannotBeOverwritten()->isRequired()->end()
-                ->scalarNode('category_manager')->defaultValue('tadcka_mapper.manager.category.default')
-                    ->cannotBeEmpty()->end()
+
                 ->scalarNode('mapping_manager')->defaultValue('tadcka_mapper.manager.mapping.default')
                     ->cannotBeEmpty()->end()
-                ->scalarNode('source_manager')->defaultValue('tadcka_mapper.manager.source.default')
+
+                ->scalarNode('mapping_item_manager')->defaultValue('tadcka_mapper.manager.mapping_item.default')
                     ->cannotBeEmpty()->end()
+
+                ->scalarNode('mapping_source_manager')->defaultValue('tadcka_mapper.manager.mapping_source.default')
+                    ->cannotBeEmpty()->end()
+
                 ->scalarNode('mapper_provider')->defaultValue('tadcka_mapper.provider.default')
                     ->cannotBeEmpty()->end()
-                ->arrayNode('frontend')->isRequired()
-                    ->children()
-                        ->scalarNode('tree_manager')->defaultValue('tadcka_mapper.frontend.manager.tree.default')
-                            ->cannotBeEmpty()->end()
-                    ->end()
-                ->end()
+
                 ->arrayNode('class')->isRequired()
                     ->children()
                         ->arrayNode('model')->isRequired()
                             ->children()
-                                ->scalarNode('category')->isRequired()->end()
                                 ->scalarNode('mapping')->isRequired()->end()
-                                ->scalarNode('source')->isRequired()->end()
+                                ->scalarNode('mapping_item')->isRequired()->end()
+                                ->scalarNode('mapping_source')->isRequired()->end()
                             ->end()
                         ->end()
                     ->end()

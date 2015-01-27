@@ -14,7 +14,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <mapped-superclass name="Tadcka\Component\Mapper\Model\Mapping">
+    <mapped-superclass name="Tadcka\Mapper\Model\Mapping">
 
         <field name="main" column="main" type="boolean" nullable="false" />
 

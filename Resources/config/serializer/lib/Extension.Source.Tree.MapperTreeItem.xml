@@ -11,7 +11,7 @@
 
 <serializer>
 
-    <class name="Tadcka\Mapper\Extension\SourceType\Tree\MapperTreeItem">
+    <class name="Tadcka\Mapper\Extension\Source\Tree\MapperTreeItem">
 
         <property name="id" type="string" serialized-name="id" expose="true" />
 
@@ -22,7 +22,7 @@
         <property name="priority" type="integer" serialized-name="priority" expose="true" />
 
         <property name="children" serialized-name="children" expose="true">
-            <type><![CDATA[array<Tadcka\Mapper\Extension\SourceType\Tree\MapperTreeItem>]]></type>
+            <type><![CDATA[array<Tadcka\Mapper\Extension\Source\Tree\MapperTreeItem>]]></type>
         </property>
 
     </class>
