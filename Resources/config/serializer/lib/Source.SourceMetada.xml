@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+ This file is part of the Tadcka package.
+
+ (c) Tadcka <tadcka89@gmail.com>
+
+ For the full copyright and license information, please view the LICENSE
+ file that was distributed with this source code.
+-->
+
+<serializer>
+
+    <class name="Tadcka\Mapper\Source\SourceMetadata">
+
+        <property name="name" type="string" serialized-name="name" expose="true" />
+
+        <property name="options" type="array" serialized-name="options" expose="true" />
+
+    </class>
+
+</serializer>

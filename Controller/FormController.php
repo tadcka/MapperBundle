@@ -38,12 +38,12 @@ class FormController
     }
 
 
-    public function getAction(Request $request, $item, $source, $otherSource)
+    public function getAction(Request $request, $itemId, $sourceMetadata, $otherSourceMetadata)
     {
         return $this->renderResponse('TadckaMapperBundle:Form:form.html.twig');
     }
 
-    public function postAction(Request $request, $item, $source, $otherSource)
+    public function postAction(Request $request, $itemId, $sourceMetadata, $otherSourceMetadata)
     {
         return new Response();
     }

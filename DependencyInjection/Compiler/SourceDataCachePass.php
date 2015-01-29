@@ -13,7 +13,7 @@ namespace Tadcka\Bundle\MapperBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Tadcka\Mapper\Cache\MapperDataCacheInterface;
+use Tadcka\Mapper\Cache\SourceDataCacheInterface;
 use Tadcka\Mapper\Mapper;
 
 /**
@@ -21,18 +21,18 @@ use Tadcka\Mapper\Mapper;
  *
  * @since 1/27/15 10:22 PM
  */
-class MapperDataCachePass implements CompilerPassInterface
+class SourceDataCachePass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        if (false === $container->hasDefinition('tadcka_mapper.cache.data')) {
+        if (false === $container->hasDefinition('tadcka_mapper.source.cache.data')) {
             return null;
         }
 
-        $definition = $container->getDefinition('tadcka_mapper.cache.data');
+        $definition = $container->getDefinition('tadcka_mapper.source.cache.data');
 
         $definition->replaceArgument(0, $this->getCacheDir($container));
     }
@@ -44,7 +44,7 @@ class MapperDataCachePass implements CompilerPassInterface
             [
                 $container->getParameter('kernel.cache_dir'),
                 Mapper::NAME,
-                MapperDataCacheInterface::SUB_DIR
+                SourceDataCacheInterface::SUB_DIR
             ]
         );
     }

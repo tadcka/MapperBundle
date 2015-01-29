@@ -13,12 +13,12 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="tadcka_mapper_form_get" path="/mapper/get-form/{item}/{source}/{otherSource}" methods="GET">
+    <route id="tadcka_mapper_form_get" path="/mapper/get-form/{itemId}/{sourceMetadata}/{otherSourceMetadata}" methods="GET">
         <default key="_controller">tadcka_mapper.controller.form:getAction</default>
         <option key="expose">true</option>
     </route>
 
-    <route id="tadcka_mapper_form_post" path="/mapper/post-form/{item}/{source}/{otherSource}" methods="POST">
+    <route id="tadcka_mapper_form_post" path="/mapper/post-form/{itemId}/{sourceMetadata}/{otherSourceMetadata}" methods="POST">
         <default key="_controller">tadcka_mapper.controller.form:postAction</default>
         <option key="expose">true</option>
     </route>

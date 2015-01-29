@@ -104,15 +104,15 @@ function MapperForm() {
     /**
      * Load items.
      *
-     * @param {String} $item
-     * @param {String} $source
-     * @param {String} $otherSource
+     * @param {String} $itemId
+     * @param {String} $sourceMetadata
+     * @param {String} $otherSourceMetadata
      */
-    this.get = function ($item, $source, $otherSource) {
+    this.get = function ($itemId, $sourceMetadata, $otherSourceMetadata) {
         fadeOn();
 
         $.ajax({
-            url: Routing.generate('tadcka_mapper_form_get', {item: $item, source: $source, otherSource: $otherSource}),
+            url: Routing.generate('tadcka_mapper_form_get', {itemId: $itemId, sourceMetadata: $sourceMetadata, otherSourceMetadata: $otherSourceMetadata}),
             type: 'GET',
             success: function ($response) {
                 $form.html($response);

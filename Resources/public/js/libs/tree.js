@@ -11,20 +11,22 @@
  * Mapper tree prototype.
  */
 $.fn.mapperTree = function () {
-    var $leftTree = $('div#mapper-tree-left');
-    var $rightTree = $('div#mapper-tree-right');
+    var $leftSource = $('div#mapper-source-left');
+    var $rightSource = $('div#mapper-source-right');
+    var $leftTree = $leftSource.find('.mapper-tree:first');
+    var $rightTree = $rightSource.find('.mapper-tree:first');
     var $form = new MapperForm();
 
     $leftTree
         .jstree({
             core: {
-                'data': $leftTree.data('tree')
+                data: $leftTree.data('tree')
             },
             plugins: ['dnd']
         })
         .on('dblclick.jstree', function (e) {
             var $node = $(e.target).closest('li');
-            $form.get($node[0].id, $leftTree.data('source'), $rightTree.data('source'));
+            $form.get($node[0].id, $leftSource.data('metadata'), $rightSource.data('metadata'));
         });
 
     $rightTree
@@ -37,7 +39,7 @@ $.fn.mapperTree = function () {
         .on('dblclick.jstree', function (e) {
             console.log('esu');
             var $node = $(e.target).closest('li');
-            $form.get($node[0].id, $rightTree.data('source'), $leftTree.data('source'));
+            $form.get($node[0].id, $rightSource.data('metadata'), $leftSource.data('metadata'));
         });
 
     // Example: https://groups.google.com/forum/#!topic/jstree/BYppISuCFRE

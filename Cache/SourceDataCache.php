@@ -13,15 +13,15 @@ namespace Tadcka\Bundle\MapperBundle\Cache;
 
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Tadcka\Mapper\Cache\MapperDataCacheInterface;
-use Tadcka\Mapper\MapperDataInterface;
+use Tadcka\Mapper\Cache\SourceDataCacheInterface;
+use Tadcka\Mapper\Source\Data\SourceDataInterface;
 
 /**
  * @author Tadas Gliaubicas <tadcka89@gmail.com>
  *
  * @since 1/27/15 10:02 PM
  */
-class MapperDataCache implements MapperDataCacheInterface
+class SourceDataCache implements SourceDataCacheInterface
 {
     /**
      * @var string
@@ -72,13 +72,13 @@ class MapperDataCache implements MapperDataCacheInterface
     /**
      * {@inheritdoc}
      */
-    public function save($key, MapperDataInterface $mapperData, \DateTime $ttl)
+    public function save($key, SourceDataInterface $data, \DateTime $ttl)
     {
         $filename = $this->getFilename($key);
         $metadataFilename = $filename . '.meta';
 
-        $this->filesystem->dumpFile($metadataFilename, json_encode(['data_class' => get_class($mapperData), 'ttl' => $ttl]));
-        $this->filesystem->dumpFile($filename, $this->serializer->serialize($mapperData, 'json'));
+        $this->filesystem->dumpFile($metadataFilename, json_encode(['data_class' => get_class($data), 'ttl' => $ttl]));
+        $this->filesystem->dumpFile($filename, $this->serializer->serialize($data, 'json'));
     }
 
     private function getFilename($key)

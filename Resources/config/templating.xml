@@ -18,6 +18,7 @@
         <!--Tadcka mapper twig extension-->
         <service id="tadcka_mapper.templating.twig_extension" class="Tadcka\Bundle\MapperBundle\Twig\Extension\MapperExtension">
             <tag name="twig.extension" />
+            <argument type="service" id="serializer" />
             <argument type="service" id="twig" />
         </service>
 

@@ -11,7 +11,9 @@
 
 namespace Tadcka\Bundle\MapperBundle\Twig\Extension;
 
-use Tadcka\Mapper\MapperSource;
+use JMS\Serializer\SerializerInterface;
+use Tadcka\Mapper\Source\Source;
+use Tadcka\Mapper\Source\SourceMetadataFactory;
 use Twig_Environment as Twig;
 
 /**
@@ -22,6 +24,11 @@ use Twig_Environment as Twig;
 class MapperExtension extends \Twig_Extension
 {
     /**
+     * @var SerializerInterface
+     */
+    private $serializer;
+
+    /**
      * @var Twig
      */
     private $twig;
@@ -29,17 +36,20 @@ class MapperExtension extends \Twig_Extension
     /**
      * Constructor.
      *
+     * @param SerializerInterface $serializer
      * @param Twig $twig
      */
-    public function __construct(Twig $twig)
+    public function __construct(SerializerInterface $serializer, Twig $twig)
     {
+        $this->serializer = $serializer;
         $this->twig = $twig;
     }
 
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('mapper_render', [$this, 'renderMapper'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('mapper_render_source', [$this, 'renderSource'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('mapper_source_metadata', [$this, 'getSourceMetadata']),
         ];
     }
 
@@ -53,16 +63,28 @@ class MapperExtension extends \Twig_Extension
 ////        );
 //    }
 
-    public function renderMapper(MapperSource $mapperSource, $flag)
+    /**
+     * Get mapper source metadata.
+     *
+     * @param Source $source
+     *
+     * @return string
+     */
+    public function getSourceMetadata(Source $source)
+    {
+        return $this->serializer->serialize(SourceMetadataFactory::create($source), 'json');
+    }
+
+    public function renderSource(Source $source, $flag)
     {
         $html = '';
-        switch ($mapperSource->getTypeName()) {
+        switch ($source->getTypeName()) {
             case 'mapper_tree':
                 $html = $this->twig->render(
                     'TadckaMapperBundle:Type:tree.html.twig',
                     [
                         'flag' => $flag,
-                        'mapper_source' => $mapperSource
+                        'source' => $source
                     ]
                 );
 

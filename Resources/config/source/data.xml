@@ -15,8 +15,8 @@
 
     <services>
 
-        <!--Tadcka mapper type registry-->
-        <service id="tadcka_mapper.registry.data_factory" class="Tadcka\Mapper\Registry\Data\MapperDataFactoryRegistry"  public="false" />
+        <!--Tadcka mapper source type registry-->
+        <service id="tadcka_mapper.source.registry.data_factory" class="Tadcka\Mapper\Source\Data\SourceDataFactoryRegistry"  public="false" />
 
     </services>
 
