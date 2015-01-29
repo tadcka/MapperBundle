@@ -13,32 +13,31 @@
 $.fn.mapperTree = function () {
     var $leftTree = $('div#mapper-tree-left');
     var $rightTree = $('div#mapper-tree-right');
-    var $content = new MapperContent();
-
-    console.log($leftTree.data('tree'));
+    var $form = new MapperForm();
 
     $leftTree
         .jstree({
-            'core': {
+            core: {
                 'data': $leftTree.data('tree')
             },
-            'plugins': ['dnd']
+            plugins: ['dnd']
         })
         .on('dblclick.jstree', function (e) {
-            var node = $(e.target).closest('li');
-            $content.loadItems($leftTree.data('source'), $rightTree.data('source'), node[0].id)
+            var $node = $(e.target).closest('li');
+            $form.get($node[0].id, $leftTree.data('source'), $rightTree.data('source'));
         });
 
     $rightTree
         .jstree({
-            'core': {
-                'data': $rightTree.data('tree')
+            core: {
+                data: $rightTree.data('tree')
             },
-            'plugins': ['dnd']
+            plugins: ['dnd']
         })
         .on('dblclick.jstree', function (e) {
-            var node = $(e.target).closest('li');
-            $content.loadItems($rightTree.data('source'), $leftTree.data('source'), node[0].id)
+            console.log('esu');
+            var $node = $(e.target).closest('li');
+            $form.get($node[0].id, $rightTree.data('source'), $leftTree.data('source'));
         });
 
     // Example: https://groups.google.com/forum/#!topic/jstree/BYppISuCFRE
@@ -68,7 +67,7 @@ $.fn.mapperTree = function () {
                     var $currentTree = $($data.element).closest('div.mapper-tree-wrapper');
                     var $source = $currentTree.data('source');
 
-                    $content.addItem($source, $node.id);
+                    $form.addItem($source, $node.id);
                 }
             }
         });

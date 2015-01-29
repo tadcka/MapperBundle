@@ -32,13 +32,13 @@ class TadckaMapperExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('cache.xml');
-        $loader->load('extension/source-type.xml');
-        $loader->load('source.xml');
+        $loader->load('controllers.xml');
+        $loader->load('extension/mapper-type.xml');
+        $loader->load('mapper-cache.xml');
+        $loader->load('mapper-data.xml');
+        $loader->load('mapper-source.xml');
+        $loader->load('mapper-type.xml');
         $loader->load('templating.xml');
-//        $loader->load('services.xml');
-//        $loader->load('cache.xml');
-//        $loader->load('helpers.xml');
 
         if (!in_array(strtolower($config['db_driver']), array('mongodb', 'orm'))) {
             throw new \InvalidArgumentException(sprintf('Invalid db driver "%s".', $config['db_driver']));
@@ -52,7 +52,5 @@ class TadckaMapperExtension extends Extension
         $container->setAlias('tadcka_mapper.manager.mapping', $config['mapping_manager']);
         $container->setAlias('tadcka_mapper.manager.mapping_item', $config['mapping_item_manager']);
         $container->setAlias('tadcka_mapper.manager.mapping_source', $config['mapping_source_manager']);
-//
-//        $container->setAlias('tadcka_mapper.provider', $config['mapper_provider']);
     }
 }

@@ -10,20 +10,20 @@
 /**
  * Mapper content object.
  */
-function MapperContent() {
-    var $content = $('div.mapper-content');
+function MapperForm() {
+    var $form = $('div.mapper-form');
 
     /**
      * Remove mapper item.
      */
-    $content.on('click', 'a.mapper-remove', function ($event) {
+    $form.on('click', 'a.mapper-remove', function ($event) {
         $(this).closest('div.mapper-item').remove();
     });
 
     /**
      * Set main mapper item.
      */
-    $content.on('click', 'a.mapper-main', function ($event) {
+    $form.on('click', 'a.mapper-main', function ($event) {
         $('div.mapper-content .mapper-item').each(function () {
             $(this).find('input[type=radio]:first').removeAttr('checked');
             $(this).removeClass('is-main');
@@ -37,20 +37,20 @@ function MapperContent() {
     /**
      * Submit form.
      */
-    $content.on('click', 'button.form-submit', function ($event) {
+    $form.on('click', 'button.form-submit', function ($event) {
         $event.preventDefault();
-        var $form = $content.find('form:first');
+        var $form = $form.find('form:first');
 
         $.ajax({
             url: $form.attr('action'),
             type: 'POST',
             data: $form.serialize(),
             success: function ($response) {
-                $content.html($response);
+                $form.html($response);
                 fadeOff();
             },
             error: function ($request, $status, $error) {
-                $content.html($request.responseText);
+                $form.html($request.responseText);
                 fadeOff();
             }
         });
@@ -59,8 +59,8 @@ function MapperContent() {
     /**
      * Cancel form.
      */
-    $content.on('click', 'a.form-cancel', function ($event) {
-        $content.html('');
+    $form.on('click', 'a.form-cancel', function ($event) {
+        $form.html('');
     });
 
     /**
@@ -69,7 +69,7 @@ function MapperContent() {
      * @returns {*|jQuery|HTMLElement}
      */
     this.getContent = function () {
-        return $content;
+        return $form;
     };
 
     /**
@@ -88,13 +88,13 @@ function MapperContent() {
                 success: function ($response) {
                     clearItemErrors();
 
-                    var $form = $content.find('form:first');
+                    var $form = $form.find('form:first');
                     $form.prepend($response);
 
                     fadeOff();
                 },
                 error: function ($request, $status, $error) {
-                    $content.html($request.responseText);
+                    $form.html($request.responseText);
                     fadeOff();
                 }
             });
@@ -104,22 +104,22 @@ function MapperContent() {
     /**
      * Load items.
      *
-     * @param {String} $sourceSlug
-     * @param {String} $otherSourceSlug
-     * @param {String} $categorySlug
+     * @param {String} $item
+     * @param {String} $source
+     * @param {String} $otherSource
      */
-    this.loadItems = function ($sourceSlug, $otherSourceSlug, $categorySlug) {
+    this.get = function ($item, $source, $otherSource) {
         fadeOn();
 
         $.ajax({
-            url: Routing.generate('tadcka_mapper_get_mapping', {sourceSlug: $sourceSlug, otherSourceSlug: $otherSourceSlug, categorySlug: $categorySlug}),
+            url: Routing.generate('tadcka_mapper_form_get', {item: $item, source: $source, otherSource: $otherSource}),
             type: 'GET',
             success: function ($response) {
-                $content.html($response);
+                $form.html($response);
                 fadeOff();
             },
             error: function ($request, $status, $error) {
-                $content.html($request.responseText);
+                $form.html($request.responseText);
                 fadeOff();
             }
         });
@@ -157,13 +157,13 @@ function MapperContent() {
      * Fade on.
      */
     var fadeOn = function () {
-        $content.fadeTo(300, 0.4);
+        $form.fadeTo(300, 0.4);
     };
 
     /**
      * Fade off.
      */
     var fadeOff = function () {
-        $content.fadeTo(0, 1);
+        $form.fadeTo(0, 1);
     };
 }

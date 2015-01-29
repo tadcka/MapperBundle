@@ -18,23 +18,22 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * @author Tadas Gliaubicas <tadcka89@gmail.com>
  *
- * @since 1/26/15 11:18 PM
+ * @since 1/30/15 12:00 AM
  */
-class MapperSourceTypeRegistryPass implements CompilerPassInterface
+class MapperDataFactoryPass implements CompilerPassInterface
 {
-
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        if (false === $container->hasDefinition('tadcka_mapper.source_registry.type')) {
+        if (false === $container->hasDefinition('tadcka_mapper.registry.data_factory')) {
             return null;
         }
 
-        $definition = $container->getDefinition('tadcka_mapper.source_registry.type');
+        $definition = $container->getDefinition('tadcka_mapper.registry.data_factory');
 
-        foreach ($container->findTaggedServiceIds('tadcka_mapper_source_type') as $id => $tags) {
+        foreach ($container->findTaggedServiceIds('tadcka_mapper_data_factory') as $id => $tags) {
             foreach ($tags as $attributes) {
                 $definition->addMethodCall('add', [new Reference($id), $attributes["alias"]]);
             }
