@@ -81,7 +81,7 @@ class FormController
         $sourceMetadata = $this->sourceHelper->getMetadata($metadata);
         $sourceData = $this->sourceProvider->getData($sourceMetadata);
 
-        if (false === $sourceData->catMapping($itemId)) {
+        if (false === $sourceData->canMapping($itemId)) {
             return $this->renderResponse('TadckaMapperBundle:Mapper:mapping-error.html.twig', ['item_id' => $itemId]);
         }
 

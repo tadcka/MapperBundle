@@ -95,7 +95,12 @@ class MapperFormHandler
                         );
                     }
 
-                    $mappings[$postMapping['item']]->setMain($postMapping['main']);
+                    if (false === $hasMain) {
+                        $mappings[$postMapping['item']]->setMain($postMapping['main']);
+                    } else {
+                        $mappings[$postMapping['item']]->setMain(false);
+                    }
+
                     $hasMain = $hasMain || $postMapping['main'];
                 }
 
