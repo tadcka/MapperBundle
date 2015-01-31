@@ -14,6 +14,7 @@ namespace Tadcka\Bundle\MapperBundle;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Tadcka\Bundle\MapperBundle\DependencyInjection\Compiler\FormPass;
 use Tadcka\Bundle\MapperBundle\DependencyInjection\Compiler\SourceDataCachePass;
 use Tadcka\Bundle\MapperBundle\DependencyInjection\Compiler\SourceDataFactoryPass;
 use Tadcka\Bundle\MapperBundle\DependencyInjection\Compiler\SourceTypeRegistryPass;
@@ -32,6 +33,7 @@ class TadckaMapperBundle extends Bundle
     {
         parent::build($container);
 
+        $container->addCompilerPass(new FormPass());
         $container->addCompilerPass(new SourceDataCachePass());
         $container->addCompilerPass(new SourceDataFactoryPass());
         $container->addCompilerPass(new SourceTypeRegistryPass());

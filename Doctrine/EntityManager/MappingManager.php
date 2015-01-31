@@ -54,12 +54,12 @@ class MappingManager extends BaseMappingManager
     /**
      * {@inheritdoc}
      */
-    public function findMainMapping($itemSlug, $sourceSlug, $otherSourceSlug)
+    public function findBySourceItemId($itemId, $sourceSlug, $otherSourceSlug)
     {
         $qb = $this->repository->createQueryBuilder('m');
 
-        $qb->innerJoin('m.left', 'ml');
-        $qb->innerJoin('m.right', 'mr');
+        $qb->innerJoin('m.leftItem', 'ml');
+        $qb->innerJoin('m.rightItem', 'mr');
 
         $qb->innerJoin('ml.source', 'mls');
         $qb->innerJoin('mr.source', 'mrs');
@@ -67,19 +67,89 @@ class MappingManager extends BaseMappingManager
         $qb->where(
             $qb->expr()->orX(
                 $qb->expr()->andX(
-                    $qb->expr()->eq('ml.slug', ':item_slug'),
+                    $qb->expr()->eq('ml.slug', ':item_id'),
                     $qb->expr()->eq('mls.slug', ':source_slug'),
                     $qb->expr()->eq('mrs.slug', ':other_source_slug')
                 ),
                 $qb->expr()->andX(
-                    $qb->expr()->eq('mr.slug', ':item_slug'),
+                    $qb->expr()->eq('mr.slug', ':item_id'),
                     $qb->expr()->eq('mrs.slug', ':source_slug'),
                     $qb->expr()->eq('mls.slug', ':other_source_slug')
                 )
             )
         );
 
-        $qb->setParameter('item_slug', $itemSlug);
+        $qb->setParameter('item_id', $itemId);
+        $qb->setParameter('source_slug', $sourceSlug);
+        $qb->setParameter('other_source_slug', $otherSourceSlug);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findBySourceItemIds(array $itemIds, $sourceSlug, $otherSourceSlug)
+    {
+        $qb = $this->repository->createQueryBuilder('m');
+
+        $qb->innerJoin('m.leftItem', 'ml');
+        $qb->innerJoin('m.rightItem', 'mr');
+
+        $qb->innerJoin('ml.source', 'mls');
+        $qb->innerJoin('mr.source', 'mrs');
+
+        $qb->where(
+            $qb->expr()->orX(
+                $qb->expr()->andX(
+                    $qb->expr()->in('ml.slug', ':item_ids'),
+                    $qb->expr()->eq('mls.slug', ':source_slug'),
+                    $qb->expr()->eq('mrs.slug', ':other_source_slug')
+                ),
+                $qb->expr()->andX(
+                    $qb->expr()->in('mr.slug', ':item_ids'),
+                    $qb->expr()->eq('mrs.slug', ':source_slug'),
+                    $qb->expr()->eq('mls.slug', ':other_source_slug')
+                )
+            )
+        );
+
+        $qb->setParameter('item_slugs', $itemIds);
+        $qb->setParameter('source_slug', $sourceSlug);
+        $qb->setParameter('other_source_slug', $otherSourceSlug);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findMainBySourceItemId($itemId, $sourceSlug, $otherSourceSlug)
+    {
+        $qb = $this->repository->createQueryBuilder('m');
+
+        $qb->innerJoin('m.leftItem', 'ml');
+        $qb->innerJoin('m.rightItem', 'mr');
+
+        $qb->innerJoin('ml.source', 'mls');
+        $qb->innerJoin('mr.source', 'mrs');
+
+        $qb->where(
+            $qb->expr()->orX(
+                $qb->expr()->andX(
+                    $qb->expr()->eq('ml.slug', ':item_id'),
+                    $qb->expr()->eq('mls.slug', ':source_slug'),
+                    $qb->expr()->eq('mrs.slug', ':other_source_slug')
+                ),
+                $qb->expr()->andX(
+                    $qb->expr()->eq('mr.slug', ':item_id'),
+                    $qb->expr()->eq('mrs.slug', ':source_slug'),
+                    $qb->expr()->eq('mls.slug', ':other_source_slug')
+                )
+            )
+        );
+
+        $qb->setParameter('item_id', $itemId);
         $qb->setParameter('source_slug', $sourceSlug);
         $qb->setParameter('other_source_slug', $otherSourceSlug);
 
@@ -89,76 +159,6 @@ class MappingManager extends BaseMappingManager
         $qb->setMaxResults(1);
 
         return $qb->getQuery()->getOneOrNullResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findByMapperItemSlug($itemSlug, $sourceSlug, $otherSourceSlug)
-    {
-        $qb = $this->repository->createQueryBuilder('m');
-
-        $qb->innerJoin('m.left', 'ml');
-        $qb->innerJoin('m.right', 'mr');
-
-        $qb->innerJoin('ml.source', 'mls');
-        $qb->innerJoin('mr.source', 'mrs');
-
-        $qb->where(
-            $qb->expr()->orX(
-                $qb->expr()->andX(
-                    $qb->expr()->eq('ml.slug', ':item_slug'),
-                    $qb->expr()->eq('mls.slug', ':source_slug'),
-                    $qb->expr()->eq('mrs.slug', ':other_source_slug')
-                ),
-                $qb->expr()->andX(
-                    $qb->expr()->eq('mr.slug', ':item_slug'),
-                    $qb->expr()->eq('mrs.slug', ':source_slug'),
-                    $qb->expr()->eq('mls.slug', ':other_source_slug')
-                )
-            )
-        );
-
-        $qb->setParameter('item_slug', $itemSlug);
-        $qb->setParameter('source_slug', $sourceSlug);
-        $qb->setParameter('other_source_slug', $otherSourceSlug);
-
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findByMapperItemSlugs(array $itemSlugs, $sourceSlug, $otherSourceSlug)
-    {
-        $qb = $this->repository->createQueryBuilder('m');
-
-        $qb->innerJoin('m.left', 'ml');
-        $qb->innerJoin('m.right', 'mr');
-
-        $qb->innerJoin('ml.source', 'mls');
-        $qb->innerJoin('mr.source', 'mrs');
-
-        $qb->where(
-            $qb->expr()->orX(
-                $qb->expr()->andX(
-                    $qb->expr()->in('ml.slug', ':item_slugs'),
-                    $qb->expr()->eq('mls.slug', ':source_slug'),
-                    $qb->expr()->eq('mrs.slug', ':other_source_slug')
-                ),
-                $qb->expr()->andX(
-                    $qb->expr()->in('mr.slug', ':item_slugs'),
-                    $qb->expr()->eq('mrs.slug', ':source_slug'),
-                    $qb->expr()->eq('mls.slug', ':other_source_slug')
-                )
-            )
-        );
-
-        $qb->setParameter('item_slugs', $itemSlugs);
-        $qb->setParameter('source_slug', $sourceSlug);
-        $qb->setParameter('other_source_slug', $otherSourceSlug);
-
-        return $qb->getQuery()->getResult();
     }
 
     /**

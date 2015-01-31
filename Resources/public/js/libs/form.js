@@ -10,20 +10,20 @@
 /**
  * Mapper content object.
  */
-function MapperForm() {
-    var $form = $('div.mapper-form');
+function MappingForm() {
+    var $formWrapper = $('div.mapping-form');
 
     /**
      * Remove mapper item.
      */
-    $form.on('click', 'a.mapper-remove', function ($event) {
-        $(this).closest('div.mapper-item').remove();
+    $formWrapper.on('click', '.mapping > a.remove', function ($event) {
+        $(this).closest('div.mapping').remove();
     });
 
     /**
      * Set main mapper item.
      */
-    $form.on('click', 'a.mapper-main', function ($event) {
+    $formWrapper.on('click', 'a.mapper-main', function ($event) {
         $('div.mapper-content .mapper-item').each(function () {
             $(this).find('input[type=radio]:first').removeAttr('checked');
             $(this).removeClass('is-main');
@@ -37,9 +37,9 @@ function MapperForm() {
     /**
      * Submit form.
      */
-    $form.on('click', 'button.form-submit', function ($event) {
+    $formWrapper.on('click', 'button.form-submit', function ($event) {
         $event.preventDefault();
-        var $form = $form.find('form:first');
+        var $form = $formWrapper.find('form:first');
 
         $.ajax({
             url: $form.attr('action'),
@@ -59,8 +59,8 @@ function MapperForm() {
     /**
      * Cancel form.
      */
-    $form.on('click', 'a.form-cancel', function ($event) {
-        $form.html('');
+    $formWrapper.on('click', 'a.form-cancel', function ($event) {
+        $formWrapper.html('');
     });
 
     /**
@@ -69,32 +69,75 @@ function MapperForm() {
      * @returns {*|jQuery|HTMLElement}
      */
     this.getContent = function () {
-        return $form;
+        return $formWrapper;
     };
 
     /**
      * Load items.
      *
-     * @param {String} $sourceSlug
-     * @param {String} $categorySlug
+     * @param {String} $itemId
+     * @param {Object} $sourceMetadata
+     * @param {Object} $otherSourceMetadata
      */
-    this.addItem = function ($sourceSlug, $categorySlug) {
-        if (false === this.hasItem($categorySlug)) {
+    this.get = function ($itemId, $sourceMetadata, $otherSourceMetadata) {
+        fadeOn();
+
+        $.ajax({
+            url: Routing.generate('tadcka_mapper_form_get', {
+                itemId: $itemId,
+                sourceMetadata: JSON.stringify($sourceMetadata),
+                otherSourceMetadata: JSON.stringify($otherSourceMetadata)
+            }),
+            type: 'GET',
+            success: function ($response) {
+                $formWrapper.html($response);
+                fadeOff();
+            },
+            error: function ($request, $status, $error) {
+                $formWrapper.html($request.responseText);
+                fadeOff();
+            }
+        });
+    };
+
+    /**
+     * Load items.
+     *
+     * @param {String} $itemId
+     * @param {Object} $sourceMetadata
+     */
+    this.validateItem = function ($itemId, $sourceMetadata) {
+        if (false === this.hasMapping($itemId)) {
             fadeOn();
 
             $.ajax({
-                url: Routing.generate('tadcka_mapper_add_mapping', {sourceSlug: $sourceSlug, categorySlug: $categorySlug}),
+                url: Routing.generate('tadcka_mapper_validate_item', {
+                    itemId: $itemId,
+                    sourceMetadata: JSON.stringify($sourceMetadata)
+                }),
                 type: 'GET',
                 success: function ($response) {
-                    clearItemErrors();
+                    var $collection = $formWrapper.find('.mapping-collection:first');
 
-                    var $form = $form.find('form:first');
-                    $form.prepend($response);
+                    clearErrors($collection);
+
+                    if ($response.error) {
+                        $collection.append(getCollectionRow($response.error));
+                    } else {
+                        var $index = $collection.data('index');
+                        var $prototype = $(getCollectionRow($collection.data('prototype').replace(/__name__/g, $index)));
+
+                        $prototype.find('input[type=hidden]').val($response.item_id);
+                        $prototype.find('strong:first').html($response.item_title);
+
+                        $collection.data('index', $index + 1);
+                        $collection.append($prototype);
+                    }
 
                     fadeOff();
                 },
                 error: function ($request, $status, $error) {
-                    $form.html($request.responseText);
+                    $formWrapper.html($request.responseText);
                     fadeOff();
                 }
             });
@@ -102,68 +145,54 @@ function MapperForm() {
     };
 
     /**
-     * Load items.
+     * Check or has mapping by item id in collection.
      *
-     * @param {String} $itemId
-     * @param {String} $sourceMetadata
-     * @param {String} $otherSourceMetadata
-     */
-    this.get = function ($itemId, $sourceMetadata, $otherSourceMetadata) {
-        fadeOn();
-
-        $.ajax({
-            url: Routing.generate('tadcka_mapper_form_get', {itemId: $itemId, sourceMetadata: $sourceMetadata, otherSourceMetadata: $otherSourceMetadata}),
-            type: 'GET',
-            success: function ($response) {
-                $form.html($response);
-                fadeOff();
-            },
-            error: function ($request, $status, $error) {
-                $form.html($request.responseText);
-                fadeOff();
-            }
-        });
-    };
-
-    /**
-     * Has item.
+     * @param $itemId
      *
-     * @param {String} $categorySlug
      * @returns {boolean}
      */
-    this.hasItem = function ($categorySlug) {
-        var has = false;
-        $('div.mapper-content .mapper-item').each(function () {
-            if ($categorySlug === $(this).data('slug')) {
-                has = true;
+    this.hasMapping = function ($itemId) {
+        var $has = false;
+        $formWrapper.find('.mapping-collection .mapping input[type=hidden]').each(function () {
+            if ($itemId === $(this).val()) {
+                $has = true;
 
                 return true;
             }
         });
 
-        return has;
+        return $has;
     };
 
     /**
      * Clear item errors.
      */
-    var clearItemErrors = function () {
-        $('div.mapper-content .mapper-item-error').each(function () {
+    var clearErrors = function ($wrapper) {
+        $wrapper.find('.mapping-error').each(function () {
             $(this).remove();
         });
+    };
+
+    /**
+     * @param $rowContent
+     *
+     * @returns {string}
+     */
+    var getCollectionRow = function ($rowContent) {
+        return '<div class="row">' + $rowContent + '</div>';
     };
 
     /**
      * Fade on.
      */
     var fadeOn = function () {
-        $form.fadeTo(300, 0.4);
+        $formWrapper.fadeTo(300, 0.4);
     };
 
     /**
      * Fade off.
      */
     var fadeOff = function () {
-        $form.fadeTo(0, 1);
+        $formWrapper.fadeTo(0, 1);
     };
 }

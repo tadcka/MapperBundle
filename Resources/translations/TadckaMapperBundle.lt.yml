@@ -1,5 +1,5 @@
-drag_category_here: Nuvilkite su pele kategoriją čia.
-category_can_not_used_mapping: Kategorija "%category%" negali būti naudojama sąryšiams.
+drag_item_here: Nuvilkite su pele sąryšį čia.
+item_can_not_use_for_mapping: Šis sąryšis "%item%" negali būt naudojamas sąryšiams.
 main_category: Pagrindinė kategorija
 remove_category: Pašalinti kategoriją
 save: Išsaugoti

@@ -35,6 +35,9 @@ class TadckaMapperExtension extends Extension
         $loader->load('cache.xml');
         $loader->load('controllers.xml');
         $loader->load('extension/source-type.xml');
+        $loader->load('form/mapper.xml');
+        $loader->load('form/mapping.xml');
+        $loader->load('mapping.xml');
         $loader->load('source.xml');
         $loader->load('source/data.xml');
         $loader->load('source/type.xml');

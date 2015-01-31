@@ -15,7 +15,7 @@ $.fn.mapperTree = function () {
     var $rightSource = $('div#mapper-source-right');
     var $leftTree = $leftSource.find('.mapper-tree:first');
     var $rightTree = $rightSource.find('.mapper-tree:first');
-    var $form = new MapperForm();
+    var $mappingForm = new MappingForm();
 
     $leftTree
         .jstree({
@@ -24,9 +24,8 @@ $.fn.mapperTree = function () {
             },
             plugins: ['dnd']
         })
-        .on('dblclick.jstree', function (e) {
-            var $node = $(e.target).closest('li');
-            $form.get($node[0].id, $leftSource.data('metadata'), $rightSource.data('metadata'));
+        .on('activate_node.jstree', function ($event, $data) {
+            $mappingForm.get($data.node.id, $leftSource.data('metadata'), $rightSource.data('metadata'));
         });
 
     $rightTree
@@ -36,21 +35,18 @@ $.fn.mapperTree = function () {
             },
             plugins: ['dnd']
         })
-        .on('dblclick.jstree', function (e) {
-            console.log('esu');
-            var $node = $(e.target).closest('li');
-            $form.get($node[0].id, $rightSource.data('metadata'), $leftSource.data('metadata'));
+        .on('activate_node.jstree', function ($event, $data) {
+            $mappingForm.get($data.node.id, $rightSource.data('metadata'), $leftSource.data('metadata'));
         });
 
     // Example: https://groups.google.com/forum/#!topic/jstree/BYppISuCFRE
     $(document)
         .on('dnd_move.vakata', function ($event, $data) {
             var $target = $($data.event.target);
-            var $dropPlace = $target.closest('.mapper-drop-place');
+            var $dropPlace = $target.closest('.mapping-drop-place');
 
             if ($dropPlace.length) {
-                var $currentTreeSource = $($data.element).closest('div.mapper-tree-wrapper').data('source');
-                if ($dropPlace.data('current_source') !== $currentTreeSource) {
+                if ($dropPlace.data('current_source') !== $($data.element).closest('div.mapper-block').data('metadata').name) {
                     $data.helper.find('.jstree-icon').removeClass('jstree-er').addClass('jstree-ok');
                 }
             }
@@ -60,16 +56,15 @@ $.fn.mapperTree = function () {
         })
         .on('dnd_stop.vakata', function ($event, $data) {
             var $target = $($data.event.target);
-            var $dropPlace = $target.closest('.mapper-drop-place');
+            var $dropPlace = $target.closest('.mapping-drop-place');
 
             if ($dropPlace) {
-                var $currentTreeSource = $($data.element).closest('div.mapper-tree-wrapper').data('source');
-                if (($dropPlace.data('current_source') !== $currentTreeSource) && $data.data.jstree && $data.data.origin) {
-                    var $node = $data.data.origin.get_node($data.element);
-                    var $currentTree = $($data.element).closest('div.mapper-tree-wrapper');
-                    var $source = $currentTree.data('source');
+                var $metadata = $($data.element).closest('div.mapper-block').data('metadata');
 
-                    $form.addItem($source, $node.id);
+                if (($dropPlace.data('current_source') !== $metadata.name) && $data.data.jstree && $data.data.origin) {
+                    var $node = $data.data.origin.get_node($data.element);
+
+                    $mappingForm.validateItem($node.id, $metadata);
                 }
             }
         });

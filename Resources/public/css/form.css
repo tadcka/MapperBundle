@@ -6,16 +6,58 @@
     overflow: auto;
 }
 
+.mapping-error {
+    border: 2px solid #b81900;
+    text-align: center;
+    margin-bottom: 10px;
+}
 
+.mapping-error p {
+    margin-top: 5px;
+    font-weight: bold;
+    font-size: 14px;
+}
 
+.mapping-drop-place {
+    background: #DDDDDD;
+    height: 60px;
+    margin-bottom: 5px;
+}
 
+.mapping-drop-place p {
+    text-align: center;
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 20px;
+}
 
-.mapper-content .mapper-item {
+.mapping-collection .mapping {
     border: 1px solid #DDDDDD;
     height: 50px;
     padding: 5px;
     margin-bottom: 5px;
 }
+
+.mapping-collection .mapping strong {
+    font-size: 14px;
+}
+
+.mapping-collection .mapping .item {
+    display: none;
+}
+
+
+
+.mapping-collection .mapping .remove {
+    color: #000000;
+    float: right;
+}
+
+
+
+
+
+
 
 .mapper-content .mapper-item strong {
     font-size: 14px;
@@ -29,26 +71,13 @@
     float: right;
 }
 
-.mapper-content .mapper-item .mapper-remove {
-    color: #000000;
-}
+
 
 .mapper-content .mapper-item .mapper-main {
     margin-top: 5px;
 }
 
-.mapper-drop-place {
-    background: #DDDDDD;
-    height: 60px;
-    margin-bottom: 5px;
-}
 
-.mapper-drop-place p {
-    text-align: center;
-    margin-top: 15px;
-    font-weight: bold;
-    font-size: 20px;
-}
 
 .mapper-content .mapper-button {
     padding: 0;
