@@ -12,6 +12,7 @@
 namespace Tadcka\Bundle\MapperBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
@@ -24,6 +25,29 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class MapperType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add(
+            'mappings',
+            'collection',
+            [
+                'type' => 'tadcka_mapper_mapping',
+                'allow_add' => true,
+                'allow_delete' => true,
+                'label' => false,
+            ]
+        );
+
+        $builder->add('itemId', 'hidden');
+
+        $builder->add('source', 'hidden');
+
+        $builder->add('otherSource', 'hidden');
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -42,27 +66,9 @@ class MapperType extends AbstractType
 
         $resolver->setDefaults(
             [
-                'type' => 'tadcka_mapper_mapping',
-                'allow_add' => true,
-                'allow_delete' => true,
-                'options' => [
-                    'source' => function (Options $options) {
-                        return $options['source'];
-                    },
-                    'other_source' => function (Options $options) {
-                        return $options['other_source'];
-                    },
-                ]
+                'label' => false,
             ]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
-    {
-        return 'collection';
     }
 
 

@@ -18,7 +18,7 @@
         <!--Tadcka mapper form controller-->
         <service id="tadcka_mapper.controller.form" class="Tadcka\Bundle\MapperBundle\Controller\FormController">
             <argument type="service" id="tadcka_mapper.form_factory.mapper" />
-            <argument type="service" id="tadcka_mapper.mapping.provider" />
+            <argument type="service" id="tadcka_mapper.form_handler.mapper" />
             <argument type="service" id="tadcka_mapper.source.helper" />
             <argument type="service" id="tadcka_mapper.source.provider" />
             <argument type="service" id="templating" />

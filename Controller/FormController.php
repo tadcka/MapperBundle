@@ -16,8 +16,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Templating\EngineInterface;
 use Tadcka\Bundle\MapperBundle\Form\Factory\MapperFormFactory;
+use Tadcka\Bundle\MapperBundle\Form\Handler\MapperFormHandler;
 use Tadcka\Bundle\MapperBundle\Helper\SourceHelper;
-use Tadcka\Mapper\Mapping\MappingProviderInterface;
 use Tadcka\Mapper\Source\SourceProvider;
 
 /**
@@ -33,9 +33,9 @@ class FormController
     private $factory;
 
     /**
-     * @var MappingProviderInterface
+     * @var MapperFormHandler
      */
-    private $mappingProvider;
+    private $handler;
 
     /**
      * @var SourceHelper
@@ -56,56 +56,50 @@ class FormController
      * Constructor.
      *
      * @param MapperFormFactory $factory
-     * @param MappingProviderInterface $mappingProvider
+     * @param MapperFormHandler $handler
      * @param SourceHelper $sourceHelper
      * @param SourceProvider $sourceProvider
      * @param EngineInterface $templating
      */
     public function __construct(
         MapperFormFactory $factory,
-        MappingProviderInterface $mappingProvider,
+        MapperFormHandler $handler,
         SourceHelper $sourceHelper,
         SourceProvider $sourceProvider,
         EngineInterface $templating
     ) {
         $this->factory = $factory;
-        $this->mappingProvider = $mappingProvider;
+        $this->handler = $handler;
         $this->sourceHelper = $sourceHelper;
         $this->sourceProvider = $sourceProvider;
         $this->templating = $templating;
     }
 
 
-    public function getAction(Request $request, $itemId, $sourceMetadata, $otherSourceMetadata)
+    public function indexAction(Request $request, $itemId, $metadata, $otherMetadata)
     {
-        $sourceMetadata = $this->sourceHelper->getMetadata($sourceMetadata);
+        $sourceMetadata = $this->sourceHelper->getMetadata($metadata);
         $sourceData = $this->sourceProvider->getData($sourceMetadata);
 
         if (false === $sourceData->catMapping($itemId)) {
             return $this->renderResponse('TadckaMapperBundle:Mapper:mapping-error.html.twig', ['item_id' => $itemId]);
         }
 
-        $otherSourceMetadata = $this->sourceHelper->getMetadata($otherSourceMetadata);
+        $otherSourceMetadata = $this->sourceHelper->getMetadata($otherMetadata);
+        $form = $this->factory->create($itemId, $sourceMetadata, $otherSourceMetadata);
 
-        $mappings = $this->mappingProvider->getItems(
-            $itemId,
-            $sourceMetadata->getName(),
-            $otherSourceMetadata->getName()
-        );
+        if ($this->handler->process($form, $request)) {
+            $this->handler->onSuccess();
 
-        $form = $this->factory->create($mappings, $sourceMetadata->getName(), $otherSourceMetadata->getName());
+            return new Response();
+        }
 
         return $this->renderResponse('TadckaMapperBundle:Mapper:form.html.twig', ['form' => $form->createView()]);
     }
 
-    public function postAction(Request $request, $itemId, $sourceMetadata, $otherSourceMetadata)
+    public function validateItemAction($itemId, $metadata)
     {
-        return new Response();
-    }
-
-    public function validateItemAction($itemId, $sourceMetadata)
-    {
-        $sourceMetadata = $this->sourceHelper->getMetadata($sourceMetadata);
+        $sourceMetadata = $this->sourceHelper->getMetadata($metadata);
         $sourceData = $this->sourceProvider->getData($sourceMetadata);
 
         $data = [];

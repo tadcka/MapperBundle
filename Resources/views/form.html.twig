@@ -4,21 +4,21 @@
     {% set vars = form.vars %}
 
     <div class="col-md-12">
-        <div class="mapping-collection" data-prototype="{{ form_widget(vars.prototype)|e }}" data-index="{{ vars.data|length }}">
-
+        <div class="mapping-collection" data-prototype="{{ form_widget(form.mappings.vars.prototype)|e }}" data-index="{{ form.mappings.vars.data|length }}">
+            {{ form_widget(form.mappings) }}
         </div>
 
-        <div class="row">
-            <div class="col-md-12 mapping-drop-place" data-current_source="{{ vars.source }}">
-                <p>{{ 'drag_item_here'|trans }}</p>
-            </div>
+        {{ form_widget(form.itemId) }}
+        {{ form_widget(form.source) }}
+        {{ form_widget(form.otherSource) }}
+
+        <div class="row mapping-drop-place" data-current_source="{{ vars.source }}">
+            <p>{{ 'drag_item_here'|trans }}</p>
         </div>
 
-        <div class="row">
-            <div class="col-md-12 mapper-button">
-                <button class="btn btn-primary form-submit">{{ 'save'|trans }}</button>
-                <a class="btn btn-default form-cancel">{{ 'cancel'|trans }}</a>
-            </div>
+        <div class="row mapping-button">
+            <button class="btn btn-primary form-submit">{{ 'save'|trans }}</button>
+            <a class="btn btn-default form-cancel">{{ 'cancel'|trans }}</a>
         </div>
     </div>
 {%- endblock tadcka_mapper_widget %}
@@ -27,12 +27,15 @@
 {% block tadcka_mapper_mapping_widget -%}
     {% set vars = form.vars %}
 
-    <div class="col-md-12 mapping">
-        <strong class="title"></strong>
-        <a href="javascript:;" class="fa fa-times remove" title="{{ 'remove_item'|trans }}"></a>
-        <div class="item">
-            {{ form_widget(form) }}
+    <div class="row mapping">
+        <div>
+            <strong class="title">{{ vars.title }}</strong>
+            <a href="javascript:;" class="fa fa-times remove" title="{{ 'remove_item'|trans }}"></a>
+            <div class="item">
+                {{ form_widget(form) }}
+            </div>
         </div>
-    </div>
 
+        <a href="javascript:;" class="main" title="{{ 'main_item'|trans }}">{{ 'main_item'|trans }}</a>
+    </div>
 {%- endblock tadcka_mapper_mapping_widget %}

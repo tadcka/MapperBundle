@@ -48,7 +48,7 @@ class MapperExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('mapper_render_source', [$this, 'renderSource'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('mapper_source_render', [$this, 'sourceRender'], ['is_safe' => ['html']]),
             new \Twig_SimpleFunction('mapper_source_metadata', [$this, 'getSourceMetadata']),
         ];
     }
@@ -75,7 +75,7 @@ class MapperExtension extends \Twig_Extension
         return $this->serializer->serialize(SourceMetadataFactory::create($source), 'json');
     }
 
-    public function renderSource(Source $source, $flag)
+    public function sourceRender(Source $source)
     {
         $html = '';
         switch ($source->getTypeName()) {
@@ -83,7 +83,6 @@ class MapperExtension extends \Twig_Extension
                 $html = $this->twig->render(
                     'TadckaMapperBundle:Type:tree.html.twig',
                     [
-                        'flag' => $flag,
                         'source' => $source
                     ]
                 );

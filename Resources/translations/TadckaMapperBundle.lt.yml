@@ -1,7 +1,9 @@
 drag_item_here: Nuvilkite su pele sąryšį čia.
 item_can_not_use_for_mapping: Šis sąryšis "%item%" negali būt naudojamas sąryšiams.
-main_category: Pagrindinė kategorija
-remove_category: Pašalinti kategoriją
+title_not_found: Pavadinimas nerastas
+
+main_item: Pagrindinis sąryšis
+remove_item: Pašalinti sąryšį
 save: Išsaugoti
 cancel: Atšaukti
 

@@ -23,15 +23,15 @@ function MappingForm() {
     /**
      * Set main mapper item.
      */
-    $formWrapper.on('click', 'a.mapper-main', function ($event) {
-        $('div.mapper-content .mapper-item').each(function () {
+    $formWrapper.on('click', '.mapping > a.main', function ($event) {
+        $formWrapper.find('.mapping-collection .mapping').each(function () {
             $(this).find('input[type=radio]:first').removeAttr('checked');
             $(this).removeClass('is-main');
         });
 
-        var $mapperItem = $(this).closest('div.mapper-item');
-        $mapperItem.addClass('is-main');
-        $mapperItem.find('input[type=radio]:first').attr('checked', 'checked');
+        var $mapping = $(this).closest('.mapping');
+        $mapping.addClass('is-main');
+        $mapping.find('input[type=radio]:first').attr('checked', 'checked');
     });
 
     /**
@@ -64,29 +64,20 @@ function MappingForm() {
     });
 
     /**
-     * Get content.
-     *
-     * @returns {*|jQuery|HTMLElement}
-     */
-    this.getContent = function () {
-        return $formWrapper;
-    };
-
-    /**
      * Load items.
      *
      * @param {String} $itemId
-     * @param {Object} $sourceMetadata
-     * @param {Object} $otherSourceMetadata
+     * @param {Object} $metadata
+     * @param {Object} $otherMetadata
      */
-    this.get = function ($itemId, $sourceMetadata, $otherSourceMetadata) {
+    this.get = function ($itemId, $metadata, $otherMetadata) {
         fadeOn();
 
         $.ajax({
-            url: Routing.generate('tadcka_mapper_form_get', {
+            url: Routing.generate('tadcka_mapper_form', {
                 itemId: $itemId,
-                sourceMetadata: JSON.stringify($sourceMetadata),
-                otherSourceMetadata: JSON.stringify($otherSourceMetadata)
+                metadata: JSON.stringify($metadata),
+                otherMetadata: JSON.stringify($otherMetadata)
             }),
             type: 'GET',
             success: function ($response) {
@@ -104,16 +95,16 @@ function MappingForm() {
      * Load items.
      *
      * @param {String} $itemId
-     * @param {Object} $sourceMetadata
+     * @param {Object} $metadata
      */
-    this.validateItem = function ($itemId, $sourceMetadata) {
-        if (false === this.hasMapping($itemId)) {
+    this.validateItem = function ($itemId, $metadata) {
+        if (false === hasMapping($itemId)) {
             fadeOn();
 
             $.ajax({
                 url: Routing.generate('tadcka_mapper_validate_item', {
                     itemId: $itemId,
-                    sourceMetadata: JSON.stringify($sourceMetadata)
+                    metadata: JSON.stringify($metadata)
                 }),
                 type: 'GET',
                 success: function ($response) {
@@ -125,7 +116,7 @@ function MappingForm() {
                         $collection.append(getCollectionRow($response.error));
                     } else {
                         var $index = $collection.data('index');
-                        var $prototype = $(getCollectionRow($collection.data('prototype').replace(/__name__/g, $index)));
+                        var $prototype = $($collection.data('prototype').replace(/__name__/g, $index));
 
                         $prototype.find('input[type=hidden]').val($response.item_id);
                         $prototype.find('strong:first').html($response.item_title);
@@ -151,7 +142,7 @@ function MappingForm() {
      *
      * @returns {boolean}
      */
-    this.hasMapping = function ($itemId) {
+    var hasMapping = function ($itemId) {
         var $has = false;
         $formWrapper.find('.mapping-collection .mapping input[type=hidden]').each(function () {
             if ($itemId === $(this).val()) {

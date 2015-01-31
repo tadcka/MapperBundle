@@ -13,6 +13,8 @@ namespace Tadcka\Bundle\MapperBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -23,26 +25,11 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class MappingType extends AbstractType
 {
     /**
-     * @var string
-     */
-    private $mappingClass;
-
-    /**
-     * Constructor.
-     *
-     * @param string $mappingClass
-     */
-    public function __construct($mappingClass)
-    {
-        $this->mappingClass = $mappingClass;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('item', 'hidden', ['mapped' => false]);
+        $builder->add('item', 'hidden', ['label' => false]);
 
         $builder->add('main', 'checkbox', ['label' => false, 'required' => false]);
     }
@@ -50,11 +37,18 @@ class MappingType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        $data = $form->getData();
+        $view->vars['title'] = $data['title'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(['source', 'other_source']);
-
-        $resolver->setDefaults(['data_class' => $this->mappingClass]);
+        $resolver->setDefaults(['label' => false]);
     }
 
     /**

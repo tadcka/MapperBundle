@@ -18,7 +18,6 @@
         <!--Tadcka mapper mapping form type-->
         <service id="tadcka_mapper.form_type.mapping" class="Tadcka\Bundle\MapperBundle\Form\Type\MappingType" public="true">
             <tag name="form.type" alias="tadcka_mapper_mapping" />
-            <argument>%tadcka_mapper.model.mapping.class%</argument>
         </service>
 
     </services>
