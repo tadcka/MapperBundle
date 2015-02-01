@@ -89,8 +89,8 @@ class MapperFormFactory
             'tadcka_mapper',
             $this->getData($itemId, $sourceMetadata, $otherSourceMetadata),
             [
-                'source' => $sourceMetadata->getName(),
-                'other_source' => $otherSourceMetadata->getName(),
+                'source_metadata' => $sourceMetadata,
+                'other_source_metadata' => $otherSourceMetadata,
                 'action' => $this->router->getContext()->getPathInfo(),
             ]
         );

@@ -25,7 +25,10 @@
         <!--Tadcka mapper tree twig extension-->
         <service id="tadcka_mapper.templating.twig_extension.tree" class="Tadcka\Bundle\MapperBundle\Twig\Extension\MapperTreeExtension">
             <tag name="twig.extension" />
+            <argument type="service" id="tadcka_mapper.mapping.provider" />
             <argument type="service" id="serializer" />
+            <argument type="service" id="tadcka_mapper.source.provider"/>
+            <argument type="service" id="tadcka_mapper.source.type.tree.helper"/>
         </service>
 
     </services>

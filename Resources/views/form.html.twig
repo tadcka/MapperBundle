@@ -12,7 +12,7 @@
         {{ form_widget(form.source) }}
         {{ form_widget(form.otherSource) }}
 
-        <div class="row mapping-drop-place" data-current_source="{{ vars.source }}">
+        <div class="row mapping-drop-place" data-current_source="{{ vars.source_metadata.name }}">
             <p>{{ 'drag_item_here'|trans }}</p>
         </div>
 
@@ -27,7 +27,7 @@
 {% block tadcka_mapper_mapping_widget -%}
     {% set vars = form.vars %}
 
-    <div class="row mapping">
+    <div class="row mapping{% if vars.value.main is defined and vars.value.main %} is-main{% endif %}">
         <div>
             <strong class="title">{{ vars.title }}</strong>
             <a href="javascript:;" class="fa fa-times remove" title="{{ 'remove_item'|trans }}"></a>
@@ -35,7 +35,11 @@
                 {{ form_widget(form) }}
             </div>
         </div>
-
+        <span class="full-path">
+            {% if vars.value.item is defined %}
+                {{ mapper_tree_full_path(vars.value.item, vars.source_metadata) }}
+            {% endif %}
+        </span>
         <a href="javascript:;" class="main" title="{{ 'main_item'|trans }}">{{ 'main_item'|trans }}</a>
     </div>
 {%- endblock tadcka_mapper_mapping_widget %}

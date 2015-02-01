@@ -121,6 +121,37 @@ class MappingManager extends BaseMappingManager
         return $qb->getQuery()->getResult();
     }
 
+    public function findItemsBySources($sourceSlug, $otherSourceSlug)
+    {
+        $qb = $this->repository->createQueryBuilder('m');
+
+        $qb->innerJoin('m.leftItem', 'ml');
+        $qb->innerJoin('m.rightItem', 'mr');
+
+        $qb->innerJoin('ml.source', 'mls');
+        $qb->innerJoin('mr.source', 'mrs');
+
+        $qb->where(
+            $qb->expr()->orX(
+                $qb->expr()->andX(
+                    $qb->expr()->eq('mls.slug', ':source_slug'),
+                    $qb->expr()->eq('mrs.slug', ':other_source_slug')
+                ),
+                $qb->expr()->andX(
+                    $qb->expr()->eq('mrs.slug', ':source_slug'),
+                    $qb->expr()->eq('mls.slug', ':other_source_slug')
+                )
+            )
+        );
+
+        $qb->setParameter('source_slug', $sourceSlug);
+        $qb->setParameter('other_source_slug', $otherSourceSlug);
+
+        $qb->select('ml.slug AS left_item, mr.slug AS right_item, mls.slug AS left_source, mrs.slug AS right_source');
+
+        return $qb->getQuery()->getResult();
+    }
+
     /**
      * {@inheritdoc}
      */

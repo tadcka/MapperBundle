@@ -38,6 +38,7 @@ class MapperType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'label' => false,
+                'options' => ['source_metadata' => $options['other_source_metadata']]
             ]
         );
 
@@ -53,8 +54,8 @@ class MapperType extends AbstractType
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['source'] = $options['source'];
-        $view->vars['other_source'] = $options['other_source'];
+        $view->vars['source_metadata'] = $options['source_metadata'];
+        $view->vars['other_source_metadata'] = $options['other_source_metadata'];
     }
 
     /**
@@ -62,7 +63,7 @@ class MapperType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(['source', 'other_source']);
+        $resolver->setRequired(['source_metadata', 'other_source_metadata']);
 
         $resolver->setDefaults(
             [

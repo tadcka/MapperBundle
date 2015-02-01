@@ -41,6 +41,7 @@ class MappingType extends AbstractType
     {
         $data = $form->getData();
         $view->vars['title'] = $data['title'];
+        $view->vars['source_metadata'] = $options['source_metadata'];
     }
 
     /**
@@ -48,6 +49,8 @@ class MappingType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        $resolver->setRequired(['source_metadata']);
+
         $resolver->setDefaults(['label' => false]);
     }
 

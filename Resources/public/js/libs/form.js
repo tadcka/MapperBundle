@@ -16,7 +16,7 @@ function MappingForm() {
     /**
      * Remove mapper item.
      */
-    $formWrapper.on('click', '.mapping > a.remove', function ($event) {
+    $formWrapper.on('click', '.mapping a.remove', function ($event) {
         $(this).closest('div.mapping').remove();
     });
 
@@ -25,13 +25,13 @@ function MappingForm() {
      */
     $formWrapper.on('click', '.mapping > a.main', function ($event) {
         $formWrapper.find('.mapping-collection .mapping').each(function () {
-            $(this).find('input[type=radio]:first').removeAttr('checked');
+            $(this).find('input[type=checkbox]:first').prop('checked', false);
             $(this).removeClass('is-main');
         });
 
         var $mapping = $(this).closest('.mapping');
         $mapping.addClass('is-main');
-        $mapping.find('input[type=radio]:first').attr('checked', 'checked');
+        $mapping.find('input[type=checkbox]:first').prop('checked', true);
     });
 
     /**
@@ -120,6 +120,10 @@ function MappingForm() {
 
                         $prototype.find('input[type=hidden]').val($response.item_id);
                         $prototype.find('strong:first').html($response.item_title);
+
+                        if ($response.item_full_path) {
+                            $prototype.find('.full-path').html($response.item_full_path);
+                        }
 
                         $collection.data('index', $index + 1);
                         $collection.append($prototype);

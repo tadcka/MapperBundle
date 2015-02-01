@@ -15,6 +15,8 @@
 
         <property name="name" type="string" serialized-name="name" expose="true" />
 
+        <property name="type" type="string" serialized-name="type" expose="true" />
+
         <property name="options" type="array" serialized-name="options" expose="true" />
 
     </class>

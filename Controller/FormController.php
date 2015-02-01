@@ -18,6 +18,7 @@ use Symfony\Component\Templating\EngineInterface;
 use Tadcka\Bundle\MapperBundle\Form\Factory\MapperFormFactory;
 use Tadcka\Bundle\MapperBundle\Form\Handler\MapperFormHandler;
 use Tadcka\Bundle\MapperBundle\Helper\SourceHelper;
+use Tadcka\Mapper\Extension\Source\Tree\MapperTreeHelper;
 use Tadcka\Mapper\Source\SourceProvider;
 
 /**
@@ -53,6 +54,11 @@ class FormController
     private $templating;
 
     /**
+     * @var MapperTreeHelper
+     */
+    private $treeHelper;
+
+    /**
      * Constructor.
      *
      * @param MapperFormFactory $factory
@@ -60,19 +66,22 @@ class FormController
      * @param SourceHelper $sourceHelper
      * @param SourceProvider $sourceProvider
      * @param EngineInterface $templating
+     * @param MapperTreeHelper $treeHelper
      */
     public function __construct(
         MapperFormFactory $factory,
         MapperFormHandler $handler,
         SourceHelper $sourceHelper,
         SourceProvider $sourceProvider,
-        EngineInterface $templating
+        EngineInterface $templating,
+        MapperTreeHelper $treeHelper
     ) {
         $this->factory = $factory;
         $this->handler = $handler;
         $this->sourceHelper = $sourceHelper;
         $this->sourceProvider = $sourceProvider;
         $this->templating = $templating;
+        $this->treeHelper = $treeHelper;
     }
 
 
@@ -103,7 +112,7 @@ class FormController
         $sourceData = $this->sourceProvider->getData($sourceMetadata);
 
         $data = [];
-        if (false === $sourceData->catMapping($itemId)) {
+        if (false === $sourceData->canMapping($itemId)) {
             $data['error'] = $this->templating->render(
                 'TadckaMapperBundle:Mapper:mapping-error.html.twig',
                 ['item_id' => $itemId]
@@ -115,6 +124,10 @@ class FormController
         $data['item_id'] = $item->getId();
         $data['item_title'] = $item->getTitle();
         $data['source'] = $sourceMetadata->getName();
+
+        if ('mapper_tree' === $sourceMetadata->getType()) {
+            $data['item_full_path'] = implode(' / ', $this->treeHelper->getTreeItemFullPath($itemId, $sourceData->getTree()));
+        }
 
         return new JsonResponse($data);
     }

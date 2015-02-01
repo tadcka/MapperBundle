@@ -15,15 +15,18 @@
 
     <services>
 
-        <!--Tadcka mapper tree source type-->
-        <service id="tadcka_mapper.type.collection" class="Tadcka\Mapper\Extension\Source\Collection\MapperCollectionType" public="true">
+        <!--Tadcka mapper tree type-->
+        <service id="tadcka_mapper.source.type.collection" class="Tadcka\Mapper\Extension\Source\Collection\MapperCollectionType" public="true">
             <tag name="tadcka_mapper.source.type" alias="mapper_collection"/>
         </service>
 
-        <!--Tadcka mapper tree source type-->
-        <service id="tadcka_mapper.type.tree" class="Tadcka\Mapper\Extension\Source\Tree\MapperTreeType" public="true">
+        <!--Tadcka mapper tree type-->
+        <service id="tadcka_mapper.source.type.tree" class="Tadcka\Mapper\Extension\Source\Tree\MapperTreeType" public="true">
             <tag name="tadcka_mapper.source.type" alias="mapper_tree"/>
         </service>
+
+        <!--Tadcka mapper tree type helper-->
+        <service id="tadcka_mapper.source.type.tree.helper" class="Tadcka\Mapper\Extension\Source\Tree\MapperTreeHelper" public="false" />
 
     </services>
 

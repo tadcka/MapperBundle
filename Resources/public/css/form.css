@@ -18,7 +18,6 @@
     font-size: 14px;
 }
 
-
 .mapping-form .mapping-button {
     padding: 0;
 }
@@ -38,8 +37,8 @@
 
 .mapping-collection .mapping {
     border: 1px solid #DDDDDD;
-    height: 50px;
-    padding: 5px;
+    height: 60px;
+    padding: 10px;
     margin-bottom: 5px;
 }
 

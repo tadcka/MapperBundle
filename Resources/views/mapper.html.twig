@@ -1,10 +1,10 @@
 <div id="mapper-content">
     <div class="col-md-3 mapper-block" id="mapper-source-left" data-metadata="{{ mapper_source_metadata(mapper.leftSource) }}">
-        {{ mapper_source_render(mapper.leftSource) }}
+        {{ mapper_source_render(mapper.leftSource, mapper.rightSource) }}
     </div>
     <div class="col-md-6 mapper-block mapping-form">
     </div>
     <div class="col-md-3 mapper-block" id="mapper-source-right" data-metadata="{{ mapper_source_metadata(mapper.rightSource) }}">
-        {{ mapper_source_render(mapper.rightSource) }}
+        {{ mapper_source_render(mapper.rightSource, mapper.leftSource) }}
     </div>
 </div>

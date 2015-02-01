@@ -58,7 +58,7 @@ $.fn.mapperTree = function () {
             var $target = $($data.event.target);
             var $dropPlace = $target.closest('.mapping-drop-place');
 
-            if ($dropPlace) {
+            if ($dropPlace.length) {
                 var $metadata = $($data.element).closest('div.mapper-block').data('metadata');
 
                 if (($dropPlace.data('current_source') !== $metadata.name) && $data.data.jstree && $data.data.origin) {

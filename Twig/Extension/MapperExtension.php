@@ -54,16 +54,6 @@ class MapperExtension extends \Twig_Extension
     }
 
     /**
-     * {@inheritdoc}
-     */
-//    public function getFilters()
-//    {
-////        return array(
-////            new \Twig_SimpleFilter('mapper_item_full_path', array($this, 'getMapperItemFullPath')),
-////        );
-//    }
-
-    /**
      * Get mapper source metadata.
      *
      * @param Source $source
@@ -75,7 +65,15 @@ class MapperExtension extends \Twig_Extension
         return $this->serializer->serialize(SourceMetadataFactory::create($source), 'json');
     }
 
-    public function sourceRender(Source $source)
+    /**
+     * Source render.
+     *
+     * @param Source $source
+     * @param Source $otherSource
+     *
+     * @return string
+     */
+    public function sourceRender(Source $source, Source $otherSource)
     {
         $html = '';
         switch ($source->getTypeName()) {
@@ -83,7 +81,8 @@ class MapperExtension extends \Twig_Extension
                 $html = $this->twig->render(
                     'TadckaMapperBundle:Type:tree.html.twig',
                     [
-                        'source' => $source
+                        'source' => $source,
+                        'other_source' => $otherSource,
                     ]
                 );
 
@@ -92,26 +91,6 @@ class MapperExtension extends \Twig_Extension
 
         return $html;
     }
-
-    /**
-     * Get mapper item full path.
-     *
-     * @param MapperItemInterface $item
-     * @param string $sourceSlug
-     * @param string $locale
-     *
-     * @return string
-     */
-//    public function getMapperItemFullPath(MapperItemInterface $item, $sourceSlug, $locale)
-//    {
-//        $mapperTree = $this->mapperProvider->getMapper($this->mapperProvider->getSource($sourceSlug), $locale);
-//        $result = '';
-//        foreach ($this->mapperHelper->getMapperItemFullPath($item->getSlug(), $mapperTree) as $value) {
-//            $result .= $value . ' / ';
-//        }
-//
-//        return rtrim($result, ' / ');
-//    }
 
     /**
      * {@inheritdoc}
