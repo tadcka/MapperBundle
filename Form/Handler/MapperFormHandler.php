@@ -86,6 +86,7 @@ class MapperFormHandler
                     $otherSource->getSlug()
                 );
 
+
                 $hasMain = false;
                 foreach ($data['mappings'] as $postMapping) {
                     if (false === isset($mappings[$postMapping['item']])) {
@@ -104,8 +105,7 @@ class MapperFormHandler
                     $hasMain = $hasMain || $postMapping['main'];
                 }
 
-                if (false === $hasMain) {
-                    $mapping = reset($mappings);
+                if (false === $hasMain && $mapping = reset($mappings)) {
                     $mapping->setMain(true);
                 }
 

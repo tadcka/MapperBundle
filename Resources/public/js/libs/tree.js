@@ -26,6 +26,7 @@ $.fn.mapperTree = function () {
         })
         .on('activate_node.jstree', function ($event, $data) {
             $mappingForm.get($data.node.id, $leftSource.data('metadata'), $rightSource.data('metadata'));
+            $rightTree.jstree(true).deselect_all();
         });
 
     $rightTree
@@ -37,6 +38,7 @@ $.fn.mapperTree = function () {
         })
         .on('activate_node.jstree', function ($event, $data) {
             $mappingForm.get($data.node.id, $rightSource.data('metadata'), $leftSource.data('metadata'));
+            $leftTree.jstree(true).deselect_all();
         });
 
     // Example: https://groups.google.com/forum/#!topic/jstree/BYppISuCFRE

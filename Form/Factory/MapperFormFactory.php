@@ -138,8 +138,6 @@ class MapperFormFactory
             }
         }
 
-
-
         return $data;
     }
 }
