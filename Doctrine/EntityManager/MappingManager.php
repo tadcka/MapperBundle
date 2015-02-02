@@ -114,7 +114,7 @@ class MappingManager extends BaseMappingManager
             )
         );
 
-        $qb->setParameter('item_slugs', $itemIds);
+        $qb->setParameter('item_ids', $itemIds);
         $qb->setParameter('source_slug', $sourceSlug);
         $qb->setParameter('other_source_slug', $otherSourceSlug);
 
