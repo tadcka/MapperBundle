@@ -15,6 +15,7 @@ use Tadcka\Bundle\MapperBundle\Source\Metadata\SourceMetadata;
 use Tadcka\Mapper\ParameterBag;
 use Tadcka\Mapper\Source\Data\SourceDataFactoryRegistry;
 use Tadcka\Mapper\Source\Data\SourceDataInterface;
+use Tadcka\Mapper\Source\Data\SourceDataProvider;
 
 /**
  * @author Tadas Gliaubicas <tadcka89@gmail.com>
@@ -24,23 +25,18 @@ use Tadcka\Mapper\Source\Data\SourceDataInterface;
 class SourceProvider
 {
     /**
-     * @var SourceDataFactoryRegistry
+     * @var SourceDataProvider
      */
-    private $dataFactoryRegistry;
-
-    /**
-     * @var array
-     */
-    private $data = [];
+    private $dataProvider;
 
     /**
      * Constructor.
      *
-     * @param SourceDataFactoryRegistry $dataFactoryRegistry
+     * @param SourceDataProvider $dataProvider
      */
-    public function __construct(SourceDataFactoryRegistry $dataFactoryRegistry)
+    public function __construct(SourceDataProvider $dataProvider)
     {
-        $this->dataFactoryRegistry = $dataFactoryRegistry;
+        $this->dataProvider = $dataProvider;
     }
 
     /**
@@ -52,12 +48,6 @@ class SourceProvider
      */
     public function getData(SourceMetadata $metadata)
     {
-        if (false === isset($this->data[$metadata->getDataFactoryName()])) {
-            $factory = $this->dataFactoryRegistry->getFactory($metadata->getDataFactoryName());
-
-            $this->data[$metadata->getName()] = $factory->create(new ParameterBag($metadata->getOptions()));
-        }
-
-        return $this->data[$metadata->getName()];
+        return $this->dataProvider->getData($metadata->getDataFactoryName(), $metadata->getOptions());
     }
 }
