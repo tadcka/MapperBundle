@@ -21,12 +21,12 @@
         </service>
 
         <!--Tadcka mapper source provider-->
-        <service id="tadcka_mapper.source.provider" class="Tadcka\Mapper\Source\SourceProvider" public="false">
+        <service id="tadcka_mapper.source.provider" class="Tadcka\Bundle\MapperBundle\Source\SourceProvider" public="false">
             <argument type="service" id="tadcka_mapper.source.registry.data_factory" />
         </service>
 
         <!--Tadcka mapper source helper-->
-        <service id="tadcka_mapper.source.helper" class="Tadcka\Bundle\MapperBundle\Helper\SourceHelper">
+        <service id="tadcka_mapper.source.helper" class="Tadcka\Bundle\MapperBundle\Source\SourceHelper">
             <argument type="service" id="serializer" />
         </service>
 

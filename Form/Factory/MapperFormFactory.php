@@ -15,9 +15,9 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Tadcka\Bundle\MapperBundle\Source\Metadata\SourceMetadata;
+use Tadcka\Bundle\MapperBundle\Source\SourceProvider;
 use Tadcka\Mapper\Mapping\MappingProviderInterface;
-use Tadcka\Mapper\Source\SourceMetadata;
-use Tadcka\Mapper\Source\SourceProvider;
 
 /**
  * @author Tadas Gliaubicas <tadcka89@gmail.com>

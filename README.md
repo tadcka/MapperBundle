@@ -31,5 +31,4 @@ $ php composer.phar update tadcka/mapper-bundle
 ## TODO
 
 * Create source type render system
-* Move Source metadata from mapper lib to bundle
 * Source metadata cache and generate token

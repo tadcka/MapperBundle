@@ -12,8 +12,8 @@
 namespace Tadcka\Bundle\MapperBundle\Twig\Extension;
 
 use JMS\Serializer\SerializerInterface;
+use Tadcka\Bundle\MapperBundle\Source\Metadata\SourceMetadataFactory;
 use Tadcka\Mapper\Source\Source;
-use Tadcka\Mapper\Source\SourceMetadataFactory;
 use Twig_Environment as Twig;
 
 /**

@@ -13,14 +13,14 @@ namespace Tadcka\Bundle\MapperBundle\Twig\Extension;
 
 use JMS\Serializer\SerializerInterface;
 use Tadcka\Bundle\MapperBundle\Frontend\Icons;
+use Tadcka\Bundle\MapperBundle\Source\Metadata\SourceMetadata;
+use Tadcka\Bundle\MapperBundle\Source\SourceProvider;
 use Tadcka\JsTreeBundle\Model\Node;
 use Tadcka\Mapper\Extension\Source\Tree\MapperTree;
 use Tadcka\Mapper\Extension\Source\Tree\MapperTreeHelper;
 use Tadcka\Mapper\Extension\Source\Tree\MapperTreeItemInterface;
 use Tadcka\Mapper\Mapping\MappingProviderInterface;
 use Tadcka\Mapper\Source\Source;
-use Tadcka\Mapper\Source\SourceMetadata;
-use Tadcka\Mapper\Source\SourceProvider;
 
 /**
  * @author Tadas Gliaubicas <tadcka89@gmail.com>

@@ -17,9 +17,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Templating\EngineInterface;
 use Tadcka\Bundle\MapperBundle\Form\Factory\MapperFormFactory;
 use Tadcka\Bundle\MapperBundle\Form\Handler\MapperFormHandler;
-use Tadcka\Bundle\MapperBundle\Helper\SourceHelper;
+use Tadcka\Bundle\MapperBundle\Source\SourceHelper;
+use Tadcka\Bundle\MapperBundle\Source\SourceProvider;
 use Tadcka\Mapper\Extension\Source\Tree\MapperTreeHelper;
-use Tadcka\Mapper\Source\SourceProvider;
 
 /**
  * @author Tadas Gliaubicas <tadcka89@gmail.com>

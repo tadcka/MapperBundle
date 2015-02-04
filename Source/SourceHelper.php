@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Tadcka\Bundle\MapperBundle\Helper;
+namespace Tadcka\Bundle\MapperBundle\Source;
 
 use JMS\Serializer\SerializerInterface;
-use Tadcka\Mapper\Source\SourceMetadata;
+use Tadcka\Bundle\MapperBundle\Source\Metadata\SourceMetadata;
 
 /**
  * @author Tadas Gliaubicas <tadcka89@gmail.com>
@@ -45,6 +45,7 @@ class SourceHelper
      */
     public function getMetadata($json)
     {
-        return $this->serializer->deserialize($json, 'Tadcka\\Mapper\\Source\\SourceMetadata', 'json');
+        return $this->serializer
+            ->deserialize($json, 'Tadcka\\Bundle\\MapperBundle\\Source\\Metadata\\SourceMetadata', 'json');
     }
 }

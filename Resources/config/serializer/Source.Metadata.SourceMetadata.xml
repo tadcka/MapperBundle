@@ -11,7 +11,7 @@
 
 <serializer>
 
-    <class name="Tadcka\Mapper\Source\SourceMetadata">
+    <class name="Tadcka\Bundle\MapperBundle\Source\Metadata\SourceMetadata">
 
         <property name="type" type="string" serialized-name="type" expose="true" />
 
