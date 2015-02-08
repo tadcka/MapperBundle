@@ -7,5 +7,5 @@ remove_item: Pašalinti sąryšį
 save: Išsaugoti
 cancel: Atšaukti
 
-mappings_have_been_saved: Sėkmingai išsaugoti sąryšiai.
+successfully_save_mappings: Sėkmingai išsaugoti sąryšiai.
 was_error: Įvyko klaida.

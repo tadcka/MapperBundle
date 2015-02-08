@@ -100,7 +100,7 @@ class FormController
         if ($this->handler->process($form, $request)) {
             $this->handler->onSuccess();
 
-            return new Response();
+            return $this->renderResponse('TadckaMapperBundle:Mapper:mapping-success.html.twig');
         }
 
         return $this->renderResponse('TadckaMapperBundle:Mapper:form.html.twig', ['form' => $form->createView()]);
