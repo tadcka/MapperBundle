@@ -55,6 +55,23 @@ class SourceDataCache implements SourceDataCacheInterface
     /**
      * {@inheritdoc}
      */
+    public function delete($key)
+    {
+        $filename = $this->getFilename($key);
+        $metadataFilename = $filename . '.meta';
+
+        if (file_exists($filename) && file_exists($metadataFilename)) {
+            $this->filesystem->remove([$filename, $metadataFilename]);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function fetch($key)
     {
         $filename = $this->getFilename($key);

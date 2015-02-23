@@ -17,7 +17,7 @@
 
         <!--Tadcka mapper data cache-->
         <service id="tadcka_mapper.source.cache.data" class="Tadcka\Bundle\MapperBundle\Cache\SourceDataCache">
-            <argument></argument>
+            <argument>%tadcka_mapper.source.data_cache_dir%</argument>
             <argument type="service" id="filesystem"/>
             <argument type="service" id="serializer"/>
         </service>

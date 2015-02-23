@@ -15,6 +15,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
+use Tadcka\Mapper\Cache\SourceDataCacheInterface;
+use Tadcka\Mapper\Mapper;
 
 /**
  * @author Tadas Gliaubicas <tadcka89@gmail.com>
@@ -55,5 +57,19 @@ class TadckaMapperExtension extends Extension
         $container->setAlias('tadcka_mapper.manager.mapping', $config['mapping_manager']);
         $container->setAlias('tadcka_mapper.manager.mapping_item', $config['mapping_item_manager']);
         $container->setAlias('tadcka_mapper.manager.mapping_source', $config['mapping_source_manager']);
+
+        $container->setParameter('tadcka_mapper.source.data_cache_dir', $this->getSourceDataCacheDir($container));
+    }
+
+    private function getSourceDataCacheDir(ContainerBuilder $container)
+    {
+        return implode(
+            '/',
+            [
+                $container->getParameter('kernel.cache_dir'),
+                Mapper::NAME,
+                SourceDataCacheInterface::SUB_DIR
+            ]
+        );
     }
 }
