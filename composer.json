@@ -15,8 +15,7 @@
         "php": ">=5.4",
 
         "symfony/framework-bundle" : ">=2.3",
-
-        "jms/serializer-bundle": "~0.13",
+        "jms/serializer-bundle": "~1.0",
         "friendsofsymfony/jsrouting-bundle": "~1.5",
 
         "tadcka/mapper": "0.2.*@dev",
@@ -33,7 +32,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.1.x-dev"
+            "dev-master": "0.3.x-dev"
         }
     }
 }
