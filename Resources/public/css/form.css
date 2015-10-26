@@ -37,7 +37,7 @@
 
 .mapping-collection .mapping {
     border: 1px solid #DDDDDD;
-    height: 60px;
+    min-height: 60px;
     padding: 10px;
     margin-bottom: 5px;
 }
