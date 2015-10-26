@@ -4,6 +4,10 @@
     {% set vars = form.vars %}
 
     <div class="col-md-12">
+        <div class="row mapping-drop-place" data-current_source="{{ vars.source_metadata.name }}">
+            <p>{{ 'drag_item_here'|trans }}</p>
+        </div>
+
         <div class="mapping-collection" data-prototype="{{ form_widget(form.mappings.vars.prototype)|e }}" data-index="{{ form.mappings.vars.data|length }}">
             {{ form_widget(form.mappings) }}
         </div>
@@ -11,10 +15,6 @@
         {{ form_widget(form.itemId) }}
         {{ form_widget(form.source) }}
         {{ form_widget(form.otherSource) }}
-
-        <div class="row mapping-drop-place" data-current_source="{{ vars.source_metadata.name }}">
-            <p>{{ 'drag_item_here'|trans }}</p>
-        </div>
 
         <div class="row mapping-button">
             <button class="btn btn-primary form-submit">{{ 'save'|trans }}</button>
